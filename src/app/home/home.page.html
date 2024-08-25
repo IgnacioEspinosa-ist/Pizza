@@ -1,20 +1,40 @@
-<ion-header [translucent]="true">
+<!-- src/app/home/home.page.html -->
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+ 
+  <ion-card (click)="verPromocion()">
+    <ion-img src="assets/promociones/promo1.jpg"></ion-img>
+    <ion-card-header>
+      <ion-card-title>2x1 en pizzas medianas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      ¡Disfruta de esta oferta por tiempo limitado!
+    </ion-card-content>
+  </ion-card>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Productos</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" *ngFor="let producto of productos">
+            <ion-card (click)="verDetalleProducto(producto)">
+              <img [src]="producto.imagen" />
+              <ion-card-title>{{ producto.nombre }}</ion-card-title>
+              <p>{{ producto.precio | currency }}</p>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
