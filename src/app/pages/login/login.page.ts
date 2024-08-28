@@ -15,12 +15,12 @@ export class LoginPage {
   login() {
     if (this.username && this.password) {
      
-      if (this.username === 'admin' && this.password === '1234') {
+      if (this.username === 'donfitopaez' && this.password === 'mariposatecnicolor') {
         
         this.navCtrl.navigateForward('/home');
       } else {
         
-        alert('Invalid credentials');
+        alert('Este Usuario No Existe, Revise Los Datos');
       }
     } else {
       alert('Ingrese el Nombre y Contraseña Correcta');
