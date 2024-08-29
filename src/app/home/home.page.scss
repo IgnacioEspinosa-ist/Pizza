@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   top: 50%;
-  transform: translateY(-50%);
+  
 }
 
 #container strong {
@@ -27,7 +27,7 @@
 }
 
 ion-card {
-  margin: 16px;
+ background-color: white;
 }
 
 ion-card-title {
@@ -52,8 +52,29 @@ ion-col {
   padding: 8px;
 }
 
-ion-content{
+.fondo{
+  padding-top: 50px;
+  background-color: #ef8320;
+  padding-bottom: 200px;
+}
 
-  --color: #ef8320;
+.head{
 
+  background-color: rgb(218, 0, 0);
+}
+
+ion-toolbar{
+
+  background-color: rgb(255, 0, 0);
+}
+
+.logo{
+
+  width: 50px;
+ 
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

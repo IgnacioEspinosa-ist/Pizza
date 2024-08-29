@@ -1,12 +1,27 @@
 
 <ion-header>
+  
+  <div class="head">
   <ion-toolbar>
-    <ion-title>Home</ion-title>
+    <ion-buttons slot="start">
+      <ion-button menuToggle>
+        <ion-icon slot="icon-only" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="logo">
+      <img src="assets/logo.png" >
+      </div>
+    </ion-title>
+    
   </ion-toolbar>
+  </div> 
 </ion-header>
 
 <ion-content class="fondo">
  
+  <div class="fondo">
+
   <ion-card (click)="verPromocion()">
     <ion-img src="assets/promociones/promo1.jpg"></ion-img>
     <ion-card-header>
@@ -37,4 +52,7 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+  </div>
+
+  
 </ion-content>
