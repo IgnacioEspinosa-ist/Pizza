@@ -26,6 +26,12 @@ const routes: Routes = [
     
   },
   
+ 
+  {
+    path: 'detalle-producto',
+    loadChildren: () => import('./pages/detalle-producto/detalle-producto.module').then( m => m.DetalleProductoPageModule)
+  },
+
   {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)

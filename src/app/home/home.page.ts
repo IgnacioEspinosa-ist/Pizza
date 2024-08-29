@@ -10,27 +10,27 @@ import { NavController } from '@ionic/angular';
 export class HomePage {
   productos = [
     {
-      imagen: 'assets/productos/pizza_pepperoni.jpg',
+      imagen: 'assets/peperoni.webp',
       nombre: 'Pizza Pepperoni',
       precio: 12000,
     },
     {
-      imagen: 'assets/productos/pizza_queso.jpg',
+      imagen: 'assets/chees.webp',
       nombre: 'Pizza de Queso',
       precio: 8000,
     },
     {
-      imagen: 'assets/productos/pizza_hawaiana.jpg',
+      imagen: 'assets/jawai.jfif',
       nombre: 'Pizza Hawaiana',
       precio: 10000,
     },
     {
-      imagen: 'assets/productos/pizza_vegetariana.jpg',
+      imagen: 'assets/vegan.webp',
       nombre: 'Pizza Vegetariana',
       precio: 8000,
     },
     {
-      imagen: '',
+      imagen: 'assets/jam.png',
       nombre: 'Pizza Jamón-Queso',
       precio: 8000,
 
@@ -38,7 +38,7 @@ export class HomePage {
     },
 
     {
-      imagen: '',
+      imagen: 'assets/callam.png',
       nombre: 'Champizza',
       precio: 12000,
 
@@ -46,7 +46,7 @@ export class HomePage {
     },
 
     {
-      imagen: '',
+      imagen: 'assets/border.png',
       nombre: 'Piboqueso',
       precio: 15000,
 
@@ -54,7 +54,7 @@ export class HomePage {
     },
 
     {
-      imagen: '',
+      imagen: 'assets/deep.png',
       nombre: 'Masa',
       precio: 1500,
 
