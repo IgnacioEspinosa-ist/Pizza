@@ -1,13 +1,32 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>detalle-producto</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle de Producto</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">detalle-producto</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+ 
+  <div class="producto-imagen">
+    <img src="/assets/peperoni" alt="">
+  </div>
+
+  <!-- Información del Producto -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Camiseta</ion-card-title>
+      <ion-card-subtitle>$20.00</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>Camiseta de algodón, cómoda y perfecta para cualquier ocasión. Disponible en varios tamaños y colores.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botón para Agregar al Carrito -->
+  <ion-button expand="full" color="primary">
+    Agregar al Carrito
+  </ion-button>
 </ion-content>
