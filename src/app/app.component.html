@@ -9,21 +9,28 @@
   
       <ion-content>
         <ion-list>
-          <ion-item>
+          <ion-item [routerDirection]="'root'" [routerLink]="'/home'">
             <ion-icon name="arrow-up-circle-outline"></ion-icon>
             <ion-label>Página Home</ion-label>
           </ion-item>
   
-          <ion-item [routerDirection]="'root'" [routerLink]="'/home'">
+          <ion-item [routerDirection]="'root'" [routerLink]="'/cart'">
             <ion-icon name="cart-outline"></ion-icon>
             <ion-label>Carrito</ion-label>
           </ion-item>
 
-          <ion-item class="abajo" [routerDirection]="'root'" [routerLink]="'/home'">
+          <ion-item [routerDirection]="'root'" [routerLink]="'/perfil'">
             <ion-icon name="person-outline"></ion-icon>
             <ion-label>Perfil</ion-label>
           </ion-item>
 
+
+          <ion-footer>
+          <ion-item class="abajo" [routerDirection]="'root'" [routerLink]="'/login'">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-label>Cerrar Sesion</ion-label>
+          </ion-item>
+          </ion-footer>
 
 
  

@@ -30,12 +30,30 @@ const routes: Routes = [
   {
     path: 'detalle-producto',
     loadChildren: () => import('./pages/detalle-producto/detalle-producto.module').then( m => m.DetalleProductoPageModule)
+
+  },
+
+  { 
+    path: 'homerepa',
+    loadChildren: () => import('./pages/homerepa/homerepa.module').then( m => m.HomerepaPageModule)
+  },
+
+  {
+    path: 'perfil',
+    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+  
+ 
+  {
+    path: 'cart',
+    loadChildren: () => import('./pages/cart/cart.module').then( m => m.CartPageModule)
   },
 
   {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+  
 ];
 
 @NgModule({

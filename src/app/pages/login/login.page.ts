@@ -14,15 +14,17 @@ export class LoginPage {
 
   login() {
     if (this.username && this.password) {
-     
-      if (this.username === 'donfitopaez' && this.password === 'mariposatecnicolor') {
-        
+      if (this.username === 'GatoComilon69' && this.password === 'ñamñam') {
         this.navCtrl.navigateForward('/home');
-      } else {
-        
+      } 
+      else if (this.username === 'gatorapi' && this.password === 'miaumiaumiau') {
+        this.navCtrl.navigateForward('/homerepa');
+      } 
+      else {
         alert('Este Usuario No Existe, Revise Los Datos');
       }
-    } else {
+    } 
+    else {
       alert('Ingrese el Nombre y Contraseña Correcta');
     }
   }
