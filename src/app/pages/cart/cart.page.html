@@ -1,13 +1,36 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>cart</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Carrito De Compra</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">cart</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+<div class="fondo">
+  <h2>Tus Productos</h2>
+
+
+
+
+  <ion-card>
+    
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img alt="" src="assets/peperoni.webp" style="background-size: cover;" />
+          </ion-thumbnail>
+          <ion-label>Pizza Pepperoni</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button (click)="presentAlert()" expand="full" color="primary">
+    Pagar
+  </ion-button>
+
+</div>
 </ion-content>
