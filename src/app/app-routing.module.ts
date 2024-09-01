@@ -37,6 +37,15 @@ const routes: Routes = [
     path: 'homerepa',
     loadChildren: () => import('./pages/homerepa/homerepa.module').then( m => m.HomerepaPageModule)
   },
+  {
+    path: 'maparapi',
+    loadChildren: () => import('./pages/maparapi/maparapi.module').then( m => m.MaparapiPageModule)
+  },
+  
+  {
+    path: 'mapacli',
+    loadChildren: () => import('./pages/mapacli/mapacli.module').then( m => m.MapacliPageModule)
+  },
 
   {
     path: 'perfil',
@@ -49,7 +58,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/cart/cart.module').then( m => m.CartPageModule)
   },
 
-
+  {
+    path: '**',
+    loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
+  },
   {
     path: 'perfil-r',
     loadChildren: () => import('./pages/perfil-r/perfil-r.module').then( m => m.PerfilRPageModule)
@@ -67,6 +79,12 @@ const routes: Routes = [
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+  {
+    path: '**',
+    loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
+  },
+
+
   
 ];
 
