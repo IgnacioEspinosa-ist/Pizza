@@ -1,0 +1,24 @@
+.mapa {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .mapa-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .botonconfirmar {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    padding: 10px 0;  
+  }
+  
+  
