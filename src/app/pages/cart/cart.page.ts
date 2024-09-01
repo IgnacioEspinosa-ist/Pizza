@@ -22,7 +22,7 @@ export class CartPage implements OnInit {
     
 
     await alert.present();
-    await this.router.navigate(['/home']);
+    await this.router.navigate(['/mapacli']);
   }
   ngOnInit() {
   }
