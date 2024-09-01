@@ -22,7 +22,7 @@ export class DetallePedidoPage implements OnInit {
     
 
     await alert.present();
-    await this.router.navigate(['/maparepa']);
+    await this.router.navigate(['/maparapi']);
   }
 
   ngOnInit() {
