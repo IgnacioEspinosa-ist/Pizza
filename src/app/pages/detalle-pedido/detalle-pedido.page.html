@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle de Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+ 
+  <div class="fondo">
+
+
+  
+   <ion-card>
+    
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img alt="" src="assets/peperoni.webp" style="background-size: cover;" />
+          </ion-thumbnail>
+          <ion-label>Pizza Pepperoni</ion-label> <p style="color: gray;">x1</p>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-card >
+    <ion-grid>
+      <ion-row>
+        <ion-col size="9">
+
+          <ion-card-title > Nombre: GatoComilon69</ion-card-title>
+          <ion-label>Direccion: dancing 856915 </ion-label>
+          <ion-label>Metodo De Pago: Efectivo </ion-label>
+        </ion-col>
+        <ion-col size="3" class="ion-text-end">
+          <ion-card-subtitle>
+          </ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+
+
+  <ion-button (click)="presentAlert()" expand="full" color="primary">
+    Tomar Pedido
+  </ion-button>
+
+
+
+
+  </div>
+</ion-content>

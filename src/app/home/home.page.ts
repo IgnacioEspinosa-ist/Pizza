@@ -77,9 +77,4 @@ export class HomePage {
     });
   }
 
-  abrirMenuSecundario() {
-    
-    this.menu.enable(true, 'menuP');
-    this.menu.open('menuP');
-  }
 }

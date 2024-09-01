@@ -29,15 +29,16 @@ export class HomerepaPage {
 
   constructor(private navCtrl: NavController,private menu: MenuController) {}
 
+
+ 
+
+  openMenuSecundario() {
+    this.menu.open('menuSecundario'); 
+  }
   verDetalleProducto(producto: any) {
-    this.navCtrl.navigateForward('/detalle-producto', {
+    this.navCtrl.navigateForward('/detalle-pedido', {
       queryParams: { producto: JSON.stringify(producto) },
     });
   }
 
-  abrirMenuSecundario() {
-    
-    this.menu.enable(true, 'menuSecundario');
-    this.menu.open('menuSecundario');
-  }
 }

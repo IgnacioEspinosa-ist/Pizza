@@ -49,10 +49,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/cart/cart.module').then( m => m.CartPageModule)
   },
 
-  {
-    path: '**',
-    loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
-  },
+
   {
     path: 'perfil-r',
     loadChildren: () => import('./pages/perfil-r/perfil-r.module').then( m => m.PerfilRPageModule)
@@ -60,6 +57,15 @@ const routes: Routes = [
   {
     path: 'ayuda',
     loadChildren: () => import('./pages/ayuda/ayuda.module').then( m => m.AyudaPageModule)
+  },
+  {
+    path: 'detalle-pedido',
+    loadChildren: () => import('./pages/detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
+  },
+
+  {
+    path: '**',
+    loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
   
 ];
