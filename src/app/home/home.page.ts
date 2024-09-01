@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { MenuController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -64,7 +64,7 @@ export class HomePage {
 
   ];
 
-  constructor(private navCtrl: NavController) {}
+  constructor(private navCtrl: NavController, private menu: MenuController) {}
 
   verPromocion() {
   
@@ -75,5 +75,11 @@ export class HomePage {
     this.navCtrl.navigateForward('/detalle-producto', {
       queryParams: { producto: JSON.stringify(producto) },
     });
+  }
+
+  abrirMenuSecundario() {
+    
+    this.menu.enable(true, 'menuP');
+    this.menu.open('menuP');
   }
 }

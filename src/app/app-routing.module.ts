@@ -53,6 +53,14 @@ const routes: Routes = [
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+  {
+    path: 'perfil-r',
+    loadChildren: () => import('./pages/perfil-r/perfil-r.module').then( m => m.PerfilRPageModule)
+  },
+  {
+    path: 'ayuda',
+    loadChildren: () => import('./pages/ayuda/ayuda.module').then( m => m.AyudaPageModule)
+  },
   
 ];
 

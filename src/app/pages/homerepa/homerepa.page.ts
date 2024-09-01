@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { MenuController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-homerepa',
@@ -27,11 +27,17 @@ export class HomerepaPage {
 
   ];
 
-  constructor(private navCtrl: NavController) {}
+  constructor(private navCtrl: NavController,private menu: MenuController) {}
 
   verDetalleProducto(producto: any) {
     this.navCtrl.navigateForward('/detalle-producto', {
       queryParams: { producto: JSON.stringify(producto) },
     });
+  }
+
+  abrirMenuSecundario() {
+    
+    this.menu.enable(true, 'menuSecundario');
+    this.menu.open('menuSecundario');
   }
 }
