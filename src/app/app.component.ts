@@ -9,12 +9,7 @@ import { MenuController } from '@ionic/angular';
 export class AppComponent {
   constructor(private menu: MenuController) {}
 
-  openMenuPrincipal() {
-    this.menu.open('menuPrincipal'); 
-  }
-
   openMenuSecundario() {
     this.menu.open('menuSecundario'); 
   }
 }
-

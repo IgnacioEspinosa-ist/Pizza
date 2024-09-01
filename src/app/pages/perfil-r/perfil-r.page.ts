@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-perfil-r',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PerfilRPage implements OnInit {
 
-  constructor() { }
+  constructor(private menu: MenuController) { }
 
   ngOnInit() {
   }
 
+  
+  openMenuSecundario() {
+    this.menu.open('menuSecundario'); 
+  }
 }
