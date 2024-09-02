@@ -100,7 +100,7 @@ export class HomePage {
     });
   }
   verDetallecombos(combos: any) {
-    this.navCtrl.navigateForward('/detalle-combos', {
+    this.navCtrl.navigateForward('/detalle-combo', {
       queryParams: { combos: JSON.stringify(combos) },
     });
   }
