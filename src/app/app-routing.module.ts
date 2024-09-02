@@ -71,6 +71,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
   },
 
+
+  {
+    path: 'detalle-combo',
+    loadChildren: () => import('./pages/detalle-combo/detalle-combo.module').then( m => m.DetalleComboPageModule)
+  },
+
   {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
