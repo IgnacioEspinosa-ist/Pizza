@@ -47,6 +47,28 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+  
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>combos</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" *ngFor="let combos of combos">
+            <ion-card (click)="verDetallecombos(combos)">
+              <img [src]="combos.imagen" />
+              <ion-card-title>{{ combos.nombre }}</ion-card-title>
+              <p>{{ combos.precio | currency }}</p>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
   </div>
 
   

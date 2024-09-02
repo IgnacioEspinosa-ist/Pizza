@@ -64,6 +64,29 @@ export class HomePage {
 
   ];
 
+  combos = [
+    {
+      imagen: 'assets/combo-peperonibebida.jpg',
+      nombre: 'Combo Pizza de peperoni + Bebida ',
+      precio: 7000,
+    },
+    {
+      imagen: 'assets/combo-pizzapapasaroslata.png',
+      nombre: 'Combo Pizza, Papitas, Aros de cebolla, Empanaditas, Lata',
+      precio: 15000,
+    },
+    {
+      imagen: 'assets/combo-pizzapapasbebida.webp',
+      nombre: 'Combo Pizza, Papas, Bebida ',
+      precio: 10000,
+    },
+    {
+      imagen: 'assets/combo-trespizzaconpapasybebida.webp',
+      nombre: 'Combo 3 Pizzas, Papas, Bebida',
+      precio: 35000,
+    },
+  ];
+
   constructor(private navCtrl: NavController, private menu: MenuController) {}
 
   verPromocion() {
@@ -74,6 +97,11 @@ export class HomePage {
   verDetalleProducto(producto: any) {
     this.navCtrl.navigateForward('/detalle-producto', {
       queryParams: { producto: JSON.stringify(producto) },
+    });
+  }
+  verDetallecombos(combos: any) {
+    this.navCtrl.navigateForward('/detalle-combos', {
+      queryParams: { combos: JSON.stringify(combos) },
     });
   }
 
