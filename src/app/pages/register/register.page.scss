@@ -1,3 +1,29 @@
-ion-menu {
-    display: none; 
-  }
+
+
+form {
+  width: 100%;
+  max-width: 412px; 
+  padding: 20px;
+  background-color: #ef8320; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-top: 250px;
+  
+}
+
+ion-title{
+
+  background-color: white;
+
+
+}
+
+
+img {
+position: absolute; 
+top: 0; 
+left: 0; 
+width: 100%; 
+}

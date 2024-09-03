@@ -16,20 +16,20 @@
     left: 0;
     width: 100%;
     display: flex;
-    flex-direction: column;  /* Alinea el mensaje y el botón verticalmente */
-    align-items: center;  /* Centra ambos elementos horizontalmente */
-    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
-    padding: 20px 0;  /* Ajusta el padding para hacer el contenedor más amplio */
+    flex-direction: column;  
+    align-items: center;  
+    background-color: rgba(0, 0, 0, 0.6); 
+    padding: 20px 0;  
   }
   
   .delivery-mensaje {
     color: white;
     font-size: 18px;
     text-align: center;
-    margin-bottom: 10px;  /* Espacio entre el mensaje y el botón */
+    margin-bottom: 10px;  
   }
   
   .boton-entendido {
-    width: 80%;  /* Ajusta el ancho del botón */
+    width: 80%;  
   }
   
