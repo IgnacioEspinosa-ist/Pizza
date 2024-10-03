@@ -70,6 +70,10 @@ const routes: Routes = [
     path: 'detalle-pedido',
     loadChildren: () => import('./pages/detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
   },
+  {
+    path: 'homeadmin',
+    loadChildren: () => import('./pages/homeadmin/homeadmin.module').then( m => m.HomeadminPageModule)
+  },
 
 
   {
@@ -81,6 +85,7 @@ const routes: Routes = [
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+ 
 
 
 
