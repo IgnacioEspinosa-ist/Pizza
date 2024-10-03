@@ -1,6 +1,7 @@
+
 #container {
   text-align: center;
-
+  padding-right: 20px;
   position: absolute;
   left: 0;
   right: 0;
@@ -18,16 +19,43 @@
   line-height: 22px;
 
   color: #8c8c8c;
-
+ 
   margin: 0;
 }
 
 #container a {
   text-decoration: none;
+
+}
+
+ion-grid {
+  margin-top: 16px;
+ 
+}
+
+ion-slides {
+  height: 200px;
+}
+
+ion-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Permite que las tarjetas se ajusten en varias filas */
+}
+
+ion-col {
+  padding: 8px;
+  flex: 0 0 calc(50% - 16px); /* Dos tarjetas por fila */
+  max-width: calc(50% - 16px); /* Asegura que no se desborden */
 }
 
 ion-card {
- background-color: white;
+  background-color: white;
+  width: 95%;
+  height: 100%;  /* Hace que las tarjetas ocupen todo el espacio disponible */
+  
+  flex-direction: column;
+  
 }
 
 ion-card-title {
@@ -35,22 +63,16 @@ ion-card-title {
   text-align: center;
 }
 
-ion-card img {
-  width: 100%;
-  height: auto;
+ion-card-content {
+  text-align: center;
+  
 }
 
-ion-slides {
-  height: 200px;
-}
-
-ion-grid {
-  margin-top: 16px;
-}
-
-ion-col {
-  padding: 8px;
-}
+img {
+  width: 100%;  /* Para que la imagen ocupe todo el contenedor */
+  height: 150px; /* Ajusta la altura */
+  object-fit: cover; /* Asegura que la imagen mantenga las proporciones */
+ }
 
 .fondo{
   padding-top: 50px;
