@@ -13,11 +13,13 @@ export class RegisterPage {
   rut: string = '';
   password: string = '';
   esDelivery: boolean = false;
+  passwordMismatchError: string = '';
 
  
   emailError: string = '';
   rutError: string = '';
   passwordError: string = '';
+  confirmPassword: string ='';
 
   constructor(private alertController: AlertController,private router: Router) { }
 
@@ -39,7 +41,7 @@ export class RegisterPage {
     this.emailError = '';
     this.rutError = '';
     this.passwordError = '';
-
+    this.confirmPassword ='';
     
 
     
@@ -61,6 +63,11 @@ export class RegisterPage {
       this.passwordError = 'La contraseña es requerida.';
     } else if (this.password.length < 8) {
       this.passwordError = 'La contraseña debe tener al menos 8 caracteres.';
+    }
+
+    if (this.password !== this.confirmPassword) {
+      this.passwordMismatchError = 'Las contraseñas no coinciden';
+      return;
     }
 
     

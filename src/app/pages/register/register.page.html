@@ -29,6 +29,14 @@
     </div>
 
     <ion-item>
+      <ion-label position="floating">Repetir Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"></ion-input>
+    </ion-item>
+    <div *ngIf="passwordMismatchError" class="error-message">
+      <ion-text color="danger">{{ passwordMismatchError }}</ion-text>
+    </div>
+
+    <ion-item>
       <ion-label position="floating">RUT</ion-label>
       <ion-input type="text" [(ngModel)]="rut" name="rut"></ion-input>
     </ion-item>

@@ -1,4 +1,5 @@
 
+import { style } from '@angular/animations';
 import { Component } from '@angular/core';
 import { MenuController, NavController } from '@ionic/angular';
 
@@ -46,7 +47,7 @@ export class HomePage {
     },
 
     {
-      imagen: 'assets/border.png',
+      imagen: 'assets/border.png' ,
       nombre: 'Piboqueso',
       precio: 15000,
 
