@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle de Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+
+  <div class="fondo">
+
+  <div class="producto-imagen">
+    <img src="assets/combo-peperonibebida.jpg" alt="">
+  </div>
+
+  
+  
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Combo Pepperoni Y Bebida</ion-card-title>
+      <ion-card-subtitle>$7000</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>Pizza mediana con masa esponjosa y crujiente, cubierta de abundante queso mozzarella y pepperoni con una bebida de 1.5L</p>
+    </ion-card-content>
+  </ion-card>
+
+
+ 
+  <ion-button (click)="presentAlert()" expand="full" color="primary">
+    Agregar al Carrito
+  </ion-button>
+
+  </div>
+</ion-content>

@@ -75,6 +75,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/homeadmin/homeadmin.module').then( m => m.HomeadminPageModule)
   },
 
+
+  {
+    path: 'detalle-combo',
+    loadChildren: () => import('./pages/detalle-combo/detalle-combo.module').then( m => m.DetalleComboPageModule)
+  },
+
   {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)

@@ -8,12 +8,14 @@ import { ErrorPageRoutingModule } from './error-routing.module';
 
 import { ErrorPage } from './error.page';
 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ErrorPageRoutingModule
+    ErrorPageRoutingModule,
+    MatProgressSpinnerModule
   ],
   declarations: [ErrorPage]
 })
