@@ -11,7 +11,7 @@ export class MapacliPage {
   constructor(private navCtrl: NavController) {}
 
   irAlHome() {
-    // Redirigir a la página de inicio
+   
     this.navCtrl.navigateRoot('/home');
   }
 }

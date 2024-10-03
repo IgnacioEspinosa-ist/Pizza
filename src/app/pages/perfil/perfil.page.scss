@@ -9,24 +9,24 @@ ion-title{
 
 .logo{
 
-    width: 100%; 
-    height: auto; 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-      
-}
+    width: 50px;
+   
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 .perfil{
 
     width: 100%;
     max-width: 412px;
     padding: 20px;
     background-color: #ef8320;
-    display: flex; /* Cambiado para alinear hijos */
-    flex-direction: column; /* Coloca elementos en columna */
-    justify-content: flex-start; /* Mantiene elementos al inicio */
-    align-items: center; /* Centra los elementos horizontalmente */
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center;
     height: 100%;
     margin: top;
     
