@@ -12,10 +12,11 @@
 </ion-header>
 
 <ion-content class="">
- <div class="perfil">
-  <div class="perfil-imagen">
-    <img src="assets/repartidor.jpg"  class="perfil" alt="Foto de Perfil">
-  </div>
+  <div class="perfil">
+    <div class="perfil-imagen">
+      <!-- Cambia la imagen de perfil al tomar una foto -->
+      <img [src]="imagen || 'assets/perfil1.jpg'" class="perfil" alt="Foto de Perfil" (click)="takePicture()">
+    </div>
 
   
   <ion-list>
