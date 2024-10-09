@@ -33,7 +33,153 @@ export class DatabaseService {
   // Creación de las variables que contendrán las tablas 
 
 
-  constructor(private sqlite: SQLite, private alertController: AlertController, private platform: Platform) { }
+//variable de tipo observable para ver el estado de la base de datos
+private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  // Tabla Roll
+  tablaRoll: string = "CREATE TABLE IF NOT EXISTS roll (id_roll INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL);";
+
+  // Tabla Usuario
+  tablaUsuario: string = `CREATE TABLE IF NOT EXISTS usuario (
+      id_user INTEGER PRIMARY KEY AUTOINCREMENT,
+      nombre VARCHAR(100) NOT NULL,
+      apellido VARCHAR(100) NOT NULL,
+      rut VARCHAR(12) NOT NULL,
+      correo VARCHAR(100) NOT NULL,
+      clave VARCHAR(100) NOT NULL,
+      telefono VARCHAR(15),
+      id_roll INTEGER,
+      foto TEXT,
+      FOREIGN KEY(id_roll) REFERENCES roll(id_roll)
+  );`;
+
+  // Tabla Comuna
+  tablaComuna: string = "CREATE TABLE IF NOT EXISTS comuna (id_comuna INTEGER PRIMARY KEY AUTOINCREMENT, nombre_comuna VARCHAR(100) NOT NULL);";
+
+  // Tabla Direccion
+  tablaDireccion: string = `CREATE TABLE IF NOT EXISTS direccion (
+      id_direccion INTEGER PRIMARY KEY AUTOINCREMENT,
+      id_comuna INTEGER NOT NULL,
+      id_user INTEGER NOT NULL,
+      descripcion TEXT NOT NULL,
+      FOREIGN KEY(id_comuna) REFERENCES comuna(id_comuna),
+      FOREIGN KEY(id_user) REFERENCES usuario(id_user)
+  );`;
+
+  // Tabla Categoria
+  tablaCategoria: string = "CREATE TABLE IF NOT EXISTS categoria (id_cat INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(100) NOT NULL);";
+
+  // Tabla Producto
+  tablaProducto: string = `CREATE TABLE IF NOT EXISTS producto (
+      id_prod INTEGER PRIMARY KEY AUTOINCREMENT,
+      nombre VARCHAR(100) NOT NULL,
+      descripcion TEXT,
+      precio REAL NOT NULL,
+      stock INTEGER NOT NULL,
+      foto BLOB,
+      id_cat INTEGER,
+      FOREIGN KEY(id_cat) REFERENCES categoria(id_cat)
+  );`;
+
+  // Tabla Pedido
+  tablaPedido: string = `CREATE TABLE IF NOT EXISTS pedido (
+      id_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
+      f_pedido DATE NOT NULL,
+      id_user INTEGER NOT NULL,
+      id_direccion INTEGER NOT NULL,
+      total REAL NOT NULL,
+      id_user_resp INTEGER,
+      estatus VARCHAR(50) NOT NULL,
+      FOREIGN KEY(id_user) REFERENCES usuario(id_user),
+      FOREIGN KEY(id_direccion) REFERENCES direccion(id_direccion)
+  );`;
+
+  // Tabla Detalle
+  tablaDetalle: string = `CREATE TABLE IF NOT EXISTS detalle (
+      id_detalle INTEGER PRIMARY KEY AUTOINCREMENT,
+      id_pedido INTEGER NOT NULL,
+      id_prod INTEGER NOT NULL,
+      cantidad INTEGER NOT NULL,
+      subtotal REAL NOT NULL,
+      FOREIGN KEY(id_pedido) REFERENCES pedido(id_pedido),
+      FOREIGN KEY(id_prod) REFERENCES producto(id_prod)
+  );`;
+
+  // Tabla Auto
+  tablaAuto: string = `CREATE TABLE IF NOT EXISTS auto (
+      id_auto INTEGER PRIMARY KEY AUTOINCREMENT,
+      placa VARCHAR(20) NOT NULL,
+      modelo VARCHAR(100) NOT NULL,
+      color VARCHAR(50) NOT NULL,
+      id_user INTEGER NOT NULL,
+      FOREIGN KEY(id_user) REFERENCES usuario(id_user)
+  );`;
+
+
+
+
+  constructor(private sqlite: SQLite, private platform: Platform, private alertController: AlertController) {
+    this.crearBD();
+  }
+  
+  crearBD() {
+    // Verificar la plataforma
+    this.platform.ready().then(() => {
+      // Crear la base de datos
+      this.sqlite.create({
+        name: 'deliveryza.db', // Cambié el nombre a 'deliveryza.db'
+        location: 'default'
+      }).then((bd: SQLiteObject) => {
+        // Guardar mi conexión a la base de datos
+        this.database = bd;
+        // Llamar a la función de creación de tablas
+        this.crearTablas();
+        // Cambiar el observable del estado de la base de datos
+        this.isDBReady.next(true);
+      }).catch(e => {
+        this.presentAlert('CrearBD()', 'Error: ' + JSON.stringify(e));
+      });
+    });
+  }
+
+
+  async crearTablas() {
+    try {
+      // Crear las tablas en el orden correcto
+      await this.database.executeSql(this.tablaRoll, []);
+      console.log("Tabla roll creada");
+  
+      await this.database.executeSql(this.tablaUsuario, []);
+      console.log("Tabla usuario creada");
+  
+      await this.database.executeSql(this.tablaComuna, []);
+      console.log("Tabla comuna creada");
+  
+      await this.database.executeSql(this.tablaDireccion, []);
+      console.log("Tabla direccion creada");
+  
+      await this.database.executeSql(this.tablaCategoria, []);
+      console.log("Tabla categoria creada");
+  
+      await this.database.executeSql(this.tablaProducto, []);
+      console.log("Tabla producto creada");
+  
+      await this.database.executeSql(this.tablaPedido, []);
+      console.log("Tabla pedido creada");
+  
+      await this.database.executeSql(this.tablaDetalle, []);
+      console.log("Tabla detalle creada");
+  
+      await this.database.executeSql(this.tablaAuto, []);
+      console.log("Tabla auto creada");
+  
+      // Realizar inserciones iniciales si corresponde
+      // await this.database.executeSql(this.registroNoticia, []); // Aquí puedes agregar los insert correspondientes
+  
+    } catch (e) {
+      this.presentAlert('CrearTabla()', 'Error: ' + JSON.stringify(e));
+    }
+  }
 
   // Método para mostrar alertas
   private async presentAlert(header: string, message: string) {
