@@ -8,30 +8,27 @@
 </ion-header>
 
 <ion-content class="ion-padding">
- 
+
   <div class="fondo">
 
-  <div class="producto-imagen">
-    <img src="assets/peperoni.webp" alt="">
-  </div>
+    <div class="producto-imagen">
+      <img [src]="producto.foto" alt="">
+    </div>
 
-  
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Pizza Pepperoni</ion-card-title>
-      <ion-card-subtitle>$12.000</ion-card-subtitle>
-    </ion-card-header>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ producto.nombre }}</ion-card-title>
+        <ion-card-subtitle>{{ producto.precio | currency }}</ion-card-subtitle>
+      </ion-card-header>
 
-    <ion-card-content>
-      <p>Pizza grande con masa esponjosa y crujiente, cubierta de abundante queso mozzarella y pepperoni.</p>
-    </ion-card-content>
-  </ion-card>
+      <ion-card-content>
+        <p>{{ producto.descripcion }}</p>
+      </ion-card-content>
+    </ion-card>
 
-
- 
-  <ion-button (click)="presentAlert()" expand="full" color="primary">
-    Agregar al Carrito
-  </ion-button>
+    <ion-button (click)="presentAlert()" expand="full" color="primary">
+      Agregar al Carrito
+    </ion-button>
 
   </div>
 </ion-content>
