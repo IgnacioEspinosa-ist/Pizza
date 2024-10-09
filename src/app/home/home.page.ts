@@ -1,7 +1,6 @@
-
-import { style } from '@angular/animations';
 import { Component } from '@angular/core';
-import { MenuController, NavController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -34,35 +33,22 @@ export class HomePage {
       imagen: 'assets/jam.png',
       nombre: 'Pizza Jamón-Queso',
       precio: 8000,
-
-
     },
-
     {
       imagen: 'assets/callam.png',
       nombre: 'Champizza',
       precio: 12000,
-
-
     },
-
     {
-      imagen: 'assets/border.png' ,
+      imagen: 'assets/border.png',
       nombre: 'Piboqueso',
       precio: 15000,
-
-
     },
-
     {
       imagen: 'assets/deep.png',
       nombre: 'Masa',
       precio: 1500,
-
-
     },
-    
-
   ];
 
   combos = [
@@ -88,22 +74,14 @@ export class HomePage {
     },
   ];
 
-  constructor(private navCtrl: NavController, private menu: MenuController) {}
-
-  verPromocion() {
-  
-    this.navCtrl.navigateForward('/promocion-detalle');
-  }
+  constructor(private router: Router, private menu: MenuController) {}
 
   verDetalleProducto(producto: any) {
-    this.navCtrl.navigateForward('/detalle-producto', {
-      queryParams: { producto: JSON.stringify(producto) },
-    });
-  }
-  verDetallecombos(combos: any) {
-    this.navCtrl.navigateForward('/detalle-combo', {
-      queryParams: { combos: JSON.stringify(combos) },
-    });
+    // Navega a la página de detalle del producto con un parámetro en la URL
+    this.router.navigate(['/detalle-producto', JSON.stringify(producto)]);
   }
 
+  verDetalleCombos(combos: any) {
+    this.router.navigate(['/detalle-combo', JSON.stringify(combos)]);
+  }
 }
