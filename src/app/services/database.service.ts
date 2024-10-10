@@ -49,7 +49,7 @@ private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
       clave VARCHAR(100) NOT NULL,
       telefono VARCHAR(15),
       id_roll INTEGER,
-      foto TEXT,
+      foto_U BLOB,
       FOREIGN KEY(id_roll) REFERENCES roll(id_roll)
   );`;
 
@@ -76,7 +76,7 @@ private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
       descripcion TEXT,
       precio REAL NOT NULL,
       stock INTEGER NOT NULL,
-      foto BLOB,
+      foto_PRODUCTO BLOB,
       id_cat INTEGER,
       FOREIGN KEY(id_cat) REFERENCES categoria(id_cat)
   );`;

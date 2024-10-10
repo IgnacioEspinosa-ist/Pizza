@@ -7,6 +7,6 @@ export class Usuario {
     clave!: string;         
     telefono?: string;       
     id_roll?: number;        
-    foto?: string;           
+    foto?: any;           
 }
 
