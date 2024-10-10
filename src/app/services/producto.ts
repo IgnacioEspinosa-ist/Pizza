@@ -4,6 +4,6 @@ export class Producto {
     descripcion?: string;
     precio!: number;
     stock!: number;
-    foto?: string;
+    foto?: any;
     id_cat?: number;
 }
