@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { DatabaseService } from '../services/database.service';
+import { Producto } from '../services/producto';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
-  productos = [
+  
+  /*
+  producto = [
     {
       imagen: 'assets/peperoni.webp',
       nombre: 'Pizza Pepperoni',
@@ -73,15 +77,38 @@ export class HomePage {
       precio: 35000,
     },
   ];
+  */
 
-  constructor(private router: Router, private menu: MenuController) {}
+  productos: Producto[] = [];
 
-  verDetalleProducto(producto: any) {
+  constructor(private router: Router, private menu: MenuController, private dbService: DatabaseService) {}
+
+
+
+  
+
+
+  ngOnInit() {
+    // Suscribirse al observable de productos
+    this.dbService.productos$.subscribe((data: Producto[]) => {
+      this.productos = data;
+    });
+
+    // Llamar al método para obtener los productos
+    this.dbService.fetchProductos();
+  }
+    
+  
+
+
+  verDetalleProducto(Producto: any) {
     // Navega a la página de detalle del producto con un parámetro en la URL
-    this.router.navigate(['/detalle-producto', JSON.stringify(producto)]);
+    this.router.navigate(['/detalle-producto', JSON.stringify(Producto)]);
   }
 
   verDetalleCombos(combos: any) {
     this.router.navigate(['/detalle-combo', JSON.stringify(combos)]);
   }
+
+
 }
