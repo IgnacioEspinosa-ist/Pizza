@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { DatabaseService } from './services/database.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,8 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
     ReactiveFormsModule,
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy},SQLite
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy},SQLite,DatabaseService 
+    
     
   ],
   bootstrap: [AppComponent],

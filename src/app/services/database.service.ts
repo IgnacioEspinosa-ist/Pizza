@@ -192,6 +192,46 @@ private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
     await alert.present();
   }
 
+  private productosList = new BehaviorSubject<Producto[]>([]);
+  productos$ = this.productosList.asObservable();
+
+  // Método para obtener todos los productos y emitir los resultados al BehaviorSubject
+  fetchProductos() {
+    this.database.executeSql('SELECT * FROM producto', []).then(res => {
+      const productos: Producto[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        productos.push({
+          id_prod: res.rows.item(i).id_prod,
+          nombre: res.rows.item(i).nombre,
+          descripcion: res.rows.item(i).descripcion,
+          precio: res.rows.item(i).precio,
+          stock: res.rows.item(i).stock,
+          foto: res.rows.item(i).foto_PRODUCTO,
+          id_cat: res.rows.item(i).id_cat
+        });
+      }
+      // Emitir los productos obtenidos
+      this.productosList.next(productos);
+    }).catch(e => {
+      this.presentAlert('fetchProductos()', 'Error al obtener los productos: ' + JSON.stringify(e));
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   async insertRoll(roll: Roll): Promise<void> {
     const sql = "INSERT INTO roll (nombre) VALUES (?)";
     try {
