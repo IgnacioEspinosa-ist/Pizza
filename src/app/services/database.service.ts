@@ -30,11 +30,45 @@ export class DatabaseService {
   public pedidos: Pedido[] = [];
   public detalles: Detalle[] = [];
 
-  // Creación de las variables que contendrán las tablas 
+  // LOS INSERTS
+
+  registroPizzaPepperoni: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
+  VALUES ('Pizza Pepperoni', '', 12000, 10, 'assets/peperoni.webp');`;
+
+  registroPizzaQueso: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
+  VALUES ('Pizza de Queso', '', 8000, 10, 'assets/chees.webp');`;
+
+  registroPizzaHawaiana: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
+  VALUES ('Pizza Hawaiana', '', 10000, 10, 'assets/jawai.jfif');`;
+
+  registroPizzaVegetariana: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
+  VALUES ('Pizza Vegetariana', '', 8000, 10, 'assets/vegan.webp');`;
+
+  registroPizzaJamonQueso: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
+  VALUES ('Pizza Jamón-Queso', '', 8000, 10, 'assets/jam.png');`;
+
+  registroChampizza: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
+  VALUES ('Champizza', '', 12000, 10, 'assets/callam.png');`;
+
+  registroPiboqueso: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
+  VALUES ('Piboqueso', '', 15000, 10, 'assets/border.png');`;
+
+  registroMasa: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
+  VALUES ('Masa', '', 1500, 10, 'assets/deep.png');`;
+
+  
 
 
-//variable de tipo observable para ver el estado de la base de datos
-private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  //variable de tipo observable para ver el estado de la base de datos
+  private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   // Tabla Roll
   tablaRoll: string = "CREATE TABLE IF NOT EXISTS roll (id_roll INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL);";
@@ -116,12 +150,25 @@ private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   );`;
 
 
+  //ACA SE TIENEN QUE PONER TODOS LOS INSERT INICIALES
+  inserciones: string[] = [
+    this.registroPizzaPepperoni,
+    this.registroPizzaQueso,
+    this.registroPizzaHawaiana,
+    this.registroPizzaVegetariana,
+    this.registroPizzaJamonQueso,
+    this.registroChampizza,
+    this.registroPiboqueso,
+    this.registroMasa,
+  ];
+
+
 
 
   constructor(private sqlite: SQLite, private platform: Platform, private alertController: AlertController) {
     this.crearBD();
   }
-  
+
   crearBD() {
     // Verificar la plataforma
     this.platform.ready().then(() => {
@@ -148,34 +195,38 @@ private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
       // Crear las tablas en el orden correcto
       await this.database.executeSql(this.tablaRoll, []);
       console.log("Tabla roll creada");
-  
+
       await this.database.executeSql(this.tablaUsuario, []);
       console.log("Tabla usuario creada");
-  
+
       await this.database.executeSql(this.tablaComuna, []);
       console.log("Tabla comuna creada");
-  
+
       await this.database.executeSql(this.tablaDireccion, []);
       console.log("Tabla direccion creada");
-  
+
       await this.database.executeSql(this.tablaCategoria, []);
       console.log("Tabla categoria creada");
-  
+
       await this.database.executeSql(this.tablaProducto, []);
       console.log("Tabla producto creada");
-  
+
       await this.database.executeSql(this.tablaPedido, []);
       console.log("Tabla pedido creada");
-  
+
       await this.database.executeSql(this.tablaDetalle, []);
       console.log("Tabla detalle creada");
-  
+
       await this.database.executeSql(this.tablaAuto, []);
       console.log("Tabla auto creada");
-  
+
+      for (const insert of this.inserciones) {
+        await this.database.executeSql(insert, []);
+        console.log("Producto insertado");}
+
       // Realizar inserciones iniciales si corresponde
       // await this.database.executeSql(this.registroNoticia, []); // Aquí puedes agregar los insert correspondientes
-  
+
     } catch (e) {
       this.presentAlert('CrearTabla()', 'Error: ' + JSON.stringify(e));
     }
