@@ -1,36 +1,50 @@
 <ion-header>
   <ion-toolbar>
-    
+  
+    <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
   <form (ngSubmit)="login()">
-    
-  
-    
-
-    
-      <img src="assets/logo.png" alt="">
-    
-
+   
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="assets/logo.png" alt="Logo de la App" style="max-width: 150px;">
+    </div>
 
     <ion-item>
       <ion-label position="floating">Usuario</ion-label>
-      <ion-input [(ngModel)]="username" name="username" minlength="6" type="text" required></ion-input>
+      <ion-input
+        [(ngModel)]="username"
+        name="username"
+        minlength="6"
+        type="text"
+        required
+        aria-label="Nombre de usuario"
+      ></ion-input>
     </ion-item>
 
+   
     <ion-item>
       <ion-label position="floating">Contraseña</ion-label>
-      <ion-input [(ngModel)]="password" name="password" minlength="6"  type="password" required></ion-input>
+      <ion-input
+        [(ngModel)]="password"
+        name="password"
+        minlength="6"
+        type="password"
+        required
+        aria-label="Contraseña"
+      ></ion-input>
     </ion-item>
 
+   
     <ion-button expand="full" type="submit">Iniciar Sesión</ion-button>
-    <a [routerLink]="['/otc']">¿Olvidaste Tu Contraseña?</a> <br>
-    <a [routerLink]="['/register']">Registrate Aqui</a>
+
+
+    <div style="text-align: center; margin-top: 10px;">
+      <a [routerLink]="['/otc']">¿Olvidaste Tu Contraseña?</a> <br>
+      <a [routerLink]="['/register']">Registrate Aquí</a>
+    </div>
   </form>
-
-  
-
-  
 </ion-content>
