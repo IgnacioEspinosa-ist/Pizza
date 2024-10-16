@@ -268,7 +268,20 @@ export class DatabaseService {
     });
   }
 
-
+  async validarUsuario(username: string, password: string): Promise<any> {
+    try {
+      const query = 'SELECT * FROM usuario WHERE nombre = ? AND clave = ?';
+      const res = await this.database.executeSql(query, [username, password]);
+      if (res.rows.length > 0) {
+        // Si existe el usuario, devolver el primer resultado
+        return res.rows.item(0);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error en la validación del usuario:', error);
+      throw error;
+    }}
 
 
 
