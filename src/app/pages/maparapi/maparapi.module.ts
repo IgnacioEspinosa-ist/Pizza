@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { MaparapiPageRoutingModule } from './maparapi-routing.module';
 
-import { MaparapiPage } from './maparapi.page';
+import { MapaComponent } from './maparapi.page';
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { MaparapiPage } from './maparapi.page';
     IonicModule,
     MaparapiPageRoutingModule
   ],
-  declarations: [MaparapiPage]
+  declarations: [MapaComponent]
 })
 export class MaparapiPageModule {}

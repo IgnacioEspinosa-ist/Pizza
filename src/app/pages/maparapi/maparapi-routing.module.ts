@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { MaparapiPage } from './maparapi.page';
+import { MapaComponent } from './maparapi.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: MaparapiPage
+    component: MapaComponent
   }
 ];
 
