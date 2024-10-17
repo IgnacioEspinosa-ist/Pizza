@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomeadminPageRoutingModule } from './homeadmin-routing.module';
 
-import { HomeadminPage } from './homeadmin.page';
+import { AdminPage } from './homeadmin.page';
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { HomeadminPage } from './homeadmin.page';
     IonicModule,
     HomeadminPageRoutingModule
   ],
-  declarations: [HomeadminPage]
+  declarations: [AdminPage]
 })
 export class HomeadminPageModule {}

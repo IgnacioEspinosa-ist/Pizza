@@ -1,50 +1,63 @@
 <ion-header>
-  <div class="head">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button menu="menuadmin"></ion-menu-button>
-      </ion-buttons>
-      <img src="assets/logo.png" class="logo" slot="end">
-    </ion-toolbar>
-  </div>
+  <ion-toolbar>
+    <ion-title>Gestión de Productos</ion-title>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content class="admin-content" fullscreen>
-  <div class="admin-container">
-    
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Bienvenido Administrador</ion-card-title>
-        <ion-card-subtitle>Selecciona una opcion para comenzar</ion-card-subtitle>
-      </ion-card-header>
-    </ion-card>
+<ion-content>
+  <!-- Formulario para agregar o editar producto -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ productoActual ? 'Editar Producto' : 'Agregar Producto' }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="nombre" type="text" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-input [(ngModel)]="descripcion" type="text" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Precio</ion-label>
+        <ion-input [(ngModel)]="precio" type="number" min="0" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Stock</ion-label>
+        <ion-input [(ngModel)]="stock" type="number" min="0" required></ion-input>
+      </ion-item>
 
-    <ion-button class="admin-button" routerLink="/admin/pizzas">
-      <div class="button-background">
-        <img src="assets/logo.png" class="button-logo">
-      </div>
-      <span>Administrar Pizzas</span>
-    </ion-button>
+      <ion-button expand="full" (click)="productoActual ? modificarProducto() : agregarProducto()">
+        {{ productoActual ? 'Guardar Cambios' : 'Agregar Producto' }}
+      </ion-button>
+      <ion-button expand="full" color="medium" (click)="limpiarCampos()" *ngIf="productoActual">
+        Cancelar Edición
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 
-    <ion-button class="admin-button" routerLink="/admin/pedidos">
-      <div class="button-background">
-        <img src="assets/logo.png" class="button-logo">
-      </div>
-      <span>Administrar Pedidos</span>
-    </ion-button>
+  <!-- Lista de productos -->
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Productos Disponibles</ion-label>
+    </ion-list-header>
 
-    <ion-button class="admin-button" routerLink="/admin/repartidores">
-      <div class="button-background">
-        <img src="assets/logo.png" class="button-logo">
-      </div>
-      <span>Administrar Repartidores</span>
-    </ion-button>
-
-    <ion-button class="admin-button" routerLink="/admin/reportes">
-      <div class="button-background">
-        <img src="assets/logo.png" class="button-logo">
-      </div>
-      <span>Administrar Reportes</span>
-    </ion-button>
-  </div>
+    <ion-item *ngFor="let producto of productos">
+      <ion-label>
+        <h2>{{ producto.nombre }}</h2>
+        <p>{{ producto.descripcion }}</p>
+        <p>Precio: ${{ producto.precio }}</p>
+        <p>Stock: {{ producto.stock }}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button color="primary" (click)="cargarDatosProducto(producto)">
+          Editar
+        </ion-button>
+        <ion-button color="danger" (click)="eliminarProducto(producto.id_prod)">
+          Eliminar
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
 </ion-content>
