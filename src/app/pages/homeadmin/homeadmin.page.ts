@@ -4,8 +4,8 @@ import { Producto } from 'src/app/services/producto';
 
 @Component({
   selector: 'app-admin',
-  templateUrl: './admin.page.html',
-  styleUrls: ['./admin.page.scss'],
+  templateUrl: './homeadmin.page.html',
+  styleUrls: ['./homeadmin.page.scss'],
 })
 export class AdminPage implements OnInit {
   productos: Producto[] = [];

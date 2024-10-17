@@ -32,6 +32,8 @@ export class DatabaseService {
 
   // LOS INSERTS
 
+  //Las Pizzas
+
   registroPizzaPepperoni: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
   VALUES ('Pizza Pepperoni', '', 12000, 10, 'assets/peperoni.webp');`;
@@ -64,8 +66,24 @@ export class DatabaseService {
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
   VALUES ('Masa', '', 1500, 10, 'assets/deep.png');`;
 
-  
+  //Los Usuarios
 
+
+  registroUsuario: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ñamñamñam','123456',1)`
+
+  registroRepartidor1: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  VALUES ('Pedro','Espinoza','217845965-0','pedro@gmail.com','miaumiaumiau','123456',2)`
+
+  registroRepartidor2: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  VALUES ('Javier','Soto','18789652-0','javier@gmail.com','enwarhammer','123456',2)`
+
+  registroAdmin: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3)`
+
+  //
+
+  
 
   //variable de tipo observable para ver el estado de la base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -160,6 +178,12 @@ export class DatabaseService {
     this.registroChampizza,
     this.registroPiboqueso,
     this.registroMasa,
+    this.registroUsuario,
+    this.registroRepartidor1,
+    this.registroRepartidor2,
+    this.registroAdmin
+
+    
   ];
 
 
@@ -270,7 +294,7 @@ export class DatabaseService {
 
   async validarUsuario(username: string, password: string): Promise<any> {
     try {
-      const query = 'SELECT * FROM usuario WHERE nombre = ? AND clave = ?';
+      const query = 'SELECT * FROM usuario WHERE correo = ? AND clave = ?';
       const res = await this.database.executeSql(query, [username, password]);
       if (res.rows.length > 0) {
         // Si existe el usuario, devolver el primer resultado
@@ -294,7 +318,198 @@ export class DatabaseService {
 
 
 
+  
 
+
+
+
+
+
+
+    // Variables Observables para cada tabla
+
+  // Roll
+  private rollsSubject = new BehaviorSubject<Roll[]>([]);
+  public rolls$: Observable<Roll[]> = this.rollsSubject.asObservable();
+
+  // Usuario
+  private usuariosSubject = new BehaviorSubject<Usuario[]>([]);
+  public usuarios$: Observable<Usuario[]> = this.usuariosSubject.asObservable();
+
+  // Comuna
+  private comunasSubject = new BehaviorSubject<Comuna[]>([]);
+  public comunas$: Observable<Comuna[]> = this.comunasSubject.asObservable();
+
+  // Direccion
+  private direccionesSubject = new BehaviorSubject<Direccion[]>([]);
+  public direcciones$: Observable<Direccion[]> = this.direccionesSubject.asObservable();
+
+  // Auto
+  private autosSubject = new BehaviorSubject<Auto[]>([]);
+  public autos$: Observable<Auto[]> = this.autosSubject.asObservable();
+
+  // Categoria
+  private categoriasSubject = new BehaviorSubject<Categoria[]>([]);
+  public categorias$: Observable<Categoria[]> = this.categoriasSubject.asObservable();
+
+  // Pedido
+  private pedidosSubject = new BehaviorSubject<Pedido[]>([]);
+  public pedidos$: Observable<Pedido[]> = this.pedidosSubject.asObservable();
+
+  // Detalle
+  private detallesSubject = new BehaviorSubject<Detalle[]>([]);
+  public detalles$: Observable<Detalle[]> = this.detallesSubject.asObservable();
+
+
+
+  
+  // Método para obtener todos los rolls
+  fetchRolls() {
+    this.database.executeSql('SELECT * FROM roll', []).then(res => {
+      const rolls: Roll[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        rolls.push({
+          id_roll: res.rows.item(i).id_roll,
+          nombre: res.rows.item(i).nombre,
+        });
+      }
+      this.rollsSubject.next(rolls); // Emitir los rolls obtenidos
+    }).catch(e => {
+      this.presentAlert('fetchRolls()', 'Error al obtener los rolls: ' + JSON.stringify(e));
+    });
+  }
+
+  // Método para obtener todos los usuarios
+  fetchUsuarios() {
+    this.database.executeSql('SELECT * FROM usuario', []).then(res => {
+      const usuarios: Usuario[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        usuarios.push({
+          id_user: res.rows.item(i).id_user,
+          nombre: res.rows.item(i).nombre,
+          apellido: res.rows.item(i).apellido,
+          rut: res.rows.item(i).rut,
+          correo: res.rows.item(i).correo,
+          clave: res.rows.item(i).clave,
+          telefono: res.rows.item(i).telefono,
+          id_roll: res.rows.item(i).id_roll,
+          foto: res.rows.item(i).foto_U
+        });
+      }
+      this.usuariosSubject.next(usuarios); // Emitir los usuarios obtenidos
+    }).catch(e => {
+      this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
+    });
+  }
+
+  // Método para obtener todas las comunas
+  fetchComunas() {
+    this.database.executeSql('SELECT * FROM comuna', []).then(res => {
+      const comunas: Comuna[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        comunas.push({
+          id_comuna: res.rows.item(i).id_comuna,
+          nombre_comuna: res.rows.item(i).nombre_comuna
+        });
+      }
+      this.comunasSubject.next(comunas); // Emitir las comunas obtenidas
+    }).catch(e => {
+      this.presentAlert('fetchComunas()', 'Error al obtener las comunas: ' + JSON.stringify(e));
+    });
+  }
+
+  // Método para obtener todas las direcciones
+  fetchDirecciones() {
+    this.database.executeSql('SELECT * FROM direccion', []).then(res => {
+      const direcciones: Direccion[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        direcciones.push({
+          id_direccion: res.rows.item(i).id_direccion,
+          id_comuna: res.rows.item(i).id_comuna,
+          id_user: res.rows.item(i).id_user,
+          descripcion: res.rows.item(i).descripcion
+        });
+      }
+      this.direccionesSubject.next(direcciones); // Emitir las direcciones obtenidas
+    }).catch(e => {
+      this.presentAlert('fetchDirecciones()', 'Error al obtener las direcciones: ' + JSON.stringify(e));
+    });
+  }
+
+  // Método para obtener todas las categorías
+  fetchCategorias() {
+    this.database.executeSql('SELECT * FROM categoria', []).then(res => {
+      const categorias: Categoria[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        categorias.push({
+          id_cat: res.rows.item(i).id_cat,
+          nombre: res.rows.item(i).nombre
+        });
+      }
+      this.categoriasSubject.next(categorias); // Emitir las categorías obtenidas
+    }).catch(e => {
+      this.presentAlert('fetchCategorias()', 'Error al obtener las categorías: ' + JSON.stringify(e));
+    });
+  }
+
+  // Método para obtener todos los pedidos
+  fetchPedidos() {
+    this.database.executeSql('SELECT * FROM pedido', []).then(res => {
+      const pedidos: Pedido[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        pedidos.push({
+          id_pedido: res.rows.item(i).id_pedido,
+          f_pedido: res.rows.item(i).f_pedido,
+          id_user: res.rows.item(i).id_user,
+          id_direccion: res.rows.item(i).id_direccion,
+          total: res.rows.item(i).total,
+          id_user_resp: res.rows.item(i).id_user_resp,
+          estatus: res.rows.item(i).estatus
+        });
+      }
+      this.pedidosSubject.next(pedidos); // Emitir los pedidos obtenidos
+    }).catch(e => {
+      this.presentAlert('fetchPedidos()', 'Error al obtener los pedidos: ' + JSON.stringify(e));
+    });
+  }
+
+  // Método para obtener todos los detalles
+  fetchDetalles() {
+    this.database.executeSql('SELECT * FROM detalle', []).then(res => {
+      const detalles: Detalle[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        detalles.push({
+          id_detalle: res.rows.item(i).id_detalle,
+          id_pedido: res.rows.item(i).id_pedido,
+          id_prod: res.rows.item(i).id_prod,
+          cantidad: res.rows.item(i).cantidad,
+          subtotal: res.rows.item(i).subtotal
+        });
+      }
+      this.detallesSubject.next(detalles); // Emitir los detalles obtenidos
+    }).catch(e => {
+      this.presentAlert('fetchDetalles()', 'Error al obtener los detalles: ' + JSON.stringify(e));
+    });
+  }
+
+  // Método para obtener todos los autos
+  fetchAutos() {
+    this.database.executeSql('SELECT * FROM auto', []).then(res => {
+      const autos: Auto[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        autos.push({
+          id_auto: res.rows.item(i).id_auto,
+          placa: res.rows.item(i).placa,
+          modelo: res.rows.item(i).modelo,
+          color: res.rows.item(i).color,
+          id_user: res.rows.item(i).id_user
+        });
+      }
+      this.autosSubject.next(autos); // Emitir los autos obtenidos
+    }).catch(e => {
+      this.presentAlert('fetchAutos()', 'Error al obtener los autos: ' + JSON.stringify(e));
+    });
+  }  
 
   async insertRoll(roll: Roll): Promise<void> {
     const sql = "INSERT INTO roll (nombre) VALUES (?)";
