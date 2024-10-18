@@ -353,6 +353,76 @@ export class DatabaseService {
   }
 
 
+  getProductoById(id_prod: number) {
+    return new Observable<Producto>((observer) => {
+      this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [id_prod])
+        .then(res => {
+          if (res.rows.length > 0) {
+            const producto: Producto = {
+              id_prod: res.rows.item(0).id_prod,
+              nombre: res.rows.item(0).nombre,
+              descripcion: res.rows.item(0).descripcion,
+              precio: res.rows.item(0).precio,
+              stock: res.rows.item(0).stock,
+              foto: res.rows.item(0).foto_PRODUCTO,
+              id_cat: res.rows.item(0).id_cat
+            };
+            observer.next(producto);
+          } else {
+            observer.error('Producto no encontrado');
+          }
+          observer.complete();
+        })
+        .catch(error => {
+          console.error('Error al obtener el producto:', error);
+          observer.error(error);
+        });
+    });}
+
+    private carritoSubject = new BehaviorSubject<Producto[]>([]);
+    carrito$ = this.carritoSubject.asObservable();
+
+    agregarProductoAlCarrito(producto: Producto): void {
+      this.database.executeSql('INSERT INTO carrito (id_prod, nombre, descripcion, precio, stock, foto) VALUES (?, ?, ?, ?, ?, ?)', 
+      [producto.id_prod, producto.nombre, producto.descripcion, producto.precio, producto.stock, producto.foto])
+        .then(() => {
+          this.obtenerCarrito();
+        })
+        .catch(e => console.log('Error al agregar producto al carrito', e));
+    }
+  
+    obtenerCarrito(): void {
+      this.database.executeSql('SELECT * FROM carrito', []).then(res => {
+        const carrito: Producto[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          carrito.push({
+            id_prod: res.rows.item(i).id_prod,
+            nombre: res.rows.item(i).nombre,
+            descripcion: res.rows.item(i).descripcion,
+            precio: res.rows.item(i).precio,
+            stock: res.rows.item(i).stock,
+            foto: res.rows.item(i).foto,
+          });
+        }
+        this.carritoSubject.next(carrito);
+      }).catch(e => console.log('Error al obtener carrito', e));
+    }
+  
+    eliminarProductoDelCarrito(id_prod: number): void {
+      this.database.executeSql('DELETE FROM carrito WHERE id_prod = ?', [id_prod])
+        .then(() => {
+          this.obtenerCarrito();
+        })
+        .catch(e => console.log('Error al eliminar producto del carrito', e));
+    }
+  
+    vaciarCarrito(): void {
+      this.database.executeSql('DELETE FROM carrito', []).then(() => {
+        this.obtenerCarrito();
+      }).catch(e => console.log('Error al vaciar el carrito', e));
+    }
+  
+
 
 
 

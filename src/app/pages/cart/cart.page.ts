@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController} from '@ionic/angular';
-
+import { AlertController } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
 import { Producto } from 'src/app/services/producto';
 
 @Component({
@@ -9,46 +8,46 @@ import { Producto } from 'src/app/services/producto';
   templateUrl: './cart.page.html',
   styleUrls: ['./cart.page.scss'],
 })
-export class CartPage {
-  private carrito: Producto[] = [];
+export class CartPage implements OnInit {
+  carrito: Producto[] = [];
 
-  constructor(private alertController: AlertController,private router: Router) { }
+  constructor(
+    private alertController: AlertController,
+    private dbService: DatabaseService
+  ) { }
+
+  ngOnInit() {
+    // Suscribirse al carrito desde el servicio
+    this.dbService.carrito$.subscribe((data: Producto[]) => {
+      this.carrito = data;
+    });
+
+    // Obtener el carrito al iniciar la página
+    this.dbService.obtenerCarrito();
+  }
 
   async presentAlert() {
     const alert = await this.alertController.create({
-      header: 'Compra Realizada Con Exito',
+      header: 'Compra Realizada Con Éxito',
       buttons: ['Entendido'],
-      
     });
 
- 
-    
-
     await alert.present();
-    await this.router.navigate(['/mapacli']);
-  }
-  ngOnInit() {
   }
 
   agregarProducto(producto: Producto): void {
-    const productoExistente = this.carrito.find(item => item.id_prod === producto.id_prod);
-    if (productoExistente) {
-      productoExistente.stock += 1;
-    } else {
-      this.carrito.push({ ...producto, stock: 1 });
-    }
+    this.dbService.agregarProductoAlCarrito(producto);
   }
 
-  eliminarProducto(id: number): void {
-    this.carrito = this.carrito.filter(item => item.id_prod !== id);
+  eliminarProducto(id_prod: number): void {
+    this.dbService.eliminarProductoDelCarrito(id_prod);
   }
 
   vaciarCarrito(): void {
-    this.carrito = [];
+    this.dbService.vaciarCarrito();
   }
 
   obtenerCarrito(): Producto[] {
     return this.carrito;
   }
 }
-
