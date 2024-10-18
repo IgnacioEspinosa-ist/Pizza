@@ -82,9 +82,16 @@ const routes: Routes = [
   },
 
   {
+    path: 'administrador-usuario',
+    loadChildren: () => import('./pages/administrador-usuario/administrador-usuario.module').then( m => m.AdministradorUsuarioPageModule)
+  },
+
+  {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+  
+
  
 
 

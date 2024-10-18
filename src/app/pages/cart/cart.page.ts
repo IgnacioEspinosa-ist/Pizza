@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController} from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AlertController} from '@ionic/angular';
+
+import { Producto } from 'src/app/services/producto';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
   styleUrls: ['./cart.page.scss'],
 })
-export class CartPage implements OnInit {
+export class CartPage {
+  private carrito: Producto[] = [];
 
   constructor(private alertController: AlertController,private router: Router) { }
 
@@ -27,4 +30,25 @@ export class CartPage implements OnInit {
   ngOnInit() {
   }
 
+  agregarProducto(producto: Producto): void {
+    const productoExistente = this.carrito.find(item => item.id_prod === producto.id_prod);
+    if (productoExistente) {
+      productoExistente.stock += 1;
+    } else {
+      this.carrito.push({ ...producto, stock: 1 });
+    }
+  }
+
+  eliminarProducto(id: number): void {
+    this.carrito = this.carrito.filter(item => item.id_prod !== id);
+  }
+
+  vaciarCarrito(): void {
+    this.carrito = [];
+  }
+
+  obtenerCarrito(): Producto[] {
+    return this.carrito;
+  }
 }
+
