@@ -308,6 +308,50 @@ export class DatabaseService {
     }}
 
 
+    async checkEmailExists(email: string): Promise<boolean> {
+      try {
+        const result = await this.database.executeSql(
+          'SELECT * FROM usuario WHERE correo = ?',
+          [email]
+        );
+        return result.rows.length > 0;
+      } catch (error) {
+        console.error('Error buscando el correo', error);
+        return false;
+      }
+    }
+
+    
+    getFotoUsuario(id_user: number): Observable<string | null> {
+      return new Observable<string | null>((observer) => {
+          this.database.executeSql('SELECT foto FROM usuario WHERE id_user = ?', [id_user])
+              .then(res => {
+                  if (res.rows.length > 0) {
+                      observer.next(res.rows.item(0).foto); // Emitir la foto
+                  } else {
+                      observer.next(null); // Emitir null si no hay foto
+                  }
+                  observer.complete();
+              })
+              .catch(error => {
+                  console.error('Error al obtener la foto del usuario: ', error);
+                  observer.error(error); // Emitir el error
+              });
+      });}
+
+  async updateUsuarioFoto(id_user: number, foto: string) {
+    return new Promise<void>((resolve, reject) => {
+      this.database.executeSql('UPDATE usuario SET foto = ? WHERE id_user = ?', [foto, id_user])
+        .then(() => {
+          resolve(); // Resuelve la promesa al completar
+        })
+        .catch((error) => {
+          console.error('Error al actualizar la foto del usuario:', error);
+          reject(error); // Rechaza la promesa en caso de error
+        });
+    });
+  }
+
 
 
 
@@ -380,25 +424,29 @@ export class DatabaseService {
   }
 
   // Método para obtener todos los usuarios
-  fetchUsuarios() {
-    this.database.executeSql('SELECT * FROM usuario', []).then(res => {
-      const usuarios: Usuario[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        usuarios.push({
-          id_user: res.rows.item(i).id_user,
-          nombre: res.rows.item(i).nombre,
-          apellido: res.rows.item(i).apellido,
-          rut: res.rows.item(i).rut,
-          correo: res.rows.item(i).correo,
-          clave: res.rows.item(i).clave,
-          telefono: res.rows.item(i).telefono,
-          id_roll: res.rows.item(i).id_roll,
-          foto: res.rows.item(i).foto_U
-        });
-      }
-      this.usuariosSubject.next(usuarios); // Emitir los usuarios obtenidos
-    }).catch(e => {
-      this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
+  fetchUsuarios(): Observable<Usuario[]> {
+    return new Observable<Usuario[]>(observer => {
+      this.database.executeSql('SELECT * FROM usuario', []).then(res => {
+        const usuarios: Usuario[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          usuarios.push({
+            id_user: res.rows.item(i).id_user,
+            nombre: res.rows.item(i).nombre,
+            apellido: res.rows.item(i).apellido,
+            rut: res.rows.item(i).rut,
+            correo: res.rows.item(i).correo,
+            clave: res.rows.item(i).clave,
+            telefono: res.rows.item(i).telefono,
+            id_roll: res.rows.item(i).id_roll,
+            foto: res.rows.item(i).foto_U
+          });
+        }
+        observer.next(usuarios); // Emitir los usuarios obtenidos
+        observer.complete(); // Completar el observable
+      }).catch(e => {
+        this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
+        observer.error(e); // Emitir el error
+      });
     });
   }
 
