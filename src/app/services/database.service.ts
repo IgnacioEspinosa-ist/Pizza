@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import { Roll } from './roll';
 import { Usuario } from './usuario';
 import { Comuna } from './comuna';
@@ -523,6 +523,42 @@ export class DatabaseService {
           });
       });
     }
+
+    getUserId(): Observable<number | null> {
+      const sql = 'SELECT id_user FROM usuario WHERE ...'; // Lógica para seleccionar el usuario actual
+      return from(this.database.executeSql(sql, []).then(res => {
+        if (res.rows.length > 0) {
+          return res.rows.item(0).id_user;
+        }
+        return null; // o lanzar un error si no se encuentra
+      }));
+    }
+  
+    // Método para obtener una dirección del usuario actual
+    getDireccionByUserId(id_user: number): Observable<Direccion[]> {
+      const sql = 'SELECT * FROM direccion WHERE id_user = ?';
+      return from(this.database.executeSql(sql, [id_user]).then(res => {
+        const direcciones: Direccion[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          direcciones.push(res.rows.item(i));
+        }
+        return direcciones;
+      }));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 
