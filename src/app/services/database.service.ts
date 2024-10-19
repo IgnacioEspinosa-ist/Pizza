@@ -593,7 +593,8 @@ export class DatabaseService {
         producto.nombre,
         producto.precio,
         producto.stock,
-        
+        producto.foto,
+        producto.id_cat
       ])
       .then(() => {
         return this.refreshProductoList();  // Actualiza la lista de productos
@@ -651,9 +652,13 @@ export class DatabaseService {
       try {
         await this.database.executeSql(sql, [
           usuario.nombre,
+          usuario.apellido,
+          usuario.rut,
           usuario.correo,
+          usuario.clave,
           usuario.telefono,
           usuario.id_roll,
+          usuario.foto
         ]);
         this.refreshUsuarioList();
         this.presentAlert('Éxito', 'Usuario añadido correctamente.');
@@ -686,28 +691,28 @@ export class DatabaseService {
       }
     }
 
-    async updateUsuario(usuario: Usuario): Promise<void> {
-      const sql = `
-        UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
-        WHERE id_user = ?`;
-      try {
-        await this.database.executeSql(sql, [
-          usuario.nombre,
-          usuario.apellido,
-          usuario.rut,
-          usuario.correo,
-          usuario.clave,
-          usuario.telefono,
-          usuario.id_roll,
-          usuario.foto,
-          usuario.id_user
-        ]);
-        this.refreshUsuarioList();
-        this.presentAlert('Éxito', 'Usuario actualizado correctamente.');
-      } catch (error) {
-        this.presentAlert('Error', 'No se pudo actualizar el usuario.');
-      }
+     async updateUsuario(usuario: Usuario): Promise<void> {
+    const sql = `
+      UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
+      WHERE id_user = ?`;
+    try {
+      await this.database.executeSql(sql, [
+        usuario.nombre,
+        usuario.apellido,
+        usuario.rut,
+        usuario.correo,
+        usuario.clave,
+        usuario.telefono,
+        usuario.id_roll,
+        usuario.foto,
+        usuario.id_user
+      ]);
+      this.refreshUsuarioList();
+      this.presentAlert('Éxito', 'Usuario actualizado correctamente.');
+    } catch (error) {
+      this.presentAlert('Error', 'No se pudo actualizar el usuario.');
     }
+  }
 
 
 

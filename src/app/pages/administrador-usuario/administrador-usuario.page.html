@@ -41,6 +41,22 @@
       <ion-select-option value="3">3</ion-select-option>
     </ion-select>
   </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Apellido</ion-label>
+    <ion-input [(ngModel)]="apellido"></ion-input>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label position="floating">RUT</ion-label>
+    <ion-input [(ngModel)]="rut"></ion-input>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label position="floating">Clave</ion-label>
+    <ion-input type="password" [(ngModel)]="clave"></ion-input>
+  </ion-item>
+  
   
 
   <ion-button expand="full" (click)="agregarUsuario()">Agregar Usuario</ion-button>
