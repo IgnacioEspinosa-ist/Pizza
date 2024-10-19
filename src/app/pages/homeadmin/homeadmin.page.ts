@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
 import { Producto } from 'src/app/services/producto';
-import { Route } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -11,12 +11,11 @@ import { Route } from '@angular/router';
 export class AdminPage implements OnInit {
   productos: Producto[] = [];
   nombre: string = '';
-  
   precio: number = 0;
   stock: number = 0;
   productoActual: Producto | null = null; // Para gestionar la edición
 
-  constructor(private dbService: DatabaseService, route: Route) {}
+  constructor(private dbService: DatabaseService, private route: ActivatedRoute) {} // Asegúrate de inyectar ActivatedRoute aquí
 
   ngOnInit() {
     // Suscribirse al observable productos$
@@ -37,7 +36,6 @@ export class AdminPage implements OnInit {
     const nuevoProducto: Producto = {
       id_prod: 0, // Asumiendo que el ID será generado por la base de datos
       nombre: this.nombre,
-      
       precio: this.precio,
       stock: this.stock,
     };
@@ -63,7 +61,6 @@ export class AdminPage implements OnInit {
   cargarDatosProducto(producto: Producto) {
     this.productoActual = producto;
     this.nombre = producto.nombre;
-    
     this.precio = producto.precio;
     this.stock = producto.stock;
   }
@@ -77,7 +74,6 @@ export class AdminPage implements OnInit {
     if (this.productoActual) {
       // Actualizar los valores del producto actual
       this.productoActual.nombre = this.nombre;
-      
       this.productoActual.precio = this.precio;
       this.productoActual.stock = this.stock;
 
@@ -93,7 +89,6 @@ export class AdminPage implements OnInit {
 
   limpiarCampos() {
     this.nombre = '';
-    
     this.precio = 0;
     this.stock = 0;
     this.productoActual = null;
