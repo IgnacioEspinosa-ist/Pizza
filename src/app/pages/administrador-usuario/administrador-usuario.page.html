@@ -36,11 +36,12 @@
   <ion-item>
     <ion-label position="stacked">Rol</ion-label>
     <ion-select [(ngModel)]="id_roll">
-      <ion-select-option value="repartidor">Repartidor</ion-select-option>
-      <ion-select-option value="administrador">Administrador</ion-select-option>
-      <ion-select-option value="otro">Otro</ion-select-option>
+      <ion-select-option value="1">1</ion-select-option>
+      <ion-select-option value="2">2</ion-select-option>
+      <ion-select-option value="3">3</ion-select-option>
     </ion-select>
   </ion-item>
+  
 
   <ion-button expand="full" (click)="agregarUsuario()">Agregar Usuario</ion-button>
   <ion-button expand="full" (click)="modificarUsuario()" *ngIf="usuarioActual">Modificar Usuario</ion-button>
