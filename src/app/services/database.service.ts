@@ -546,7 +546,173 @@ export class DatabaseService {
       }));
     }
 
+    updateProducto(producto: Producto): void {
+      const sql = `
+        UPDATE producto SET nombre = ?, precio = ?, stock = ?, foto = ?, id_cat = ? WHERE id_prod = ?`;
+    
+      this.database.executeSql(sql, [
+        producto.nombre,
+        producto.precio,
+        producto.stock,
+        producto.foto,
+        producto.id_cat,
+        producto.id_prod
+      ])
+      .then(() => {
+        return this.refreshProductoList(); // Actualiza la lista de productos
+      })
+      .then(() => {
+        this.presentAlert('Éxito', 'Producto actualizado correctamente.');
+      })
+      .catch((error) => {
+        this.presentAlert('Error', 'No se pudo actualizar el producto.');
+        console.error('Error al actualizar producto:', error);
+      });
+    }
+    
+    private refreshProductoList(): Promise<void> {
+      const sql = "SELECT * FROM producto";
+      return this.database.executeSql(sql, [])
+        .then((data) => {
+          this.productos = [];
+          for (let i = 0; i < data.rows.length; i++) {
+            this.productos.push(data.rows.item(i));
+          }
+        })
+        .catch((error) => {
+          console.error('Error al refrescar la lista de productos', error);
+        });
+    }
+    
+    insertProducto(producto: Producto): void {
+      const sql = `
+        INSERT INTO producto (nombre, precio, stock, foto, id_cat) 
+        VALUES (?, ?, ?, ?, ?)`;
+    
+      this.database.executeSql(sql, [
+        producto.nombre,
+        producto.precio,
+        producto.stock,
+        producto.foto,
+        producto.id_cat
+      ])
+      .then(() => {
+        return this.refreshProductoList();  // Actualiza la lista de productos
+      })
+      .then(() => {
+        this.presentAlert('Éxito', 'Producto añadido correctamente.');
+      })
+      .catch((error) => {
+        this.presentAlert('Error', 'No se pudo añadir el producto.');
+        console.error('Error al añadir producto:', error);
+      });
+    }
 
+    async deleteProducto(id: number): Promise<void> {
+      const sql = "DELETE FROM producto WHERE id_prod = ?";
+      try {
+        await this.database.executeSql(sql, [id]);
+        this.refreshProductoList();
+        this.presentAlert('Éxito', 'Producto eliminado correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo eliminar el producto.');
+      }
+    }
+
+    fetchUsuarios(): Observable<Usuario[]> {
+      return new Observable<Usuario[]>(observer => {
+        this.database.executeSql('SELECT * FROM usuario', []).then(res => {
+          const usuarios: Usuario[] = [];
+          for (let i = 0; i < res.rows.length; i++) {
+            usuarios.push({
+              id_user: res.rows.item(i).id_user,
+              nombre: res.rows.item(i).nombre,
+              apellido: res.rows.item(i).apellido,
+              rut: res.rows.item(i).rut,
+              correo: res.rows.item(i).correo,
+              clave: res.rows.item(i).clave,
+              telefono: res.rows.item(i).telefono,
+              id_roll: res.rows.item(i).id_roll,
+              foto: res.rows.item(i).foto_U
+            });
+          }
+          observer.next(usuarios); // Emitir los usuarios obtenidos
+          observer.complete(); // Completar el observable
+        }).catch(e => {
+          this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
+          observer.error(e); // Emitir el error
+        });
+      });
+    }
+    
+    async insertUsuario(usuario: Usuario): Promise<void> {
+      const sql = `
+        INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      try {
+        await this.database.executeSql(sql, [
+          usuario.nombre,
+          usuario.apellido,
+          usuario.rut,
+          usuario.correo,
+          usuario.clave,
+          usuario.telefono,
+          usuario.id_roll,
+          usuario.foto
+        ]);
+        this.refreshUsuarioList();
+        this.presentAlert('Éxito', 'Usuario añadido correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo añadir el usuario.');
+      }
+    }
+
+    private async refreshUsuarioList(): Promise<void> {
+      const sql = "SELECT * FROM usuario";
+      try {
+        const data = await this.database.executeSql(sql, []);
+        this.usuarios = [];
+        for (let i = 0; i < data.rows.length; i++) {
+          this.usuarios.push(data.rows.item(i));
+        }
+      } catch (error) {
+        console.error('Error al refrescar la lista de usuarios', error);
+      }
+    }
+
+    async deleteUsuario(id: number): Promise<void> {
+      const sql = "DELETE FROM usuario WHERE id_user = ?";
+      try {
+        await this.database.executeSql(sql, [id]);
+        this.refreshUsuarioList();
+        this.presentAlert('Éxito', 'Usuario eliminado correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo eliminar el usuario.');
+      }
+    }
+
+    async updateUsuario(usuario: Usuario): Promise<void> {
+      const sql = `
+        UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
+        WHERE id_user = ?`;
+      try {
+        await this.database.executeSql(sql, [
+          usuario.nombre,
+          usuario.apellido,
+          usuario.rut,
+          usuario.correo,
+          usuario.clave,
+          usuario.telefono,
+          usuario.id_roll,
+          usuario.foto,
+          usuario.id_user
+        ]);
+        this.refreshUsuarioList();
+        this.presentAlert('Éxito', 'Usuario actualizado correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo actualizar el usuario.');
+      }
+    }
 
 
 
@@ -609,7 +775,7 @@ export class DatabaseService {
   public detalles$: Observable<Detalle[]> = this.detallesSubject.asObservable();
 
 
-
+/*
   
   // Método para obtener todos los rolls
   fetchRolls() {
@@ -628,31 +794,7 @@ export class DatabaseService {
   }
 
   // Método para obtener todos los usuarios
-  fetchUsuarios(): Observable<Usuario[]> {
-    return new Observable<Usuario[]>(observer => {
-      this.database.executeSql('SELECT * FROM usuario', []).then(res => {
-        const usuarios: Usuario[] = [];
-        for (let i = 0; i < res.rows.length; i++) {
-          usuarios.push({
-            id_user: res.rows.item(i).id_user,
-            nombre: res.rows.item(i).nombre,
-            apellido: res.rows.item(i).apellido,
-            rut: res.rows.item(i).rut,
-            correo: res.rows.item(i).correo,
-            clave: res.rows.item(i).clave,
-            telefono: res.rows.item(i).telefono,
-            id_roll: res.rows.item(i).id_roll,
-            foto: res.rows.item(i).foto_U
-          });
-        }
-        observer.next(usuarios); // Emitir los usuarios obtenidos
-        observer.complete(); // Completar el observable
-      }).catch(e => {
-        this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
-        observer.error(e); // Emitir el error
-      });
-    });
-  }
+  
 
   // Método para obtener todas las comunas
   fetchComunas() {
@@ -774,27 +916,7 @@ export class DatabaseService {
     }
   }
 
-  async insertUsuario(usuario: Usuario): Promise<void> {
-    const sql = `
-      INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-    try {
-      await this.database.executeSql(sql, [
-        usuario.nombre,
-        usuario.apellido,
-        usuario.rut,
-        usuario.correo,
-        usuario.clave,
-        usuario.telefono,
-        usuario.id_roll,
-        usuario.foto
-      ]);
-      this.refreshUsuarioList();
-      this.presentAlert('Éxito', 'Usuario añadido correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir el usuario.');
-    }
-  }
+  
 
   async insertComuna(comuna: Comuna): Promise<void> {
     const sql = "INSERT INTO comuna (nombre_comuna) VALUES (?)";
@@ -844,28 +966,7 @@ export class DatabaseService {
     }
   }
 
-  insertProducto(producto: Producto): void {
-    const sql = `
-      INSERT INTO producto (nombre, descripcion, precio, stock, foto, id_cat) 
-      VALUES (?, ?, ?, ?, ?, ?)`;
-    
-    this.database.executeSql(sql, [
-      producto.nombre,
-      
-      producto.precio,
-      producto.stock,
-      producto.foto,
-      producto.id_cat
-    ])
-    .then(() => {
-      this.refreshProductoList();  // Actualiza la lista de productos
-      this.presentAlert('Éxito', 'Producto añadido correctamente.');
-    })
-    .catch((error) => {
-      this.presentAlert('Error', 'No se pudo añadir el producto.');
-      console.error('Error al añadir producto:', error);
-    });
-  }
+  
   
 
   insertPedido(total: number, id_user: number, id_direccion: number): Observable<number> {
@@ -916,28 +1017,7 @@ export class DatabaseService {
     }
   }
 
-  async updateUsuario(usuario: Usuario): Promise<void> {
-    const sql = `
-      UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
-      WHERE id_user = ?`;
-    try {
-      await this.database.executeSql(sql, [
-        usuario.nombre,
-        usuario.apellido,
-        usuario.rut,
-        usuario.correo,
-        usuario.clave,
-        usuario.telefono,
-        usuario.id_roll,
-        usuario.foto,
-        usuario.id_user
-      ]);
-      this.refreshUsuarioList();
-      this.presentAlert('Éxito', 'Usuario actualizado correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo actualizar el usuario.');
-    }
-  }
+ 
 
   async updateComuna(comuna: Comuna): Promise<void> {
     const sql = "UPDATE comuna SET nombre_comuna = ? WHERE id_comuna = ?";
@@ -983,31 +1063,10 @@ export class DatabaseService {
     } catch (error) {
       this.presentAlert('Error', 'No se pudo actualizar la categoría.');
     }
-  }
+  } */
 
-  updateProducto(producto: Producto): void {
-    const sql = `
-      UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, stock = ?, foto = ?, id_cat = ? WHERE id_prod = ?`;
-  
-    this.database.executeSql(sql, [
-      producto.nombre,
-   
-      producto.precio,
-      producto.stock,
-      producto.foto,
-      producto.id_cat,
-      producto.id_prod
-    ])
-    .then(() => {
-      this.refreshProductoList(); // Actualiza la lista de productos
-      this.presentAlert('Éxito', 'Producto actualizado correctamente.');
-    })
-    .catch((error) => {
-      this.presentAlert('Error', 'No se pudo actualizar el producto.');
-      console.error('Error al actualizar producto:', error);
-    });
-  }
-  
+ 
+  /*
 
   async updatePedido(pedido: Pedido): Promise<void> {
     const sql = `
@@ -1058,16 +1117,7 @@ export class DatabaseService {
     }
   }
 
-  async deleteUsuario(id: number): Promise<void> {
-    const sql = "DELETE FROM usuario WHERE id_user = ?";
-    try {
-      await this.database.executeSql(sql, [id]);
-      this.refreshUsuarioList();
-      this.presentAlert('Éxito', 'Usuario eliminado correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo eliminar el usuario.');
-    }
-  }
+  
 
   async deleteComuna(id: number): Promise<void> {
     const sql = "DELETE FROM comuna WHERE id_comuna = ?";
@@ -1113,16 +1163,7 @@ export class DatabaseService {
     }
   }
 
-  async deleteProducto(id: number): Promise<void> {
-    const sql = "DELETE FROM producto WHERE id_prod = ?";
-    try {
-      await this.database.executeSql(sql, [id]);
-      this.refreshProductoList();
-      this.presentAlert('Éxito', 'Producto eliminado correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo eliminar el producto.');
-    }
-  }
+  
 
   async deletePedido(id: number): Promise<void> {
     const sql = "DELETE FROM pedido WHERE id_pedido = ?";
@@ -1160,18 +1201,7 @@ export class DatabaseService {
     }
   }
 
-  private async refreshUsuarioList(): Promise<void> {
-    const sql = "SELECT * FROM usuario";
-    try {
-      const data = await this.database.executeSql(sql, []);
-      this.usuarios = [];
-      for (let i = 0; i < data.rows.length; i++) {
-        this.usuarios.push(data.rows.item(i));
-      }
-    } catch (error) {
-      console.error('Error al refrescar la lista de usuarios', error);
-    }
-  }
+  
 
   private async refreshComunaList(): Promise<void> {
     const sql = "SELECT * FROM comuna";
@@ -1225,18 +1255,7 @@ export class DatabaseService {
     }
   }
 
-  private async refreshProductoList(): Promise<void> {
-    const sql = "SELECT * FROM producto";
-    try {
-      const data = await this.database.executeSql(sql, []);
-      this.productos = [];
-      for (let i = 0; i < data.rows.length; i++) {
-        this.productos.push(data.rows.item(i));
-      }
-    } catch (error) {
-      console.error('Error al refrescar la lista de productos', error);
-    }
-  }
+  
 
   private async refreshPedidoList(): Promise<void> {
     const sql = "SELECT * FROM pedido";
@@ -1263,4 +1282,5 @@ export class DatabaseService {
       console.error('Error al refrescar la lista de detalles', error);
     }
   }
+}*/
 }
