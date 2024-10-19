@@ -593,8 +593,7 @@ export class DatabaseService {
         producto.nombre,
         producto.precio,
         producto.stock,
-        producto.foto,
-        producto.id_cat
+        
       ])
       .then(() => {
         return this.refreshProductoList();  // Actualiza la lista de productos
@@ -652,13 +651,9 @@ export class DatabaseService {
       try {
         await this.database.executeSql(sql, [
           usuario.nombre,
-          usuario.apellido,
-          usuario.rut,
           usuario.correo,
-          usuario.clave,
           usuario.telefono,
           usuario.id_roll,
-          usuario.foto
         ]);
         this.refreshUsuarioList();
         this.presentAlert('Éxito', 'Usuario añadido correctamente.');
