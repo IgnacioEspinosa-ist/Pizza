@@ -14,6 +14,9 @@ export class UsuariosPage implements OnInit {
   email: string = '';
   id_roll: any = ''; // Puede ser 'repartidor', 'administrador', etc.
   usuarioActual: Usuario | null = null; // Para gestionar la edición
+  apellido: string= '';
+  rut: string= '';;
+  clave: string= '';;
 
   constructor(private dbService: DatabaseService) { }
 
@@ -32,37 +35,28 @@ export class UsuariosPage implements OnInit {
   }
 
   async agregarUsuario() {
-    if (!this.nombre || !this.telefono || !this.email || !this.id_roll) {
+    if (!this.nombre || !this.telefono || !this.email || !this.id_roll || !this.apellido || !this.rut || !this.clave) {
       console.warn('Todos los campos son obligatorios');
       return;
     }
-
+  
     const nuevoUsuario: Usuario = {
-      id_user: 0, // Asegúrate de que el ID se maneje correctamente en tu backend
+      id_user: 0, // Se debe manejar automáticamente en la base de datos
       nombre: this.nombre,
-      telefono: this.telefono,
+      apellido: this.apellido, // Incluye el apellido
+      rut: this.rut, // Incluye el RUT
       correo: this.email,
-      id_roll: this.id_roll,
-      apellido: '',
-      rut: '',
-      clave: ''
+      clave: this.clave, // Incluye la clave
+      telefono: this.telefono,
+      id_roll: this.id_roll
     };
-
+  
     try {
-      await this.dbService.insertUsuario(nuevoUsuario); // Asegúrate de que este método esté en tu servicio
+      await this.dbService.insertUsuario(nuevoUsuario);
       await this.cargarUsuarios();
       this.limpiarCampos();
     } catch (error) {
       console.error("Error al agregar el usuario:", error);
-    }
-  }
-
-  async eliminarUsuario(id: number) {
-    try {
-      await this.dbService.deleteUsuario(id); // Asegúrate de que este método esté en tu servicio
-      await this.cargarUsuarios();
-    } catch (error) {
-      console.error("Error al eliminar el usuario:", error);
     }
   }
 
@@ -75,19 +69,22 @@ export class UsuariosPage implements OnInit {
   }
 
   async modificarUsuario() {
-    if (!this.nombre || !this.telefono || !this.email || !this.id_roll) {
+    if (!this.nombre || !this.telefono || !this.email || !this.id_roll || !this.apellido || !this.rut || !this.clave) {
       console.warn('Todos los campos son obligatorios');
       return;
     }
-
+  
     if (this.usuarioActual) {
       this.usuarioActual.nombre = this.nombre;
-      this.usuarioActual.telefono = this.telefono;
+      this.usuarioActual.apellido = this.apellido; // Modificar el apellido
+      this.usuarioActual.rut = this.rut; // Modificar el RUT
       this.usuarioActual.correo = this.email;
-      this.usuarioActual.id_roll = this.id_roll; // Modifica el rol también
-
+      this.usuarioActual.clave = this.clave; // Modificar la clave
+      this.usuarioActual.telefono = this.telefono;
+      this.usuarioActual.id_roll = this.id_roll;
+  
       try {
-        await this.dbService.updateUsuario(this.usuarioActual); // Asegúrate de que este método esté en tu servicio
+        await this.dbService.updateUsuario(this.usuarioActual);
         await this.cargarUsuarios();
         this.limpiarCampos();
       } catch (error) {
@@ -95,6 +92,16 @@ export class UsuariosPage implements OnInit {
       }
     }
   }
+
+  async eliminarUsuario(id: number) {
+    try {
+      await this.dbService.deleteUsuario(id); // Asegúrate de que este método esté en tu servicio
+      await this.cargarUsuarios();
+    } catch (error) {
+      console.error("Error al eliminar el usuario:", error);
+    }
+  }
+  
 
   limpiarCampos() {
     this.nombre = '';
