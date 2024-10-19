@@ -278,7 +278,7 @@ export class DatabaseService {
         productos.push({
           id_prod: res.rows.item(i).id_prod,
           nombre: res.rows.item(i).nombre,
-          descripcion: res.rows.item(i).descripcion,
+          
           precio: res.rows.item(i).precio,
           stock: res.rows.item(i).stock,
           foto: res.rows.item(i).foto_PRODUCTO,
@@ -361,7 +361,7 @@ export class DatabaseService {
             const producto: Producto = {
               id_prod: res.rows.item(0).id_prod,
               nombre: res.rows.item(0).nombre,
-              descripcion: res.rows.item(0).descripcion,
+              
               precio: res.rows.item(0).precio,
               stock: res.rows.item(0).stock,
               foto: res.rows.item(0).foto_PRODUCTO,
@@ -384,7 +384,7 @@ export class DatabaseService {
 
     agregarProductoAlCarrito(producto: Producto): void {
       this.database.executeSql('INSERT INTO carrito (id_prod, nombre, descripcion, precio, stock, foto) VALUES (?, ?, ?, ?, ?, ?)', 
-      [producto.id_prod, producto.nombre, producto.descripcion, producto.precio, producto.stock, producto.foto])
+      [producto.id_prod, producto.nombre, producto.precio, producto.stock, producto.foto])
         .then(() => {
           this.obtenerCarrito();
         })
@@ -398,7 +398,7 @@ export class DatabaseService {
           carrito.push({
             id_prod: res.rows.item(i).id_prod,
             nombre: res.rows.item(i).nombre,
-            descripcion: res.rows.item(i).descripcion,
+            
             precio: res.rows.item(i).precio,
             stock: res.rows.item(i).stock,
             foto: res.rows.item(i).foto,
@@ -443,26 +443,26 @@ export class DatabaseService {
       });
     }
     
-    addDetallePedido(id_pedido: number, productos: Producto[]) {
-      return new Observable<void>((observer) => {
-        productos.forEach((producto) => {
-          const { id_prod, precio, stock } = producto;
-          const subtotal = precio * stock;
+    addDetallePedido(id_pedido: number, carrito: Producto[]): Observable<void> {
+      const sql = `INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)`;
     
-          // Insertar el detalle en la tabla 'detalle'
-          this.database.executeSql('INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)', 
-            [id_pedido, id_prod, stock, subtotal])
-            .then(() => {
-              observer.next();
-            })
-            .catch(error => {
-              console.error('Error al agregar detalle de pedido:', error);
-              observer.error(error);
-            });
+      return new Observable((observer) => {
+        const queries = carrito.map(producto => {
+          const subtotal = producto.precio * producto.stock; // Calcula el subtotal
+          return this.database.executeSql(sql, [id_pedido, producto.id_prod, producto.stock, subtotal]);
         });
-        observer.complete();
+    
+        Promise.all(queries)
+          .then(() => {
+            observer.next();
+            observer.complete();
+          })
+          .catch((error) => {
+            observer.error(error);
+          });
       });
     }
+    
     
     private pedidosPendientesSubject = new BehaviorSubject<Pedido[]>([]);
     public pedidosPendientes$ = this.pedidosPendientesSubject.asObservable();
@@ -815,7 +815,7 @@ export class DatabaseService {
     
     this.database.executeSql(sql, [
       producto.nombre,
-      producto.descripcion,
+      
       producto.precio,
       producto.stock,
       producto.foto,
@@ -832,25 +832,24 @@ export class DatabaseService {
   }
   
 
-  async insertPedido(pedido: Pedido): Promise<void> {
-    const sql = `
-      INSERT INTO pedido (f_pedido, id_user, id_direccion, total, id_user_resp, estatus) 
-      VALUES (?, ?, ?, ?, ?, ?)`;
-    try {
-      await this.database.executeSql(sql, [
-        pedido.f_pedido,
-        pedido.id_user,
-        pedido.id_direccion,
-        pedido.total,
-        pedido.id_user_resp,
-        pedido.estatus
-      ]);
-      this.refreshPedidoList();
-      this.presentAlert('Éxito', 'Pedido añadido correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir el pedido.');
-    }
+  insertPedido(total: number, id_user: number, id_direccion: number): Observable<number> {
+    const sql = `INSERT INTO pedido (f_pedido, id_user, id_direccion, total, estatus) VALUES (?, ?, ?, ?, ?)`;
+    const fecha = new Date().toISOString(); // Formato de fecha
+  
+    return new Observable((observer) => {
+      this.database.executeSql(sql, [fecha, id_user, id_direccion, total, 'Pendiente'])
+        .then((result) => {
+          const id_pedido = result.insertId; // ID del nuevo pedido
+          observer.next(id_pedido);
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
   }
+
+  
 
   async insertDetalle(detalle: Detalle): Promise<void> {
     const sql = `
@@ -956,7 +955,7 @@ export class DatabaseService {
   
     this.database.executeSql(sql, [
       producto.nombre,
-      producto.descripcion,
+   
       producto.precio,
       producto.stock,
       producto.foto,

@@ -71,7 +71,7 @@ export class CartPage implements OnInit {
   // Nueva función para finalizar la compra y añadir detalles a la tabla de pedidos
   finalizarCompra(id_user: number, id_direccion: number) {
     const total = this.obtenerTotalCarrito();
-
+  
     // Agregar pedido y detalles del pedido
     this.dbService.addPedido(total, id_user, id_direccion).subscribe({
       next: (id_pedido: number) => {
@@ -92,6 +92,7 @@ export class CartPage implements OnInit {
       }
     });
   }
+  
 
   obtenerTotalCarrito(): number {
     return this.carrito.reduce((total, item) => total + item.precio * item.stock, 0);
