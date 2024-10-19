@@ -308,9 +308,202 @@ export class DatabaseService {
     }}
 
 
+    async checkEmailExists(email: string): Promise<boolean> {
+      try {
+        const result = await this.database.executeSql(
+          'SELECT * FROM usuario WHERE correo = ?',
+          [email]
+        );
+        return result.rows.length > 0;
+      } catch (error) {
+        console.error('Error buscando el correo', error);
+        return false;
+      }
+    }
+
+    
+    getFotoUsuario(id_user: number): Observable<string | null> {
+      return new Observable<string | null>((observer) => {
+          this.database.executeSql('SELECT foto FROM usuario WHERE id_user = ?', [id_user])
+              .then(res => {
+                  if (res.rows.length > 0) {
+                      observer.next(res.rows.item(0).foto); // Emitir la foto
+                  } else {
+                      observer.next(null); // Emitir null si no hay foto
+                  }
+                  observer.complete();
+              })
+              .catch(error => {
+                  console.error('Error al obtener la foto del usuario: ', error);
+                  observer.error(error); // Emitir el error
+              });
+      });}
+
+  async updateUsuarioFoto(id_user: number, foto: string) {
+    return new Promise<void>((resolve, reject) => {
+      this.database.executeSql('UPDATE usuario SET foto = ? WHERE id_user = ?', [foto, id_user])
+        .then(() => {
+          resolve(); // Resuelve la promesa al completar
+        })
+        .catch((error) => {
+          console.error('Error al actualizar la foto del usuario:', error);
+          reject(error); // Rechaza la promesa en caso de error
+        });
+    });
+  }
 
 
+  getProductoById(id_prod: number) {
+    return new Observable<Producto>((observer) => {
+      this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [id_prod])
+        .then(res => {
+          if (res.rows.length > 0) {
+            const producto: Producto = {
+              id_prod: res.rows.item(0).id_prod,
+              nombre: res.rows.item(0).nombre,
+              descripcion: res.rows.item(0).descripcion,
+              precio: res.rows.item(0).precio,
+              stock: res.rows.item(0).stock,
+              foto: res.rows.item(0).foto_PRODUCTO,
+              id_cat: res.rows.item(0).id_cat
+            };
+            observer.next(producto);
+          } else {
+            observer.error('Producto no encontrado');
+          }
+          observer.complete();
+        })
+        .catch(error => {
+          console.error('Error al obtener el producto:', error);
+          observer.error(error);
+        });
+    });}
 
+    private carritoSubject = new BehaviorSubject<Producto[]>([]);
+    carrito$ = this.carritoSubject.asObservable();
+
+    agregarProductoAlCarrito(producto: Producto): void {
+      this.database.executeSql('INSERT INTO carrito (id_prod, nombre, descripcion, precio, stock, foto) VALUES (?, ?, ?, ?, ?, ?)', 
+      [producto.id_prod, producto.nombre, producto.descripcion, producto.precio, producto.stock, producto.foto])
+        .then(() => {
+          this.obtenerCarrito();
+        })
+        .catch(e => console.log('Error al agregar producto al carrito', e));
+    }
+  
+    obtenerCarrito(): void {
+      this.database.executeSql('SELECT * FROM carrito', []).then(res => {
+        const carrito: Producto[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          carrito.push({
+            id_prod: res.rows.item(i).id_prod,
+            nombre: res.rows.item(i).nombre,
+            descripcion: res.rows.item(i).descripcion,
+            precio: res.rows.item(i).precio,
+            stock: res.rows.item(i).stock,
+            foto: res.rows.item(i).foto,
+          });
+        }
+        this.carritoSubject.next(carrito);
+      }).catch(e => console.log('Error al obtener carrito', e));
+    }
+  
+    eliminarProductoDelCarrito(id_prod: number): void {
+      this.database.executeSql('DELETE FROM carrito WHERE id_prod = ?', [id_prod])
+        .then(() => {
+          this.obtenerCarrito();
+        })
+        .catch(e => console.log('Error al eliminar producto del carrito', e));
+    }
+  
+    vaciarCarrito(): void {
+      this.database.executeSql('DELETE FROM carrito', []).then(() => {
+        this.obtenerCarrito();
+      }).catch(e => console.log('Error al vaciar el carrito', e));
+    }
+  
+
+    addPedido(total: number, id_user: number, id_direccion: number) {
+      return new Observable<number>((observer) => {
+        const f_pedido = new Date().toISOString(); // Fecha del pedido
+        const estatus = 'pendiente'; // Estado del pedido
+    
+        // Insertar el pedido en la tabla 'pedido'
+        this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, id_direccion, total, estatus) VALUES (?, ?, ?, ?, ?)', 
+          [f_pedido, id_user, id_direccion, total, estatus])
+          .then(result => {
+            const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
+            observer.next(id_pedido); // Emitir el ID del pedido
+            observer.complete();
+          })
+          .catch(error => {
+            console.error('Error al agregar pedido:', error);
+            observer.error(error);
+          });
+      });
+    }
+    
+    addDetallePedido(id_pedido: number, productos: Producto[]) {
+      return new Observable<void>((observer) => {
+        productos.forEach((producto) => {
+          const { id_prod, precio, stock } = producto;
+          const subtotal = precio * stock;
+    
+          // Insertar el detalle en la tabla 'detalle'
+          this.database.executeSql('INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)', 
+            [id_pedido, id_prod, stock, subtotal])
+            .then(() => {
+              observer.next();
+            })
+            .catch(error => {
+              console.error('Error al agregar detalle de pedido:', error);
+              observer.error(error);
+            });
+        });
+        observer.complete();
+      });
+    }
+    
+    private pedidosPendientesSubject = new BehaviorSubject<Pedido[]>([]);
+    public pedidosPendientes$ = this.pedidosPendientesSubject.asObservable();
+
+    obtenerPedidosPendientes() {
+      this.database.executeSql(`SELECT * FROM pedido WHERE estatus = 'pendiente'`, [])
+        .then(res => {
+          let pedidos: Pedido[] = [];
+          for (let i = 0; i < res.rows.length; i++) {
+            pedidos.push({
+              id_pedido: res.rows.item(i).id_pedido,
+              f_pedido: res.rows.item(i).f_pedido,
+              id_user: res.rows.item(i).id_user,
+              id_direccion: res.rows.item(i).id_direccion,
+              total: res.rows.item(i).total,
+              id_user_resp: res.rows.item(i).id_user_resp,
+              estatus: res.rows.item(i).estatus,
+              
+            });
+          }
+          this.pedidosPendientesSubject.next(pedidos); // Emitir los pedidos pendientes
+        })
+        .catch(error => {
+          console.error('Error al obtener los pedidos pendientes:', error);
+        });
+    }
+  
+    // Método para marcar un pedido como entregado
+    marcarPedidoComoEntregado(id_pedido: number): Observable<void> {
+      return new Observable<void>((observer) => {
+        this.database.executeSql(`UPDATE pedido SET estatus = 'entregado' WHERE id_pedido = ?`, [id_pedido])
+          .then(() => {
+            observer.next(); // Emitir el éxito
+            observer.complete();
+          })
+          .catch(error => {
+            console.error('Error al marcar el pedido como entregado:', error);
+            observer.error(error); // Emitir el error
+          });
+      });
+    }
 
 
 
@@ -380,25 +573,29 @@ export class DatabaseService {
   }
 
   // Método para obtener todos los usuarios
-  fetchUsuarios() {
-    this.database.executeSql('SELECT * FROM usuario', []).then(res => {
-      const usuarios: Usuario[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        usuarios.push({
-          id_user: res.rows.item(i).id_user,
-          nombre: res.rows.item(i).nombre,
-          apellido: res.rows.item(i).apellido,
-          rut: res.rows.item(i).rut,
-          correo: res.rows.item(i).correo,
-          clave: res.rows.item(i).clave,
-          telefono: res.rows.item(i).telefono,
-          id_roll: res.rows.item(i).id_roll,
-          foto: res.rows.item(i).foto_U
-        });
-      }
-      this.usuariosSubject.next(usuarios); // Emitir los usuarios obtenidos
-    }).catch(e => {
-      this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
+  fetchUsuarios(): Observable<Usuario[]> {
+    return new Observable<Usuario[]>(observer => {
+      this.database.executeSql('SELECT * FROM usuario', []).then(res => {
+        const usuarios: Usuario[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          usuarios.push({
+            id_user: res.rows.item(i).id_user,
+            nombre: res.rows.item(i).nombre,
+            apellido: res.rows.item(i).apellido,
+            rut: res.rows.item(i).rut,
+            correo: res.rows.item(i).correo,
+            clave: res.rows.item(i).clave,
+            telefono: res.rows.item(i).telefono,
+            id_roll: res.rows.item(i).id_roll,
+            foto: res.rows.item(i).foto_U
+          });
+        }
+        observer.next(usuarios); // Emitir los usuarios obtenidos
+        observer.complete(); // Completar el observable
+      }).catch(e => {
+        this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
+        observer.error(e); // Emitir el error
+      });
     });
   }
 
