@@ -504,7 +504,26 @@ export class DatabaseService {
           });
       });
     }
-
+  
+    getProductosPorIds(ids: number[]): Observable<Producto[]> {
+      return new Observable((observer) => {
+        const placeholders = ids.map(() => '?').join(',');
+        this.database.executeSql(`SELECT * FROM producto WHERE id_prod IN (${placeholders})`, ids)
+          .then(res => {
+            const productos: Producto[] = [];
+            for (let i = 0; i < res.rows.length; i++) {
+              productos.push(res.rows.item(i));
+            }
+            observer.next(productos); // Emitir los productos
+            observer.complete();
+          })
+          .catch(error => {
+            console.error('Error al obtener los productos por IDs: ', error);
+            observer.error(error); // Emitir el error
+          });
+      });
+    }
+    
 
 
 

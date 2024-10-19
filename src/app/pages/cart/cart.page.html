@@ -1,38 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button menu="menuP" ></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Carrito De Compra</ion-title>
+    <ion-title>Carrito</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-<div class="fondo">
-  
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let producto of carrito">
+      <ion-label>{{ producto.nombre }}</ion-label>
+      <ion-label slot="end">{{ producto.precio | currency }}</ion-label>
+      <ion-button (click)="eliminarProducto(producto.id_prod)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
 
-
-  <ion-card style="padding-top: 25px; padding-bottom: 25px;"> <ion-card-title style="text-align: center;">Tus Productos</ion-card-title></ion-card>
-
-  <ion-card>
-    
-    <ion-card-content>
-      <ion-list>
-        <ion-item>
-          
-          <ion-thumbnail slot="start">
-            <img alt="" src="assets/peperoni.webp" style="background-size: cover;" />
-          </ion-thumbnail>
-         
-          <ion-label>Pizza Pepperoni</ion-label> <h4 style="color: gray;">X1</h4>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-button (click)="presentAlert()" expand="full" color="primary">
-    Pagar
-  </ion-button>
-
-</div>
+  <ion-button expand="full" (click)="vaciarCarrito()">Vaciar Carrito</ion-button>
 </ion-content>

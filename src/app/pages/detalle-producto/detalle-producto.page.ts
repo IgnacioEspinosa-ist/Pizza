@@ -13,35 +13,20 @@ import { Producto } from 'src/app/services/producto';
 export class DetalleProductoPage implements OnInit {
   producto: Producto | null = null;
 
-  constructor(
-    private dbService: DatabaseService,
-    private storage: Storage,
-    private router: Router,
-    private alertController: AlertController
-  ) {}
+  constructor(private dbService: DatabaseService, private storage: Storage, private router: Router, private alertController: AlertController) { }
 
-  // Método para mostrar una alerta cuando se añade al carrito
   async presentAlert() {
     const alert = await this.alertController.create({
-      header: 'Producto Añadido al Carrito',
+      header: 'Se Ha Añadido Al Carro',
       buttons: ['Entendido'],
     });
 
     await alert.present();
-    await this.router.navigate(['/cart']); // Navegar al carrito después de añadir
+    await this.router.navigate(['/cart']);
   }
 
-  // Método para agregar el producto al carrito
-  agregarAlCarrito() {
-    if (this.producto) {
-      this.dbService.agregarProductoAlCarrito(this.producto); // Agregar el producto al carrito
-      this.presentAlert(); // Mostrar alerta y redirigir al carrito
-    }
-  }
-
-  // Obtener detalles del producto al inicializar la página
   async ngOnInit() {
-    await this.storage.create(); // Inicializar el Storage
+    await this.storage.create(); // Inicializar Storage
 
     // Recuperar el id del producto desde el Storage
     const productId = await this.storage.get('selectedProductId');
@@ -56,6 +41,14 @@ export class DetalleProductoPage implements OnInit {
           console.error('Error al cargar el producto:', error);
         }
       });
+    }
+  }
+
+  agregarAlCarrito() {
+    if (this.producto) {
+      this.dbService.agregarProductoAlCarrito(this.producto); // Agregar producto al carrito
+      this.storage.set('carrito', this.producto.id_prod); // Guardar la ID del producto en el Storage
+      this.presentAlert(); // Mostrar alerta
     }
   }
 }
