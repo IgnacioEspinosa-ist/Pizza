@@ -808,25 +808,29 @@ export class DatabaseService {
     }
   }
 
-  async insertProducto(producto: Producto): Promise<void> {
+  insertProducto(producto: Producto): void {
     const sql = `
       INSERT INTO producto (nombre, descripcion, precio, stock, foto, id_cat) 
       VALUES (?, ?, ?, ?, ?, ?)`;
-    try {
-      await this.database.executeSql(sql, [
-        producto.nombre,
-        producto.descripcion,
-        producto.precio,
-        producto.stock,
-        producto.foto,
-        producto.id_cat
-      ]);
-      this.refreshProductoList();
+    
+    this.database.executeSql(sql, [
+      producto.nombre,
+      producto.descripcion,
+      producto.precio,
+      producto.stock,
+      producto.foto,
+      producto.id_cat
+    ])
+    .then(() => {
+      this.refreshProductoList();  // Actualiza la lista de productos
       this.presentAlert('Éxito', 'Producto añadido correctamente.');
-    } catch (error) {
+    })
+    .catch((error) => {
       this.presentAlert('Error', 'No se pudo añadir el producto.');
-    }
+      console.error('Error al añadir producto:', error);
+    });
   }
+  
 
   async insertPedido(pedido: Pedido): Promise<void> {
     const sql = `
@@ -946,25 +950,29 @@ export class DatabaseService {
     }
   }
 
-  async updateProducto(producto: Producto): Promise<void> {
+  updateProducto(producto: Producto): void {
     const sql = `
       UPDATE producto SET nombre = ?, descripcion = ?, precio = ?, stock = ?, foto = ?, id_cat = ? WHERE id_prod = ?`;
-    try {
-      await this.database.executeSql(sql, [
-        producto.nombre,
-        producto.descripcion,
-        producto.precio,
-        producto.stock,
-        producto.foto,
-        producto.id_cat,
-        producto.id_prod
-      ]);
-      this.refreshProductoList();
+  
+    this.database.executeSql(sql, [
+      producto.nombre,
+      producto.descripcion,
+      producto.precio,
+      producto.stock,
+      producto.foto,
+      producto.id_cat,
+      producto.id_prod
+    ])
+    .then(() => {
+      this.refreshProductoList(); // Actualiza la lista de productos
       this.presentAlert('Éxito', 'Producto actualizado correctamente.');
-    } catch (error) {
+    })
+    .catch((error) => {
       this.presentAlert('Error', 'No se pudo actualizar el producto.');
-    }
+      console.error('Error al actualizar producto:', error);
+    });
   }
+  
 
   async updatePedido(pedido: Pedido): Promise<void> {
     const sql = `
@@ -1141,7 +1149,7 @@ export class DatabaseService {
     } catch (error) {
       console.error('Error al refrescar la lista de comunas', error);
     }
-  }
+  } 
 
   private async refreshDireccionList(): Promise<void> {
     const sql = "SELECT * FROM direccion";

@@ -15,7 +15,7 @@ export class AdminPage implements OnInit {
   stock: number = 0;
   productoActual: Producto | null = null; // Para gestionar la edición
 
-  constructor(private dbService: DatabaseService) { }
+  constructor(private dbService: DatabaseService) {}
 
   ngOnInit() {
     // Suscribirse al observable productos$
@@ -34,7 +34,7 @@ export class AdminPage implements OnInit {
     }
 
     const nuevoProducto: Producto = {
-      id_prod: 0,
+      id_prod: 0, // Asumiendo que el ID será generado por la base de datos
       nombre: this.nombre,
       descripcion: this.descripcion,
       precio: this.precio,
@@ -43,7 +43,8 @@ export class AdminPage implements OnInit {
 
     try {
       await this.dbService.insertProducto(nuevoProducto);
-      this.limpiarCampos();  // Limpiar los campos después de agregar
+      this.limpiarCampos(); // Limpiar los campos después de agregar
+      this.dbService.fetchProductos(); // Actualizar la lista de productos
     } catch (error) {
       console.error("Error al agregar el producto:", error);
     }
@@ -52,6 +53,7 @@ export class AdminPage implements OnInit {
   async eliminarProducto(id: number) {
     try {
       await this.dbService.deleteProducto(id);
+      this.dbService.fetchProductos(); // Actualizar la lista de productos después de eliminar
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
@@ -72,6 +74,7 @@ export class AdminPage implements OnInit {
     }
 
     if (this.productoActual) {
+      // Actualizar los valores del producto actual
       this.productoActual.nombre = this.nombre;
       this.productoActual.descripcion = this.descripcion;
       this.productoActual.precio = this.precio;
@@ -80,6 +83,7 @@ export class AdminPage implements OnInit {
       try {
         await this.dbService.updateProducto(this.productoActual);
         this.limpiarCampos();
+        this.dbService.fetchProductos(); // Actualizar la lista de productos
       } catch (error) {
         console.error("Error al modificar el producto:", error);
       }
