@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
 import { Producto } from 'src/app/services/producto';
+import { Route } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -15,7 +16,7 @@ export class AdminPage implements OnInit {
   stock: number = 0;
   productoActual: Producto | null = null; // Para gestionar la edición
 
-  constructor(private dbService: DatabaseService) {}
+  constructor(private dbService: DatabaseService, route: Route) {}
 
   ngOnInit() {
     // Suscribirse al observable productos$
