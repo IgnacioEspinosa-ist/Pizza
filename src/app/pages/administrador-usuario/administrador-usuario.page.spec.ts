@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MapaComponent } from './maparapi.page';
+import { UsuariosPage } from './administrador-usuario.page';
 
-describe('MaparapiPage', () => {
-  let component: MapaComponent;
-  let fixture: ComponentFixture<MapaComponent>;
+describe('AdministradorUsuarioPage', () => {
+  let component: UsuariosPage;
+  let fixture: ComponentFixture<UsuariosPage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapaComponent);
+    fixture = TestBed.createComponent(UsuariosPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
