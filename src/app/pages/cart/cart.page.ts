@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { DatabaseService } from 'src/app/services/database.service';
 import { Producto } from 'src/app/services/producto';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-cart',
@@ -13,10 +14,23 @@ export class CartPage implements OnInit {
 
   constructor(
     private alertController: AlertController,
-    private dbService: DatabaseService
+    private dbService: DatabaseService,
+    private storage: Storage // Inyectar Storage
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.storage.create(); // Inicializar Storage
+
+    // Obtener las IDs del carrito desde el Storage
+    const idsCarrito = await this.storage.get('carrito');
+    
+    if (idsCarrito) {
+      // Obtener productos desde la base de datos usando las IDs
+      this.dbService.getProductosPorIds(idsCarrito).subscribe((data: Producto[]) => {
+        this.carrito = data; // Asignar productos al carrito
+      });
+    }
+
     // Suscribirse al carrito desde el servicio
     this.dbService.carrito$.subscribe((data: Producto[]) => {
       this.carrito = data;
@@ -37,14 +51,17 @@ export class CartPage implements OnInit {
 
   agregarProducto(producto: Producto): void {
     this.dbService.agregarProductoAlCarrito(producto);
+    this.storage.set('carrito', this.carrito.map(p => p.id_prod)); // Guardar IDs en el Storage
   }
 
   eliminarProducto(id_prod: number): void {
     this.dbService.eliminarProductoDelCarrito(id_prod);
+    this.actualizarStorage(); // Actualizar el Storage después de eliminar un producto
   }
 
   vaciarCarrito(): void {
     this.dbService.vaciarCarrito();
+    this.storage.remove('carrito'); // Limpiar el Storage
   }
 
   obtenerCarrito(): Producto[] {
@@ -78,5 +95,11 @@ export class CartPage implements OnInit {
 
   obtenerTotalCarrito(): number {
     return this.carrito.reduce((total, item) => total + item.precio * item.stock, 0);
+  }
+
+  // Función para actualizar el Storage después de eliminar un producto
+  async actualizarStorage() {
+    const idsCarrito = this.carrito.map(p => p.id_prod);
+    await this.storage.set('carrito', idsCarrito); // Guardar IDs actualizadas en el Storage
   }
 }

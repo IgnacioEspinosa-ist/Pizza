@@ -22,6 +22,8 @@ export class LoginPage {
             this.navCtrl.navigateForward('/home'); // Navegar al dashboard del usuario regular
           } else if (usuarioValido.id_roll === 2) {
             this.navCtrl.navigateForward('/homerepa'); // Navegar al dashboard del repartidor
+          }else if (usuarioValido.id_roll === 3) {
+            this.navCtrl.navigateForward('/homeadmin'); // Navegar al dashboard del repartidor
           }
         } else {
           alert('Este Usuario No Existe, Revise Los Datos');
