@@ -423,8 +423,87 @@ export class DatabaseService {
     }
   
 
+    addPedido(total: number, id_user: number, id_direccion: number) {
+      return new Observable<number>((observer) => {
+        const f_pedido = new Date().toISOString(); // Fecha del pedido
+        const estatus = 'pendiente'; // Estado del pedido
+    
+        // Insertar el pedido en la tabla 'pedido'
+        this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, id_direccion, total, estatus) VALUES (?, ?, ?, ?, ?)', 
+          [f_pedido, id_user, id_direccion, total, estatus])
+          .then(result => {
+            const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
+            observer.next(id_pedido); // Emitir el ID del pedido
+            observer.complete();
+          })
+          .catch(error => {
+            console.error('Error al agregar pedido:', error);
+            observer.error(error);
+          });
+      });
+    }
+    
+    addDetallePedido(id_pedido: number, productos: Producto[]) {
+      return new Observable<void>((observer) => {
+        productos.forEach((producto) => {
+          const { id_prod, precio, stock } = producto;
+          const subtotal = precio * stock;
+    
+          // Insertar el detalle en la tabla 'detalle'
+          this.database.executeSql('INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)', 
+            [id_pedido, id_prod, stock, subtotal])
+            .then(() => {
+              observer.next();
+            })
+            .catch(error => {
+              console.error('Error al agregar detalle de pedido:', error);
+              observer.error(error);
+            });
+        });
+        observer.complete();
+      });
+    }
+    
+    private pedidosPendientesSubject = new BehaviorSubject<Pedido[]>([]);
+    public pedidosPendientes$ = this.pedidosPendientesSubject.asObservable();
 
-
+    obtenerPedidosPendientes() {
+      this.database.executeSql(`SELECT * FROM pedido WHERE estatus = 'pendiente'`, [])
+        .then(res => {
+          let pedidos: Pedido[] = [];
+          for (let i = 0; i < res.rows.length; i++) {
+            pedidos.push({
+              id_pedido: res.rows.item(i).id_pedido,
+              f_pedido: res.rows.item(i).f_pedido,
+              id_user: res.rows.item(i).id_user,
+              id_direccion: res.rows.item(i).id_direccion,
+              total: res.rows.item(i).total,
+              id_user_resp: res.rows.item(i).id_user_resp,
+              estatus: res.rows.item(i).estatus,
+              
+            });
+          }
+          this.pedidosPendientesSubject.next(pedidos); // Emitir los pedidos pendientes
+        })
+        .catch(error => {
+          console.error('Error al obtener los pedidos pendientes:', error);
+        });
+    }
+  
+    // Método para marcar un pedido como entregado
+    marcarPedidoComoEntregado(id_pedido: number): Observable<void> {
+      return new Observable<void>((observer) => {
+        this.database.executeSql(`UPDATE pedido SET estatus = 'entregado' WHERE id_pedido = ?`, [id_pedido])
+          .then(() => {
+            observer.next(); // Emitir el éxito
+            observer.complete();
+          })
+          .catch(error => {
+            console.error('Error al marcar el pedido como entregado:', error);
+            observer.error(error); // Emitir el error
+          });
+      });
+    }
 
 
 

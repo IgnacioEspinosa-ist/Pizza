@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Pedido } from 'src/app/services/pedido';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-detalle-pedido',
@@ -9,25 +11,13 @@ import { Router } from '@angular/router';
 })
 export class DetallePedidoPage implements OnInit {
 
-  constructor(private alertController: AlertController,private router: Router) { }
+  pedidosPendientes: Pedido[] = [];
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Pedido Tomado',
-      buttons: ['Entendido'],
-      
-    });
-
- 
-    
-
-    await alert.present();
-    await this.router.navigate(['/maparapi']);
-  }
+  constructor(private dbService: DatabaseService) {}
 
   ngOnInit() {
+    
+    };
   }
-}
-
- 
+   
 

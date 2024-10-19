@@ -1,6 +1,9 @@
 
 import { Component } from '@angular/core';
-import { MenuController, NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, MenuController, NavController } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
+import { Pedido } from 'src/app/services/pedido';
 
 @Component({
   selector: 'app-homerepa',
@@ -27,18 +30,38 @@ export class HomerepaPage {
 
   ];
 
-  constructor(private navCtrl: NavController,private menu: MenuController) {}
 
+  pedidosPendientes: Pedido[] = [];
 
- 
+  constructor(
+    private dbService: DatabaseService,
+    private alertController: AlertController,
+    private menu: MenuController,
+    private router: Router
+  ) {}
 
+  ngOnInit() {
+    // Obtener los pedidos pendientes al cargar la página
+    this.dbService.pedidosPendientes$.subscribe((data: Pedido[]) => {
+      this.pedidosPendientes = data;
+    });
+    this.dbService.obtenerPedidosPendientes(); // Llamar al método para obtener los pedidos
+  }
   openMenuSecundario() {
     this.menu.open('menuSecundario'); 
   }
-  verDetalleProducto(producto: any) {
-    this.navCtrl.navigateForward('/detalle-pedido', {
-      queryParams: { producto: JSON.stringify(producto) },
-    });
-  }
 
-}
+  irAMapaRepartidor(pedido: Pedido) {
+    // Navegar a la página del mapa, pasando el pedido seleccionado
+    this.router.navigate(['/maparepa'], {
+      queryParams: {
+        id_pedido: pedido.id_pedido,
+        id_user: pedido.id_user,
+      }})}};
+
+  
+
+
+
+  
+    
