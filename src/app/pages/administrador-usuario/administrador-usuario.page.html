@@ -1,64 +1,34 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Gestión de Usuarios</ion-title>
+    <ion-title>Crear Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let usuario of usuarios">
-      <ion-label>
-        <h2>{{ usuario.nombre }}</h2>
-        <p>Teléfono: {{ usuario.telefono }}</p>
-        <p>Email: {{ usuario.correo }}</p>
-        <p>Rol: {{ usuario.id_roll }}</p>
-      </ion-label>
-      <ion-button (click)="cargarDatosUsuario(usuario)">Editar</ion-button>
-      <ion-button color="danger" (click)="eliminarUsuario(usuario.id_user)">Eliminar</ion-button>
-    </ion-item>
-  </ion-list>
-
   <ion-item>
-    <ion-label position="stacked">Nombre</ion-label>
-    <ion-input [(ngModel)]="nombre"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="stacked">Teléfono</ion-label>
-    <ion-input [(ngModel)]="telefono"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="stacked">Email</ion-label>
-    <ion-input [(ngModel)]="email"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="stacked">Rol</ion-label>
-    <ion-select [(ngModel)]="id_roll">
-      <ion-select-option value="1">1</ion-select-option>
-      <ion-select-option value="2">2</ion-select-option>
-      <ion-select-option value="3">3</ion-select-option>
-    </ion-select>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="newUser.nombre" required></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label position="floating">Apellido</ion-label>
-    <ion-input [(ngModel)]="apellido"></ion-input>
+    <ion-input [(ngModel)]="newUser.apellido" required></ion-input>
   </ion-item>
-  
+
   <ion-item>
     <ion-label position="floating">RUT</ion-label>
-    <ion-input [(ngModel)]="rut"></ion-input>
+    <ion-input [(ngModel)]="newUser.rut" required></ion-input>
   </ion-item>
-  
+
+  <ion-item>
+    <ion-label position="floating">Correo</ion-label>
+    <ion-input [(ngModel)]="newUser.correo" required></ion-input>
+  </ion-item>
+
   <ion-item>
     <ion-label position="floating">Clave</ion-label>
-    <ion-input type="password" [(ngModel)]="clave"></ion-input>
+    <ion-input [(ngModel)]="newUser.clave" required type="password"></ion-input>
   </ion-item>
-  
-  
 
-  <ion-button expand="full" (click)="agregarUsuario()">Agregar Usuario</ion-button>
-  <ion-button expand="full" (click)="modificarUsuario()" *ngIf="usuarioActual">Modificar Usuario</ion-button>
+  <ion-button expand="full" (click)="addUsuario()">Guardar Usuario</ion-button>
 </ion-content>

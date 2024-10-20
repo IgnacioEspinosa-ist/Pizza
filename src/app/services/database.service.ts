@@ -182,9 +182,9 @@ export class DatabaseService {
     this.registroRepartidor1,
     this.registroRepartidor2,
     this.registroAdmin
-
     
   ];
+  
 
 
 
@@ -248,9 +248,7 @@ export class DatabaseService {
         await this.database.executeSql(insert, []);
         console.log("Producto insertado");}
 
-      // Realizar inserciones iniciales si corresponde
-      // await this.database.executeSql(this.registroNoticia, []); // Aquí puedes agregar los insert correspondientes
-
+     
     } catch (e) {
       this.presentAlert('CrearTabla()', 'Error: ' + JSON.stringify(e));
     }
@@ -714,6 +712,23 @@ export class DatabaseService {
     }
   }
 
+  //para el admin-usuario
+
+  addUsuario(user: Usuario): Observable<any> {
+    return new Observable(observer => {
+      const sql = `INSERT INTO usuario (nombre, apellido, rut, correo, clave) VALUES (?, ?, ?, ?, ?)`;
+      const params = [user.nombre, user.apellido, user.rut, user.correo, user.clave];
+
+      this.database.executeSql(sql, params)
+        .then((res) => {
+          observer.next(res);
+          observer.complete();
+        })
+        .catch((err) => {
+          observer.error(err);
+        });
+    });
+  }
 
 
 
