@@ -69,16 +69,16 @@ export class DatabaseService {
   //Los Usuarios
 
 
-  registroUsuario: string=`INSERT OR IGNORE INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  registroUsuario: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ñamñamñam','123456',1)`
 
-  registroRepartidor1: string=`INSERT OR IGNORE INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  registroRepartidor1: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Pedro','Espinoza','217845965-0','pedro@gmail.com','miaumiaumiau','123456',2)`
 
-  registroRepartidor2: string=`INSERT OR IGNORE INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  registroRepartidor2: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Javier','Soto','18789652-0','javier@gmail.com','enwarhammer','123456',2)`
 
-  registroAdmin: string=`INSERT INTO OR IGNORE usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  registroAdmin: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3)`
 
   //
