@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
 import { Usuario } from 'src/app/services/usuario'; // Asegúrate de que este modelo esté definido correctamente
-import { ToastController } from '@ionic/angular/providers/toast-controller';
+
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-usuarios',
@@ -21,7 +22,7 @@ export class UsuariosPage implements OnInit {
   
   newUser: Usuario = new Usuario();
 
-  constructor(private dbService: DatabaseService,private toastCtrl: ToastController) { }
+  constructor(private dbService: DatabaseService,private alertController: AlertController) { }
 
   ngOnInit() {
     this.cargarUsuarios();
@@ -37,26 +38,24 @@ export class UsuariosPage implements OnInit {
     });
   }
 
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: 'Usuario Creado',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
   addUsuario() {
     this.dbService.addUsuario(this.newUser).subscribe({
-      next: async (res) => {
-        const toast = await this.toastCtrl.create({
-          message: 'Usuario creado exitosamente',
-          duration: 2000,
-          position: 'top',
-        });
-        toast.present();
+      next: (res) => {
+        // Muestra un alert cuando el usuario es creado exitosamente
+        this.presentAlert('Éxito', 'Usuario creado exitosamente');
       },
-      error: async (err) => {
-        const toast = await this.toastCtrl.create({
-          message: 'Error al crear usuario: ' + err.message,
-          duration: 2000,
-          position: 'top',
-        });
-        toast.present();
+      error: (err) => {
+        // Muestra un alert cuando ocurre un error
+        this.presentAlert('Error', 'Error al crear usuario: ' + err.message);
       }
-    });
-  }
+    });}
 
   cargarDatosUsuario(usuario: Usuario) {
     this.usuarioActual = usuario;
