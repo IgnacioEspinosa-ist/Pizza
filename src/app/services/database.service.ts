@@ -377,49 +377,9 @@ export class DatabaseService {
         });
     });}
 
-    private carritoSubject = new BehaviorSubject<Producto[]>([]);
-    carrito$ = this.carritoSubject.asObservable();
+    
 
-    agregarProductoAlCarrito(producto: Producto): void {
-      this.database.executeSql('INSERT INTO carrito (id_prod, nombre, descripcion, precio, stock, foto) VALUES (?, ?, ?, ?, ?, ?)', 
-      [producto.id_prod, producto.nombre, producto.precio, producto.stock, producto.foto])
-        .then(() => {
-          this.obtenerCarrito();
-        })
-        .catch(e => console.log('Error al agregar producto al carrito', e));
-    }
-  
-    obtenerCarrito(): void {
-      this.database.executeSql('SELECT * FROM carrito', []).then(res => {
-        const carrito: Producto[] = [];
-        for (let i = 0; i < res.rows.length; i++) {
-          carrito.push({
-            id_prod: res.rows.item(i).id_prod,
-            nombre: res.rows.item(i).nombre,
-            
-            precio: res.rows.item(i).precio,
-            stock: res.rows.item(i).stock,
-            foto: res.rows.item(i).foto,
-          });
-        }
-        this.carritoSubject.next(carrito);
-      }).catch(e => console.log('Error al obtener carrito', e));
-    }
-  
-    eliminarProductoDelCarrito(id_prod: number): void {
-      this.database.executeSql('DELETE FROM carrito WHERE id_prod = ?', [id_prod])
-        .then(() => {
-          this.obtenerCarrito();
-        })
-        .catch(e => console.log('Error al eliminar producto del carrito', e));
-    }
-  
-    vaciarCarrito(): void {
-      this.database.executeSql('DELETE FROM carrito', []).then(() => {
-        this.obtenerCarrito();
-      }).catch(e => console.log('Error al vaciar el carrito', e));
-    }
-  
+    
 
     addPedido(total: number, id_user: number, id_direccion: number) {
       return new Observable<number>((observer) => {

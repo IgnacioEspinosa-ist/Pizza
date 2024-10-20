@@ -44,11 +44,11 @@ export class DetalleProductoPage implements OnInit {
     }
   }
 
-  agregarAlCarrito() {
+  /*agregarAlCarrito() {
     if (this.producto) {
       this.dbService.agregarProductoAlCarrito(this.producto); // Agregar producto al carrito
       this.storage.set('carrito', this.producto.id_prod); // Guardar la ID del producto en el Storage
-      this.presentAlert(); // Mostrar alerta
+      this.presentAlert();// Mostrar alerta
     }
-  }
+  }*/
 }
