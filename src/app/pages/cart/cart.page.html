@@ -1,21 +1,45 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Carrito</ion-title>
+    <ion-title>Carrito de Compras</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list *ngIf="carrito.length > 0; else emptyCart">
     <ion-item *ngFor="let producto of carrito">
-      <ion-label>{{ producto.nombre }}</ion-label>
-      <ion-label slot="end">{{ producto.precio | currency }}</ion-label>
-      <ion-button (click)="eliminarProducto(producto.id_prod)">Eliminar</ion-button>
+      <ion-label>
+        <h2>{{ producto.nombre }}</h2>
+        <p>Precio: {{ producto.precio | currency }}</p>
+        <p>Cantidad: {{ producto.stock }}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="eliminarProducto(producto.id_prod)">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-item>
   </ion-list>
 
-  <ion-button expand="full" (click)="vaciarCarrito()">Vaciar Carrito</ion-button>
+  <ng-template #emptyCart>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>El carrito está vacío</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Agrega productos para verlos aquí.
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
 
-  <ion-button (click)="finalizarCompra()" expand="full" color="success">
-    Finalizar Compra
-  </ion-button>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="vaciarCarrito()">Vaciar Carrito</ion-button>
+      </ion-buttons>
+      <ion-title>Total: {{ obtenerTotalCarrito() | currency }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="finalizarCompra()" [disabled]="carrito.length === 0">Finalizar Compra</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>
