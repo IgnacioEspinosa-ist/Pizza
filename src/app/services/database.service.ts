@@ -169,21 +169,21 @@ export class DatabaseService {
 
 
   //ACA SE TIENEN QUE PONER TODOS LOS INSERT INICIALES
-  async onCreate(db: { executeSql: (arg0: string, arg1: never[]) => any; }) {
-    await db.executeSql(this.registroPizzaPepperoni, []);
-    await db.executeSql(this.registroPizzaQueso, []);
-    await db.executeSql(this.registroPizzaHawaiana, []);
-    await db.executeSql(this.registroPizzaVegetariana, []);
-    await db.executeSql(this.registroPizzaJamonQueso, []);
-    await db.executeSql(this.registroChampizza, []);
-    await db.executeSql(this.registroPiboqueso, []);
-    await db.executeSql(this.registroMasa, []);
-  
-    await db.executeSql(this.registroUsuario, []);
-    await db.executeSql(this.registroRepartidor1, []);
-    await db.executeSql(this.registroRepartidor2, []);
-    await db.executeSql(this.registroAdmin, []);
-  }
+  inserciones: string[] = [
+    this.registroPizzaPepperoni,
+    this.registroPizzaQueso,
+    this.registroPizzaHawaiana,
+    this.registroPizzaVegetariana,
+    this.registroPizzaJamonQueso,
+    this.registroChampizza,
+    this.registroPiboqueso,
+    this.registroMasa,
+    this.registroUsuario,
+    this.registroRepartidor1,
+    this.registroRepartidor2,
+    this.registroAdmin
+    
+  ];
   
 
 
@@ -243,6 +243,10 @@ export class DatabaseService {
 
       await this.database.executeSql(this.tablaAuto, []);
       console.log("Tabla auto creada");
+
+      for (const insert of this.inserciones) {
+        await this.database.executeSql(insert, []);
+        console.log("Producto insertado");}
 
      
     } catch (e) {
