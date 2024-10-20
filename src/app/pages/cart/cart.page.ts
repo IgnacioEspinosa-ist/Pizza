@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { CarritoService } from 'src/app/services/carrito.service'; 
-import { DatabaseService } from 'src/app/services/database.service'; 
+import { CarritoService } from 'src/app/services/carrito.service';
+import { DatabaseService } from 'src/app/services/database.service';
 import { Producto } from 'src/app/services/producto';
 import { Storage } from '@ionic/storage-angular';
+import { Router } from '@angular/router'; // Asegúrate de importar Router
 
 @Component({
   selector: 'app-cart',
@@ -12,24 +13,29 @@ import { Storage } from '@ionic/storage-angular';
 })
 export class CartPage implements OnInit {
   carrito: Producto[] = [];
-  id_user: number | null = null; 
-  id_direccion: number | null = null; 
+  productos: Producto[] = []; // Agregar un array para los productos disponibles
+  id_user: number | null = null;
+  id_direccion: number | null = null;
 
   constructor(
     private alertController: AlertController,
-    private carritoService: CarritoService, 
-    private dbService: DatabaseService, 
-    private storage: Storage
+    private carritoService: CarritoService,
+    private dbService: DatabaseService,
+    private storage: Storage,
+    private router: Router // Inyectar el Router
   ) { }
 
   async ngOnInit() {
     await this.storage.create();
-    this.carrito = this.carritoService.obtenerProductos();
-    const idsCarrito = await this.storage.get('carrito');
+    this.carrito = this.carritoService.obtenerProductos(); // Obtener productos del carrito
 
-    if (idsCarrito) {
-      
-    }
+    // Suscribirse al observable de productos
+    this.dbService.productos$.subscribe((data: Producto[]) => {
+      this.productos = data; // Asignar los productos obtenidos a la variable
+    });
+
+    // Llamar al método para obtener los productos
+    this.dbService.fetchProductos();
   }
 
   async presentAlert() {
@@ -78,7 +84,7 @@ export class CartPage implements OnInit {
         this.dbService.addDetallePedido(id_pedido, this.carrito).subscribe({
           next: () => {
             this.presentAlert();
-            this.vaciarCarrito(); 
+            this.vaciarCarrito();
           },
           error: (error) => {
             console.error('Error al agregar detalles del pedido:', error);
@@ -89,5 +95,12 @@ export class CartPage implements OnInit {
         console.error('Error al agregar el pedido:', error);
       }
     });
+  }
+
+  async verDetalleProducto(producto: Producto) {
+    // Almacenar el id del producto en Storage
+    await this.storage.set('selectedProductId', producto.id_prod);
+    // Navegar a la página de detalle del producto
+    this.router.navigate(['/detalle-producto']);
   }
 }
