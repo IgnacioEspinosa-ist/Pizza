@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
 import { Usuario } from 'src/app/services/usuario'; // Asegúrate de que este modelo esté definido correctamente
+import { ToastController } from '@ionic/angular/providers/toast-controller';
 
 @Component({
   selector: 'app-usuarios',
@@ -15,10 +16,12 @@ export class UsuariosPage implements OnInit {
   id_roll: any = ''; // Puede ser 'repartidor', 'administrador', etc.
   usuarioActual: Usuario | null = null; // Para gestionar la edición
   apellido: string= '';
-  rut: string= '';;
-  clave: string= '';;
+  rut: string= '';
+  clave: string= '';
+  
+  newUser: Usuario = new Usuario();
 
-  constructor(private dbService: DatabaseService) { }
+  constructor(private dbService: DatabaseService,private toastCtrl: ToastController) { }
 
   ngOnInit() {
     this.cargarUsuarios();
@@ -34,30 +37,25 @@ export class UsuariosPage implements OnInit {
     });
   }
 
-  async agregarUsuario() {
-    if (!this.nombre || !this.telefono || !this.email || !this.id_roll || !this.apellido || !this.rut || !this.clave) {
-      console.warn('Todos los campos son obligatorios');
-      return;
-    }
-  
-    const nuevoUsuario: Usuario = {
-      id_user: 0, // Se debe manejar automáticamente en la base de datos
-      nombre: this.nombre,
-      apellido: this.apellido, // Incluye el apellido
-      rut: this.rut, // Incluye el RUT
-      correo: this.email,
-      clave: this.clave, // Incluye la clave
-      telefono: this.telefono,
-      id_roll: this.id_roll
-    };
-  
-    try {
-      await this.dbService.insertUsuario(nuevoUsuario);
-      await this.cargarUsuarios();
-      this.limpiarCampos();
-    } catch (error) {
-      console.error("Error al agregar el usuario:", error);
-    }
+  addUsuario() {
+    this.dbService.addUsuario(this.newUser).subscribe({
+      next: async (res) => {
+        const toast = await this.toastCtrl.create({
+          message: 'Usuario creado exitosamente',
+          duration: 2000,
+          position: 'top',
+        });
+        toast.present();
+      },
+      error: async (err) => {
+        const toast = await this.toastCtrl.create({
+          message: 'Error al crear usuario: ' + err.message,
+          duration: 2000,
+          position: 'top',
+        });
+        toast.present();
+      }
+    });
   }
 
   cargarDatosUsuario(usuario: Usuario) {
