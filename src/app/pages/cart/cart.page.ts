@@ -13,7 +13,7 @@ export class CartPage implements OnInit {
   carrito: Producto[] = [];
   id_user: number | null = null; // Agregar propiedad para el ID del usuario
   id_direccion: number | null = null; // Agregar propiedad para el ID de la dirección
-
+  producto: Producto | null = null;
   constructor(
     private alertController: AlertController,
     private dbService: DatabaseService,
@@ -27,24 +27,17 @@ export class CartPage implements OnInit {
     const idsCarrito = await this.storage.get('carrito');
     
     if (idsCarrito) {
-      this.dbService.getProductosPorIds(idsCarrito).subscribe((data: Producto[]) => {
-        this.carrito = data;
+      // Obtener los detalles del producto desde la base de datos
+      this.dbService.getProductoById(idsCarrito).subscribe({
+        next: (producto: Producto) => {
+          this.producto = producto; // Asignar el producto a la variable local
+        },
+        error: (error: any) => {
+          console.error('Error al cargar el producto:', error);
+        }
       });
     }
-  
-    // Obtener el ID del usuario
-    this.dbService.getUserId().subscribe(userId => {
-      this.id_user = userId; // Asigna el ID del usuario
-      if (this.id_user) {
-        // Obtener direcciones del usuario
-        this.dbService.getDireccionByUserId(this.id_user).subscribe(direcciones => {
-          // Asignar la primera dirección como id_direccion
-          if (direcciones.length > 0) {
-            this.id_direccion = direcciones[0].id_direccion;
-          }
-        });
-      }
-    });}
+  }
 
   async presentAlert() {
     const alert = await this.alertController.create({
