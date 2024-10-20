@@ -40,7 +40,8 @@ export class UsuariosPage implements OnInit {
 
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
-      header: 'Usuario Creado',
+      header: header,
+      message: message,
       buttons: ['OK']
     });
     await alert.present();
