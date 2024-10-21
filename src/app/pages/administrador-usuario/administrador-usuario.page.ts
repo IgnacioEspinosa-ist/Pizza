@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
-import { Usuario } from 'src/app/services/usuario'; // Asegúrate de que este modelo esté definido correctamente
-
+import { Usuario } from 'src/app/services/usuario'; 
+import { Camera, CameraResultType } from '@capacitor/camera';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -10,23 +10,27 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./administrador-usuario.page.scss'],
 })
 export class UsuariosPage implements OnInit {
-  usuarios: Usuario[] = []; // Declarar la propiedad 'usuarios'
+  usuarios: Usuario[] = []; 
   nombre: string = '';
-  telefono: any = '';
+  telefono!: string  // Cambiar tipo a string
   email: string = '';
-  id_roll: any = ''; // Puede ser 'repartidor', 'administrador', etc.
-  usuarioActual: Usuario | null = null; // Para gestionar la edición
+  id_roll: number = 0 ; // Cambiar a tipo number o null
+  usuarioActual: Usuario | null = null; 
   apellido: string = '';
   rut: string = '';
   clave: string = '';
-
+  
   newUser: Usuario = new Usuario();
+  imagen: string = ''; // Variable para almacenar la foto
 
-  constructor(private dbService: DatabaseService, private alertController: AlertController) { }
+  constructor(private dbService: DatabaseService, private alertController: AlertController) {
+    
+   }
 
   ngOnInit() {
     this.cargarUsuarios();
   }
+
   async cargarUsuarios() {
     this.dbService.fetchUsuarios().subscribe({
       next: (usuarios: Usuario[]) => {
@@ -37,7 +41,7 @@ export class UsuariosPage implements OnInit {
       }
     });
   }
-  //aqui para ver
+
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,
@@ -46,24 +50,29 @@ export class UsuariosPage implements OnInit {
     });
     await alert.present();
   }
+
   async addUsuario() {
+    // Asegúrate de asignar las propiedades nuevas al nuevo usuario
+    this.newUser.telefono = this.telefono;
+    this.newUser.id_roll = this.id_roll;
+    this.newUser.foto = this.imagen; // Asignar la foto
+
     try {
       await this.dbService.insertUsuario(this.newUser); // Llama a la función insertUsuario
-      // Muestra un alert cuando el usuario es creado exitosamente
       this.presentAlert('Éxito', 'Usuario creado exitosamente');
+      this.limpiarCampos(); // Limpiar campos después de crear el usuario
     } catch (err) {
-      // Muestra un alert cuando ocurre un error
       this.presentAlert('Error', 'Error al crear usuario: ' + err);
     }
   }
 
-
   cargarDatosUsuario(usuario: Usuario) {
     this.usuarioActual = usuario;
     this.nombre = usuario.nombre;
-    this.telefono = usuario.telefono;
+    this.telefono = usuario.telefono|| ' ';
     this.email = usuario.correo;
-    this.id_roll = usuario.id_roll; // Carga el rol del usuario actual
+    this.id_roll = usuario.id_roll|| 0; // Carga el rol del usuario actual
+    this.imagen = usuario.foto || ''; // Cargar la foto del usuario actual si existe
   }
 
   async modificarUsuario() {
@@ -80,6 +89,7 @@ export class UsuariosPage implements OnInit {
       this.usuarioActual.clave = this.clave; // Modificar la clave
       this.usuarioActual.telefono = this.telefono;
       this.usuarioActual.id_roll = this.id_roll;
+      this.usuarioActual.foto = this.imagen; // Actualizar la foto si se ha cambiado
 
       try {
         await this.dbService.updateUsuario(this.usuarioActual);
@@ -100,13 +110,24 @@ export class UsuariosPage implements OnInit {
     }
   }
 
+  async takePicture() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+    });
+
+    this.imagen = image.webPath ?? 'assets/perfil1.jpg'; // Guardar la foto en una variable
+
+    // Si deseas actualizar la vista inmediatamente, puedes usar un método para hacerlo
+  }
 
   limpiarCampos() {
     this.nombre = '';
     this.telefono = '';
     this.email = '';
-    this.id_roll = ''; // Limpia el rol también
+    this.id_roll = 0; // Cambiar a null
     this.usuarioActual = null;
+    this.imagen = ''; // Limpiar imagen
   }
 }
-
