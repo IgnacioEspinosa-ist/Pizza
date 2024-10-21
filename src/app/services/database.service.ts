@@ -193,7 +193,10 @@ export class DatabaseService {
     this.registroComuna1,
     this.registroComuna2,
     this.registroPedido1,
-    this.registroPedido2
+    this.registroPedido2,
+    this.registerRol1,
+    this.registerRol2,
+    this.registerRol3
 
   ];
 
