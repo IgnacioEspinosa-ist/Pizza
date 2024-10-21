@@ -54,43 +54,43 @@ export class CartPage implements OnInit {
   //aquiiiiiiiii
   //buscarProductoPorId
 
-  async eliminarProductoDelCarritoPorIndice(indice: number): Promise<void> {
+  async eliminarProductoDelCarrito(indice: number): Promise<void> {
     try {
-        const producto = await this.dbService.buscarProductoPorIndice(indice);
-        
-        if (producto) {
-            // Lógica para eliminar el producto del carrito y manejar el almacenamiento
-            const storedCarrito: Producto[] = await this.storage.get('carrito') || [];
-            const posicion = storedCarrito.findIndex(p => p.id_prod === producto.id_prod);
+      const producto = await this.dbService.buscarProductoPorIndice(indice);
 
-            if (posicion !== -1) {
-                storedCarrito.splice(posicion, 1);
-                await this.storage.set('carrito', storedCarrito);
+      if (producto) {
+        // Lógica para eliminar el producto del carrito y manejar el almacenamiento
+        const storedCarrito: Producto[] = await this.storage.get('carrito') || [];
+        const posicion = storedCarrito.findIndex(p => p.id_prod === producto.id_prod);
 
-                const alert = await this.alertController.create({
-                    header: 'Producto Eliminado',
-                    message: `El producto "${producto.nombre}" ha sido eliminado del carrito.`,
-                    buttons: ['Entendido']
-                });
-                await alert.present();
-            }
-        } else {
-            const alert = await this.alertController.create({
-                header: 'Producto No Encontrado',
-                message: 'No se encontró el producto en la base de datos.',
-                buttons: ['Entendido']
-            });
-            await alert.present();
-        }
-    } catch (error) {
-        const alert = await this.alertController.create({
-            header: 'Error',
-            message: `Ocurrió un error: ${error}`,
+        if (posicion !== -1) {
+          storedCarrito.splice(posicion, 1);
+          await this.storage.set('carrito', storedCarrito);
+
+          const alert = await this.alertController.create({
+            header: 'Producto Eliminado',
+            message: `El producto "${producto.nombre}" ha sido eliminado del carrito.`,
             buttons: ['Entendido']
+          });
+          await alert.present();
+        }
+      } else {
+        const alert = await this.alertController.create({
+          header: 'Producto No Encontrado',
+          message: 'No se encontró el producto en la base de datos.',
+          buttons: ['Entendido']
         });
         await alert.present();
+      }
+    } catch (error) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: `Ocurrió un error: ${error}`,
+        buttons: ['Entendido']
+      });
+      await alert.present();
     }
-}
+  }
 
 
   async presentAlert() {
