@@ -712,6 +712,28 @@ export class DatabaseService {
     }
   }
 
+  updatePerfil(id_user: number, nombre: string, telefono: string): Observable<any> {
+    const query = `UPDATE usuario SET nombre = ?, telefono = ? WHERE id_user = ?`;
+    const params = [nombre, telefono, id_user];
+
+    return from(this.database.executeSql(query, params));
+  }
+
+  updatePerfilU(
+    id_user: number,
+    nombre: string,
+    apellido: string,
+    telefono: string,
+    rut: string
+  ): Observable<any> {
+    const query = `UPDATE usuario SET nombre = ?, apellido = ?, telefono = ?, rut = ? WHERE id_user = ?`;
+    const params = [nombre, apellido, telefono, rut, id_user];
+
+    return from(this.database.executeSql(query, params));
+  }
+
+  
+
   //para el admin-usuario
 
   addUsuario(user: Usuario): Observable<any> {
@@ -730,6 +752,22 @@ export class DatabaseService {
     });
   }
 
+  getUsuarioById(id_user: number): Observable<Usuario> {
+    return new Observable((observer) => {
+      this.database.executeSql(`SELECT * FROM usuario WHERE id_user = ?`, [id_user])
+        .then((res) => {
+          if (res.rows.length > 0) {
+            const usuario: Usuario = res.rows.item(0);
+            observer.next(usuario);
+          } else {
+            observer.error('Usuario no encontrado');
+          }
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
 
 
 

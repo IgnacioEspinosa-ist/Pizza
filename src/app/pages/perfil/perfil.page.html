@@ -9,32 +9,30 @@
   </div>
 </ion-header>
 
-<ion-content class="">
+<ion-content>
   <div class="perfil">
     <div class="perfil-imagen">
       <!-- Cambia la imagen de perfil al tomar una foto -->
       <img [src]="imagen || 'assets/perfil1.jpg'" class="perfil" alt="Foto de Perfil" (click)="takePicture()">
     </div>
 
-    <ion-list>
+    <ion-list *ngIf="usuario">
       <ion-item>
         <ion-label>Nombre:</ion-label>
-        <ion-text>GatoComelon69</ion-text>
+        <ion-input [(ngModel)]="usuario.nombre" *ngIf="editableCampos.nombre" (ionBlur)="guardarCambios('nombre')"></ion-input>
+        <ion-text *ngIf="!editableCampos.nombre" (click)="activarEdicion('nombre')">{{ usuario.nombre }}</ion-text>
       </ion-item>
 
       <ion-item>
-        <ion-label>Teléfono: </ion-label>
-        <ion-text>9 2548 7595 1</ion-text>
+        <ion-label>Teléfono:</ion-label>
+        <ion-input [(ngModel)]="usuario.telefono" *ngIf="editableCampos.telefono" (ionBlur)="guardarCambios('telefono')"></ion-input>
+        <ion-text *ngIf="!editableCampos.telefono" (click)="activarEdicion('telefono')">{{ usuario.telefono }}</ion-text>
       </ion-item>
 
       <ion-item>
-        <ion-label>Direccion:</ion-label>
-        <ion-text>Micasa #8547</ion-text>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Rut</ion-label>
-        <ion-text>21365478-k</ion-text>
+        <ion-label>Rut:</ion-label>
+        <ion-input [(ngModel)]="usuario.rut" *ngIf="editableCampos.rut" (ionBlur)="guardarCambios('rut')"></ion-input>
+        <ion-text *ngIf="!editableCampos.rut" (click)="activarEdicion('rut')">{{ usuario.rut }}</ion-text>
       </ion-item>
     </ion-list>
   </div>
