@@ -82,8 +82,15 @@ export class DatabaseService {
   VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3)`
 
   //
+  registroComuna1: string ="INSERT INTO comuna (nombre_comuna) values ('Conchali')"
+  registroComuna2: string ="INSERT INTO comuna (nombre_comuna) values ('Quilicura')"
 
+  //
+  registroPedido1: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (sysdate,'1','1',12000,10,'pendiente')" 
+  
+  registroPedido2: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (sysdate,'2','2',8000,10,'pendiente')" 
 
+  
 
   //variable de tipo observable para ver el estado de la base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -181,7 +188,11 @@ export class DatabaseService {
     this.registroUsuario,
     this.registroRepartidor1,
     this.registroRepartidor2,
-    this.registroAdmin
+    this.registroAdmin,
+    this.registroComuna1,
+    this.registroComuna2,
+    this.registroPedido1,
+    this.registroPedido2
 
   ];
 
