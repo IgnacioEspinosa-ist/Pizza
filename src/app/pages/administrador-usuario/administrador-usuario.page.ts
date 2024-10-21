@@ -80,17 +80,24 @@ export class UsuariosPage implements OnInit {
       console.warn('Todos los campos son obligatorios');
       return;
     }
-
+  
     if (this.usuarioActual) {
+      console.log(this.usuarioActual); // Verificar usuario actual
+  
+      if (!this.usuarioActual.id_user) {
+        console.warn('ID de usuario no válido');
+        return;
+      }
+  
       this.usuarioActual.nombre = this.nombre;
-      this.usuarioActual.apellido = this.apellido; // Modificar el apellido
-      this.usuarioActual.rut = this.rut; // Modificar el RUT
+      this.usuarioActual.apellido = this.apellido;
+      this.usuarioActual.rut = this.rut;
       this.usuarioActual.correo = this.email;
-      this.usuarioActual.clave = this.clave; // Modificar la clave
+      this.usuarioActual.clave = this.clave;
       this.usuarioActual.telefono = this.telefono;
       this.usuarioActual.id_roll = this.id_roll;
-      this.usuarioActual.foto = this.imagen; // Actualizar la foto si se ha cambiado
-
+      this.usuarioActual.foto = this.imagen;
+  
       try {
         await this.dbService.updateUsuario(this.usuarioActual);
         await this.cargarUsuarios();
@@ -100,6 +107,7 @@ export class UsuariosPage implements OnInit {
       }
     }
   }
+  
 
   async eliminarUsuario(id: number) {
     try {

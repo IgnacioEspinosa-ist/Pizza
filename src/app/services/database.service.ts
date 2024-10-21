@@ -728,8 +728,21 @@ export class DatabaseService {
     const sql = `
       UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
       WHERE id_user = ?`;
+    
+    console.log(sql, [
+      usuario.nombre,
+      usuario.apellido,
+      usuario.rut,
+      usuario.correo,
+      usuario.clave,
+      usuario.telefono,
+      usuario.id_roll,
+      usuario.foto,
+      usuario.id_user
+    ]); // Log para depuración
+  
     try {
-      await this.database.executeSql(sql, [
+      const result = await this.database.executeSql(sql, [
         usuario.nombre,
         usuario.apellido,
         usuario.rut,
@@ -740,10 +753,16 @@ export class DatabaseService {
         usuario.foto,
         usuario.id_user
       ]);
-      this.refreshUsuarioList();
-      this.presentAlert('Éxito', 'Usuario actualizado correctamente.');
+      
+      if (result.rowsAffected > 0) {
+        this.refreshUsuarioList();
+        this.presentAlert('Éxito', 'Usuario actualizado correctamente.');
+      } else {
+        this.presentAlert('Error', 'No se pudo actualizar el usuario: el ID puede no existir.');
+      }
     } catch (error) {
-      this.presentAlert('Error', 'No se pudo actualizar el usuario.');
+      console.error("Error en la actualización de usuario:", error);
+      
     }
   }
 
