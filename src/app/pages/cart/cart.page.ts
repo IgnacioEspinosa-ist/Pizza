@@ -70,7 +70,7 @@ export class CartPage implements OnInit {
 
         if (producto) {
           // Si el producto existe, eliminarlo del carrito
-          storedCarrito.splice(posicion, 0);
+          storedCarrito.splice(posicion, 1);
           await this.storage.set('carrito', storedCarrito);
 
           console.log('Producto eliminado:', producto.nombre); // Verificar que se eliminó correctamente
