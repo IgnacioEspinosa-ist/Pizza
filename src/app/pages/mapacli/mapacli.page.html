@@ -2,16 +2,27 @@
   <ion-toolbar>
     <ion-title>Mapa</ion-title>
   </ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="/"></ion-back-button>
+  </ion-buttons>
 </ion-header>
 
 <ion-content>
   
     <ion-content class="Mapa">
+      
+      
       <div id="map" style="height: 75%;"></div>
+
+      
+      <ion-button color="success" expand="block" (click)="presentAlert()">
+        Ir al menu
+      
+      
+      </ion-button>
     </ion-content>
-    <ion-button (click)="presentAlert()" expand="full" class="botonconfirmar" >
-      Confirmar Pedido
-    </ion-button>
+    
   
 
+    
 </ion-content>
