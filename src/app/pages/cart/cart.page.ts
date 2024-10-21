@@ -54,65 +54,43 @@ export class CartPage implements OnInit {
   //aquiiiiiiiii
   //buscarProductoPorId
 
-  async eliminarProductoDelCarrito(posicion: number): Promise<void> {
+  async eliminarProductoDelCarritoPorIndice(indice: number): Promise<void> {
     try {
-      const storedCarrito: Producto[] = await this.storage.get('carrito') || [];
-
-      console.log('Carrito almacenado:', storedCarrito); // Verificar el estado del carrito
-      console.log('Posición recibida:', posicion); // Verificar la posición recibida
-
-      if (posicion >= 0 && posicion < storedCarrito.length) {
-        // Verificar el id_prod del producto antes de eliminar
-        const id_prod = storedCarrito[posicion].id_prod;
-
-        // Buscar el producto en la base de datos para verificar que existe
-        const producto = await this.dbService.buscarProductoPorId(id_prod);
-
+        const producto = await this.dbService.buscarProductoPorIndice(indice);
+        
         if (producto) {
-          // Si el producto existe, eliminarlo del carrito
-          storedCarrito.splice(posicion, 1);
-          await this.storage.set('carrito', storedCarrito);
+            // Lógica para eliminar el producto del carrito y manejar el almacenamiento
+            const storedCarrito: Producto[] = await this.storage.get('carrito') || [];
+            const posicion = storedCarrito.findIndex(p => p.id_prod === producto.id_prod);
 
-          console.log('Producto eliminado:', producto.nombre); // Verificar que se eliminó correctamente
+            if (posicion !== -1) {
+                storedCarrito.splice(posicion, 1);
+                await this.storage.set('carrito', storedCarrito);
 
-          const alert = await this.alertController.create({
-            header: 'Producto Eliminado',
-            message: `El producto "${producto.nombre}" ha sido eliminado del carrito.`,
-            buttons: ['Entendido']
-          });
-          await alert.present();
-
-          // Actualizar la lista de productos en el carrito
-          this.productos = await this.dbService.getProductosById(storedCarrito.map(p => p.id_prod));
+                const alert = await this.alertController.create({
+                    header: 'Producto Eliminado',
+                    message: `El producto "${producto.nombre}" ha sido eliminado del carrito.`,
+                    buttons: ['Entendido']
+                });
+                await alert.present();
+            }
         } else {
-          // Si el producto no está en la base de datos
-          const alert = await this.alertController.create({
-            header: 'Producto No Encontrado',
-            message: `No se encontró el producto con ID: ${id_prod} en la base de datos.`,
-            buttons: ['Entendido']
-          });
-          await alert.present();
+            const alert = await this.alertController.create({
+                header: 'Producto No Encontrado',
+                message: 'No se encontró el producto en la base de datos.',
+                buttons: ['Entendido']
+            });
+            await alert.present();
         }
-      } else {
-        // Manejo de posición inválida
+    } catch (error) {
         const alert = await this.alertController.create({
-          header: 'Posición No Válida',
-          message: `No se encontró un producto en la posición ${posicion + 1}.`,
-          buttons: ['Entendido']
+            header: 'Error',
+            message: `Ocurrió un error: ${error}`,
+            buttons: ['Entendido']
         });
         await alert.present();
-      }
-    } catch (error) {
-      // Manejo de errores generales
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: `Ocurrió un error al intentar eliminar el producto: ${error}`,
-        buttons: ['Entendido']
-      });
-      await alert.present();
     }
-  }
-
+}
 
 
   async presentAlert() {

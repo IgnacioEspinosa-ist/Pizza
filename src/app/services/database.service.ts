@@ -420,31 +420,32 @@ export class DatabaseService {
 
   //aqui
 
-  buscarProductoPorId(id_prod: number): Promise<Producto | null> {
+  buscarProductoPorIndice(indice: number): Promise<Producto | null> {
     return new Promise((resolve, reject) => {
-      
-      this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [id_prod])
-        .then(res => {
-          if (res.rows.length > 0) {
-            
-            const producto: Producto = {
-              id_prod: res.rows.item(0).id_prod,
-              nombre: res.rows.item(0).nombre,
-              precio: res.rows.item(0).precio,
-              stock: res.rows.item(0).stock,
-              foto: res.rows.item(0).foto_PRODUCTO,
-              id_cat: res.rows.item(0).id_cat
-            };
-            resolve(producto);  
-          } else {
-            resolve(null); 
-          }
-        })
-        .catch(error => {
-          reject(error);  
-        });
+        const query = 'SELECT * FROM producto ORDER BY id_prod LIMIT 1 OFFSET ?';
+        
+        this.database.executeSql(query, [indice])
+            .then(res => {
+                if (res.rows.length > 0) {
+                    const producto: Producto = {
+                        id_prod: res.rows.item(0).id_prod,
+                        nombre: res.rows.item(0).nombre,
+                        precio: res.rows.item(0).precio,
+                        stock: res.rows.item(0).stock,
+                        foto: res.rows.item(0).foto_PRODUCTO,
+                        id_cat: res.rows.item(0).id_cat
+                    };
+                    resolve(producto);
+                } else {
+                    resolve(null); // No se encontró el producto
+                }
+            })
+            .catch(error => {
+                reject(error); // Manejo de errores
+            });
     });
-  }
+}
+
   
 
   
