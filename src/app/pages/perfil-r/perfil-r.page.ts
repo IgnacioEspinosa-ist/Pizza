@@ -9,51 +9,81 @@ import { DatabaseService } from 'src/app/services/database.service';
   styleUrls: ['./perfil-r.page.scss'],
 })
 export class PerfilRPage implements OnInit {
+  imagen: string | null = null;
+  id_user: number = 2; // ID del repartidor (asegúrate de tener el ID correcto)
+  repartidorNombre: string = '';
+  repartidorTelefono: string = '';
 
-  imagen: string | null = null; // Inicializa la imagen como null
-  id_user: number = 1; // Establece el ID del usuario actual
-  menu: any;
+  editableCampos = {
+    nombre: false,
+    telefono: false
+  };
 
-  constructor(private dbService: DatabaseService) { }
+  constructor(private dbService: DatabaseService, private menu: MenuController) { }
 
-  ngOnInit() {
-    // Cargar la foto del usuario al inicializar el componente
-    this.dbService.getFotoUsuario(this.id_user).subscribe({
-        next: (foto: string | null) => {
-            this.imagen = foto ? foto : 'assets/perfil1.jpg'; // Establece la foto o una predeterminada
+  async ngOnInit() {
+    
+
+      // Cargar los datos del repartidor
+      this.dbService.getUsuarioById(this.id_user).subscribe({
+        next: (usuario: any) => {
+          this.repartidorNombre = usuario.nombre;
+          this.repartidorTelefono = usuario.telefono;
         },
         error: (error: any) => {
-            console.error("Error al cargar la foto:", error);
-            this.imagen = 'assets/perfil1.jpg'; // Establece la foto predeterminada en caso de error
+          console.error('Error al cargar los datos del repartidor:', error);
         }
-    });}
+      });
+    
+  }
 
+  // Activar o desactivar la edición de los campos
+  activarEdicion(campo: 'nombre' | 'telefono') {
+    this.editableCampos[campo] = true;
+  }
+
+  // Método para guardar los cambios en la base de datos
+  guardarCambios() {
+    if (this.id_user) {
+      this.dbService.updatePerfil(this.id_user,this.repartidorNombre, this.repartidorTelefono).subscribe({
+        next: () => {
+          console.log('Datos actualizados correctamente');
+          // Desactivar la edición después de guardar
+          this.editableCampos.nombre = false;
+          this.editableCampos.telefono = false;
+          // Opcional: agregar una alerta o mensaje de éxito
+        },
+        error: (error: any) => {
+          console.error('Error al actualizar los datos del repartidor:', error);
+          // Opcional: manejar el error y mostrar un mensaje al usuario
+        }
+      });
+    }
+  }
   async takePicture() {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
-      resultType: CameraResultType.Uri // Usar URI para mostrar la imagen
+      resultType: CameraResultType.Uri,
     });
 
-    // Establecer la nueva imagen
-    this.imagen = image.webPath??'assets/perfil1.jpg';
+    this.imagen = image.webPath ?? 'assets/perfil1.jpg';
 
-    // Guarda la nueva imagen en la base de datos
     if (image.path) {
-      await this.guardarFotoEnDB(image.path); // Guardar en la base de datos
+      await this.guardarFotoEnDB(image.path);
     }
   }
 
   async guardarFotoEnDB(foto: string) {
     try {
-      await this.dbService.updateUsuarioFoto(this.id_user, foto); // Implementa este método en el servicio
-      console.log("Foto actualizada exitosamente");
+      await this.dbService.updateUsuarioFoto(this.id_user, foto);
+      console.log('Foto actualizada exitosamente');
     } catch (error) {
-      console.error("Error al guardar la foto en la base de datos:", error);
+      console.error('Error al guardar la foto en la base de datos:', error);
     }
   }
 
   openMenuSecundario() {
-    this.menu.open('menuSecundario'); 
+    this.menu.open('menuSecundario');
   }
 }
