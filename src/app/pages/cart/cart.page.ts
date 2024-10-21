@@ -56,21 +56,24 @@ export class CartPage implements OnInit {
 
   async eliminarProductoDelCarrito(posicion: number): Promise<void> {
     try {
-      // Obtener el carrito almacenado
       const storedCarrito: Producto[] = await this.storage.get('carrito') || [];
 
-      // Verificar si la posición es válida
+      console.log('Carrito almacenado:', storedCarrito); // Verificar el estado del carrito
+      console.log('Posición recibida:', posicion); // Verificar la posición recibida
+
       if (posicion >= 0 && posicion < storedCarrito.length) {
-        // Obtener el id_prod del producto que se va a eliminar
+        // Verificar el id_prod del producto antes de eliminar
         const id_prod = storedCarrito[posicion].id_prod;
 
-        // Verificar si el producto existe en la base de datos
+        // Buscar el producto en la base de datos para verificar que existe
         const producto = await this.dbService.buscarProductoPorId(id_prod);
 
         if (producto) {
-          // Si el producto existe, proceder a eliminarlo del carrito
-          storedCarrito.splice(posicion, 1);
+          // Si el producto existe, eliminarlo del carrito
+          storedCarrito.splice(posicion, 0);
           await this.storage.set('carrito', storedCarrito);
+
+          console.log('Producto eliminado:', producto.nombre); // Verificar que se eliminó correctamente
 
           const alert = await this.alertController.create({
             header: 'Producto Eliminado',
@@ -82,7 +85,7 @@ export class CartPage implements OnInit {
           // Actualizar la lista de productos en el carrito
           this.productos = await this.dbService.getProductosById(storedCarrito.map(p => p.id_prod));
         } else {
-          // Si el producto no se encuentra en la base de datos, mostrar alerta
+          // Si el producto no está en la base de datos
           const alert = await this.alertController.create({
             header: 'Producto No Encontrado',
             message: `No se encontró el producto con ID: ${id_prod} en la base de datos.`,
