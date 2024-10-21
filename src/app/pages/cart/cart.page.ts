@@ -97,6 +97,22 @@ export class CartPage implements OnInit {
     });
   }
 
+  async agregarProductoAlCarrito() {
+    const productId = await this.storage.get('selectedProductId'); // Recuperar el ID del producto
+  
+    if (productId) {
+      // Aquí deberías buscar el producto en tu lista de productos o base de datos
+      const producto = this.productos.find(p => p.id_prod === productId);
+  
+      if (producto) {
+        // Llamar al servicio para agregar el producto al carrito
+        await this.carritoService.agregarProducto(producto);
+      } else {
+        console.error('Producto no encontrado');
+      }
+    }
+  }
+
   async verDetalleProducto(producto: Producto) {
     // Almacenar el id del producto en Storage
     await this.storage.set('selectedProductId', producto.id_prod);
