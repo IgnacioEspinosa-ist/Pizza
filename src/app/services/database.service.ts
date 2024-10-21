@@ -69,21 +69,21 @@ export class DatabaseService {
   //Los Usuarios
 
 
-  registroUsuario: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  registroUsuario: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ñamñamñam','123456',1)`
 
-  registroRepartidor1: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  registroRepartidor1: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Pedro','Espinoza','217845965-0','pedro@gmail.com','miaumiaumiau','123456',2)`
 
-  registroRepartidor2: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  registroRepartidor2: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Javier','Soto','18789652-0','javier@gmail.com','enwarhammer','123456',2)`
 
-  registroAdmin: string=`INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
+  registroAdmin: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3)`
 
   //
 
-  
+
 
   //variable de tipo observable para ver el estado de la base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -182,9 +182,9 @@ export class DatabaseService {
     this.registroRepartidor1,
     this.registroRepartidor2,
     this.registroAdmin
-    
+
   ];
-  
+
 
 
 
@@ -246,9 +246,10 @@ export class DatabaseService {
 
       for (const insert of this.inserciones) {
         await this.database.executeSql(insert, []);
-        console.log("Producto insertado");}
+        console.log("Producto insertado");
+      }
 
-     
+
     } catch (e) {
       this.presentAlert('CrearTabla()', 'Error: ' + JSON.stringify(e));
     }
@@ -276,7 +277,7 @@ export class DatabaseService {
         productos.push({
           id_prod: res.rows.item(i).id_prod,
           nombre: res.rows.item(i).nombre,
-          
+
           precio: res.rows.item(i).precio,
           stock: res.rows.item(i).stock,
           foto: res.rows.item(i).foto_PRODUCTO,
@@ -303,39 +304,41 @@ export class DatabaseService {
     } catch (error) {
       console.error('Error en la validación del usuario:', error);
       throw error;
-    }}
-
-
-    async checkEmailExists(email: string): Promise<boolean> {
-      try {
-        const result = await this.database.executeSql(
-          'SELECT * FROM usuario WHERE correo = ?',
-          [email]
-        );
-        return result.rows.length > 0;
-      } catch (error) {
-        console.error('Error buscando el correo', error);
-        return false;
-      }
     }
+  }
 
-    
-    getFotoUsuario(id_user: number): Observable<string | null> {
-      return new Observable<string | null>((observer) => {
-          this.database.executeSql('SELECT foto FROM usuario WHERE id_user = ?', [id_user])
-              .then(res => {
-                  if (res.rows.length > 0) {
-                      observer.next(res.rows.item(0).foto); // Emitir la foto
-                  } else {
-                      observer.next(null); // Emitir null si no hay foto
-                  }
-                  observer.complete();
-              })
-              .catch(error => {
-                  console.error('Error al obtener la foto del usuario: ', error);
-                  observer.error(error); // Emitir el error
-              });
-      });}
+
+  async checkEmailExists(email: string): Promise<boolean> {
+    try {
+      const result = await this.database.executeSql(
+        'SELECT * FROM usuario WHERE correo = ?',
+        [email]
+      );
+      return result.rows.length > 0;
+    } catch (error) {
+      console.error('Error buscando el correo', error);
+      return false;
+    }
+  }
+
+
+  getFotoUsuario(id_user: number): Observable<string | null> {
+    return new Observable<string | null>((observer) => {
+      this.database.executeSql('SELECT foto FROM usuario WHERE id_user = ?', [id_user])
+        .then(res => {
+          if (res.rows.length > 0) {
+            observer.next(res.rows.item(0).foto); // Emitir la foto
+          } else {
+            observer.next(null); // Emitir null si no hay foto
+          }
+          observer.complete();
+        })
+        .catch(error => {
+          console.error('Error al obtener la foto del usuario: ', error);
+          observer.error(error); // Emitir el error
+        });
+    });
+  }
 
   async updateUsuarioFoto(id_user: number, foto: string) {
     return new Promise<void>((resolve, reject) => {
@@ -359,7 +362,7 @@ export class DatabaseService {
             const producto: Producto = {
               id_prod: res.rows.item(0).id_prod,
               nombre: res.rows.item(0).nombre,
-              
+
               precio: res.rows.item(0).precio,
               stock: res.rows.item(0).stock,
               foto: res.rows.item(0).foto_PRODUCTO,
@@ -375,9 +378,10 @@ export class DatabaseService {
           console.error('Error al obtener el producto:', error);
           observer.error(error);
         });
-    });}
+    });
+  }
 
-   getProductosById(productos: number[]) {
+  getProductosById(productos: number[]) {
     let arregloProductos: Producto[] = []
     for (let i = 0; i < productos.length; i++) {
       this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [productos[i]])
@@ -393,7 +397,7 @@ export class DatabaseService {
               id_cat: res.rows.item(0).id_cat
             };
             arregloProductos.push(producto)
-            
+
 
           }
         })
@@ -402,150 +406,175 @@ export class DatabaseService {
 
   }
 
-  vaciarCarrito(): void {
-    
-    this.productos = [];
-    console.log('Carrito vacío');
-  }
-    
+  //aqui
 
-    
-
-    addPedido(total: number, id_user: number, id_direccion: number) {
-      return new Observable<number>((observer) => {
-        const f_pedido = new Date().toISOString(); // Fecha del pedido
-        const estatus = 'pendiente'; // Estado del pedido
-    
-        // Insertar el pedido en la tabla 'pedido'
-        this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, id_direccion, total, estatus) VALUES (?, ?, ?, ?, ?)', 
-          [f_pedido, id_user, id_direccion, total, estatus])
-          .then(result => {
-            const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
-            observer.next(id_pedido); // Emitir el ID del pedido
-            observer.complete();
-          })
-          .catch(error => {
-            console.error('Error al agregar pedido:', error);
-            observer.error(error);
-          });
-      });
-    }
-    
-    addDetallePedido(id_pedido: number, carrito: Producto[]): Observable<void> {
-      const sql = `INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)`;
-    
-      return new Observable((observer) => {
-        const queries = carrito.map(producto => {
-          const subtotal = producto.precio * producto.stock; // Calcula el subtotal
-          return this.database.executeSql(sql, [id_pedido, producto.id_prod, producto.stock, subtotal]);
-        });
-    
-        Promise.all(queries)
-          .then(() => {
-            observer.next();
-            observer.complete();
-          })
-          .catch((error) => {
-            observer.error(error);
-          });
-      });
-    }
-    
-    
-    private pedidosPendientesSubject = new BehaviorSubject<Pedido[]>([]);
-    public pedidosPendientes$ = this.pedidosPendientesSubject.asObservable();
-
-    obtenerPedidosPendientes() {
-      this.database.executeSql(`SELECT * FROM pedido WHERE estatus = 'pendiente'`, [])
+  buscarProductoPorId(id_prod: number): Promise<Producto | null> {
+    return new Promise((resolve, reject) => {
+      
+      this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [id_prod])
         .then(res => {
-          let pedidos: Pedido[] = [];
-          for (let i = 0; i < res.rows.length; i++) {
-            pedidos.push({
-              id_pedido: res.rows.item(i).id_pedido,
-              f_pedido: res.rows.item(i).f_pedido,
-              id_user: res.rows.item(i).id_user,
-              id_direccion: res.rows.item(i).id_direccion,
-              total: res.rows.item(i).total,
-              id_user_resp: res.rows.item(i).id_user_resp,
-              estatus: res.rows.item(i).estatus,
-              
-            });
+          if (res.rows.length > 0) {
+            
+            const producto: Producto = {
+              id_prod: res.rows.item(0).id_prod,
+              nombre: res.rows.item(0).nombre,
+              precio: res.rows.item(0).precio,
+              stock: res.rows.item(0).stock,
+              foto: res.rows.item(0).foto_PRODUCTO,
+              id_cat: res.rows.item(0).id_cat
+            };
+            resolve(producto);  
+          } else {
+            resolve(null); 
           }
-          this.pedidosPendientesSubject.next(pedidos); // Emitir los pedidos pendientes
         })
         .catch(error => {
-          console.error('Error al obtener los pedidos pendientes:', error);
+          reject(error);  
         });
-    }
+    });
+  }
   
-    // Método para marcar un pedido como entregado
-    marcarPedidoComoEntregado(id_pedido: number): Observable<void> {
-      return new Observable<void>((observer) => {
-        this.database.executeSql(`UPDATE pedido SET estatus = 'entregado' WHERE id_pedido = ?`, [id_pedido])
-          .then(() => {
-            observer.next(); // Emitir el éxito
-            observer.complete();
-          })
-          .catch(error => {
-            console.error('Error al marcar el pedido como entregado:', error);
-            observer.error(error); // Emitir el error
-          });
-      });
-    }
-  
-    getProductosPorIds(ids: number[]): Observable<Producto[]> {
-      return new Observable((observer) => {
-        const placeholders = ids.map(() => '?').join(',');
-        this.database.executeSql(`SELECT * FROM producto WHERE id_prod IN (${placeholders})`, ids)
-          .then(res => {
-            const productos: Producto[] = [];
-            for (let i = 0; i < res.rows.length; i++) {
-              productos.push(res.rows.item(i));
-            }
-            observer.next(productos); // Emitir los productos
-            observer.complete();
-          })
-          .catch(error => {
-            console.error('Error al obtener los productos por IDs: ', error);
-            observer.error(error); // Emitir el error
-          });
-      });
-    }
 
-    getUserId(): Observable<number | null> {
-      const sql = 'SELECT id_user FROM usuario WHERE ...'; // Lógica para seleccionar el usuario actual
-      return from(this.database.executeSql(sql, []).then(res => {
-        if (res.rows.length > 0) {
-          return res.rows.item(0).id_user;
-        }
-        return null; // o lanzar un error si no se encuentra
-      }));
-    }
   
-    // Método para obtener una dirección del usuario actual
-    getDireccionByUserId(id_user: number): Observable<Direccion[]> {
-      const sql = 'SELECT * FROM direccion WHERE id_user = ?';
-      return from(this.database.executeSql(sql, [id_user]).then(res => {
-        const direcciones: Direccion[] = [];
+
+
+
+
+  addPedido(total: number, id_user: number, id_direccion: number) {
+    return new Observable<number>((observer) => {
+      const f_pedido = new Date().toISOString(); // Fecha del pedido
+      const estatus = 'pendiente'; // Estado del pedido
+
+      // Insertar el pedido en la tabla 'pedido'
+      this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, id_direccion, total, estatus) VALUES (?, ?, ?, ?, ?)',
+        [f_pedido, id_user, id_direccion, total, estatus])
+        .then(result => {
+          const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
+          observer.next(id_pedido); // Emitir el ID del pedido
+          observer.complete();
+        })
+        .catch(error => {
+          console.error('Error al agregar pedido:', error);
+          observer.error(error);
+        });
+    });
+  }
+
+  addDetallePedido(id_pedido: number, carrito: Producto[]): Observable<void> {
+    const sql = `INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)`;
+
+    return new Observable((observer) => {
+      const queries = carrito.map(producto => {
+        const subtotal = producto.precio * producto.stock; // Calcula el subtotal
+        return this.database.executeSql(sql, [id_pedido, producto.id_prod, producto.stock, subtotal]);
+      });
+
+      Promise.all(queries)
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+
+
+  private pedidosPendientesSubject = new BehaviorSubject<Pedido[]>([]);
+  public pedidosPendientes$ = this.pedidosPendientesSubject.asObservable();
+
+  obtenerPedidosPendientes() {
+    this.database.executeSql(`SELECT * FROM pedido WHERE estatus = 'pendiente'`, [])
+      .then(res => {
+        let pedidos: Pedido[] = [];
         for (let i = 0; i < res.rows.length; i++) {
-          direcciones.push(res.rows.item(i));
-        }
-        return direcciones;
-      }));
-    }
+          pedidos.push({
+            id_pedido: res.rows.item(i).id_pedido,
+            f_pedido: res.rows.item(i).f_pedido,
+            id_user: res.rows.item(i).id_user,
+            id_direccion: res.rows.item(i).id_direccion,
+            total: res.rows.item(i).total,
+            id_user_resp: res.rows.item(i).id_user_resp,
+            estatus: res.rows.item(i).estatus,
 
-    updateProducto(producto: Producto): void {
-      const sql = `
+          });
+        }
+        this.pedidosPendientesSubject.next(pedidos); // Emitir los pedidos pendientes
+      })
+      .catch(error => {
+        console.error('Error al obtener los pedidos pendientes:', error);
+      });
+  }
+
+  // Método para marcar un pedido como entregado
+  marcarPedidoComoEntregado(id_pedido: number): Observable<void> {
+    return new Observable<void>((observer) => {
+      this.database.executeSql(`UPDATE pedido SET estatus = 'entregado' WHERE id_pedido = ?`, [id_pedido])
+        .then(() => {
+          observer.next(); // Emitir el éxito
+          observer.complete();
+        })
+        .catch(error => {
+          console.error('Error al marcar el pedido como entregado:', error);
+          observer.error(error); // Emitir el error
+        });
+    });
+  }
+
+  getProductosPorIds(ids: number[]): Observable<Producto[]> {
+    return new Observable((observer) => {
+      const placeholders = ids.map(() => '?').join(',');
+      this.database.executeSql(`SELECT * FROM producto WHERE id_prod IN (${placeholders})`, ids)
+        .then(res => {
+          const productos: Producto[] = [];
+          for (let i = 0; i < res.rows.length; i++) {
+            productos.push(res.rows.item(i));
+          }
+          observer.next(productos); // Emitir los productos
+          observer.complete();
+        })
+        .catch(error => {
+          console.error('Error al obtener los productos por IDs: ', error);
+          observer.error(error); // Emitir el error
+        });
+    });
+  }
+
+  getUserId(): Observable<number | null> {
+    const sql = 'SELECT id_user FROM usuario WHERE ...'; // Lógica para seleccionar el usuario actual
+    return from(this.database.executeSql(sql, []).then(res => {
+      if (res.rows.length > 0) {
+        return res.rows.item(0).id_user;
+      }
+      return null; // o lanzar un error si no se encuentra
+    }));
+  }
+
+  // Método para obtener una dirección del usuario actual
+  getDireccionByUserId(id_user: number): Observable<Direccion[]> {
+    const sql = 'SELECT * FROM direccion WHERE id_user = ?';
+    return from(this.database.executeSql(sql, [id_user]).then(res => {
+      const direcciones: Direccion[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        direcciones.push(res.rows.item(i));
+      }
+      return direcciones;
+    }));
+  }
+
+  updateProducto(producto: Producto): void {
+    const sql = `
         UPDATE producto SET nombre = ?, precio = ?, stock = ?, foto = ?, id_cat = ? WHERE id_prod = ?`;
-    
-      this.database.executeSql(sql, [
-        producto.nombre,
-        producto.precio,
-        producto.stock,
-        producto.foto,
-        producto.id_cat,
-        producto.id_prod
-      ])
+
+    this.database.executeSql(sql, [
+      producto.nombre,
+      producto.precio,
+      producto.stock,
+      producto.foto,
+      producto.id_cat,
+      producto.id_prod
+    ])
       .then(() => {
         return this.refreshProductoList(); // Actualiza la lista de productos
       })
@@ -556,34 +585,34 @@ export class DatabaseService {
         this.presentAlert('Error', 'No se pudo actualizar el producto.');
         console.error('Error al actualizar producto:', error);
       });
-    }
-    
-    private refreshProductoList(): Promise<void> {
-      const sql = "SELECT * FROM producto";
-      return this.database.executeSql(sql, [])
-        .then((data) => {
-          this.productos = [];
-          for (let i = 0; i < data.rows.length; i++) {
-            this.productos.push(data.rows.item(i));
-          }
-        })
-        .catch((error) => {
-          console.error('Error al refrescar la lista de productos', error);
-        });
-    }
-    
-    insertProducto(producto: Producto): void {
-      const sql = `
+  }
+
+  private refreshProductoList(): Promise<void> {
+    const sql = "SELECT * FROM producto";
+    return this.database.executeSql(sql, [])
+      .then((data) => {
+        this.productos = [];
+        for (let i = 0; i < data.rows.length; i++) {
+          this.productos.push(data.rows.item(i));
+        }
+      })
+      .catch((error) => {
+        console.error('Error al refrescar la lista de productos', error);
+      });
+  }
+
+  insertProducto(producto: Producto): void {
+    const sql = `
         INSERT INTO producto (nombre, precio, stock, foto, id_cat) 
         VALUES (?, ?, ?, ?, ?)`;
-    
-      this.database.executeSql(sql, [
-        producto.nombre,
-        producto.precio,
-        producto.stock,
-        producto.foto,
-        producto.id_cat
-      ])
+
+    this.database.executeSql(sql, [
+      producto.nombre,
+      producto.precio,
+      producto.stock,
+      producto.foto,
+      producto.id_cat
+    ])
       .then(() => {
         return this.refreshProductoList();  // Actualiza la lista de productos
       })
@@ -594,92 +623,92 @@ export class DatabaseService {
         this.presentAlert('Error', 'No se pudo añadir el producto.');
         console.error('Error al añadir producto:', error);
       });
-    }
+  }
 
-    async deleteProducto(id: number): Promise<void> {
-      const sql = "DELETE FROM producto WHERE id_prod = ?";
-      try {
-        await this.database.executeSql(sql, [id]);
-        this.refreshProductoList();
-        this.presentAlert('Éxito', 'Producto eliminado correctamente.');
-      } catch (error) {
-        this.presentAlert('Error', 'No se pudo eliminar el producto.');
-      }
+  async deleteProducto(id: number): Promise<void> {
+    const sql = "DELETE FROM producto WHERE id_prod = ?";
+    try {
+      await this.database.executeSql(sql, [id]);
+      this.refreshProductoList();
+      this.presentAlert('Éxito', 'Producto eliminado correctamente.');
+    } catch (error) {
+      this.presentAlert('Error', 'No se pudo eliminar el producto.');
     }
+  }
 
-    fetchUsuarios(): Observable<Usuario[]> {
-      return new Observable<Usuario[]>(observer => {
-        this.database.executeSql('SELECT * FROM usuario', []).then(res => {
-          const usuarios: Usuario[] = [];
-          for (let i = 0; i < res.rows.length; i++) {
-            usuarios.push({
-              id_user: res.rows.item(i).id_user,
-              nombre: res.rows.item(i).nombre,
-              apellido: res.rows.item(i).apellido,
-              rut: res.rows.item(i).rut,
-              correo: res.rows.item(i).correo,
-              clave: res.rows.item(i).clave,
-              telefono: res.rows.item(i).telefono,
-              id_roll: res.rows.item(i).id_roll,
-              foto: res.rows.item(i).foto_U
-            });
-          }
-          observer.next(usuarios); // Emitir los usuarios obtenidos
-          observer.complete(); // Completar el observable
-        }).catch(e => {
-          this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
-          observer.error(e); // Emitir el error
-        });
+  fetchUsuarios(): Observable<Usuario[]> {
+    return new Observable<Usuario[]>(observer => {
+      this.database.executeSql('SELECT * FROM usuario', []).then(res => {
+        const usuarios: Usuario[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          usuarios.push({
+            id_user: res.rows.item(i).id_user,
+            nombre: res.rows.item(i).nombre,
+            apellido: res.rows.item(i).apellido,
+            rut: res.rows.item(i).rut,
+            correo: res.rows.item(i).correo,
+            clave: res.rows.item(i).clave,
+            telefono: res.rows.item(i).telefono,
+            id_roll: res.rows.item(i).id_roll,
+            foto: res.rows.item(i).foto_U
+          });
+        }
+        observer.next(usuarios); // Emitir los usuarios obtenidos
+        observer.complete(); // Completar el observable
+      }).catch(e => {
+        this.presentAlert('fetchUsuarios()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
+        observer.error(e); // Emitir el error
       });
-    }
-    
-    async insertUsuario(usuario: Usuario): Promise<void> {
-      const sql = `
+    });
+  }
+
+  async insertUsuario(usuario: Usuario): Promise<void> {
+    const sql = `
         INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-      try {
-        await this.database.executeSql(sql, [
-          usuario.nombre,
-          usuario.apellido,
-          usuario.rut,
-          usuario.correo,
-          usuario.clave,
-          usuario.telefono,
-          usuario.id_roll,
-          usuario.foto
-        ]);
-        this.refreshUsuarioList();
-        this.presentAlert('Éxito', 'Usuario añadido correctamente.');
-      } catch (error) {
-        this.presentAlert('Error', 'No se pudo añadir el usuario.');
-      }
+    try {
+      await this.database.executeSql(sql, [
+        usuario.nombre,
+        usuario.apellido,
+        usuario.rut,
+        usuario.correo,
+        usuario.clave,
+        usuario.telefono,
+        usuario.id_roll,
+        usuario.foto
+      ]);
+      this.refreshUsuarioList();
+      this.presentAlert('Éxito', 'Usuario añadido correctamente.');
+    } catch (error) {
+      this.presentAlert('Error', 'No se pudo añadir el usuario.');
     }
+  }
 
-    private async refreshUsuarioList(): Promise<void> {
-      const sql = "SELECT * FROM usuario";
-      try {
-        const data = await this.database.executeSql(sql, []);
-        this.usuarios = [];
-        for (let i = 0; i < data.rows.length; i++) {
-          this.usuarios.push(data.rows.item(i));
-        }
-      } catch (error) {
-        console.error('Error al refrescar la lista de usuarios', error);
+  private async refreshUsuarioList(): Promise<void> {
+    const sql = "SELECT * FROM usuario";
+    try {
+      const data = await this.database.executeSql(sql, []);
+      this.usuarios = [];
+      for (let i = 0; i < data.rows.length; i++) {
+        this.usuarios.push(data.rows.item(i));
       }
+    } catch (error) {
+      console.error('Error al refrescar la lista de usuarios', error);
     }
+  }
 
-    async deleteUsuario(id: number): Promise<void> {
-      const sql = "DELETE FROM usuario WHERE id_user = ?";
-      try {
-        await this.database.executeSql(sql, [id]);
-        this.refreshUsuarioList();
-        this.presentAlert('Éxito', 'Usuario eliminado correctamente.');
-      } catch (error) {
-        this.presentAlert('Error', 'No se pudo eliminar el usuario.');
-      }
+  async deleteUsuario(id: number): Promise<void> {
+    const sql = "DELETE FROM usuario WHERE id_user = ?";
+    try {
+      await this.database.executeSql(sql, [id]);
+      this.refreshUsuarioList();
+      this.presentAlert('Éxito', 'Usuario eliminado correctamente.');
+    } catch (error) {
+      this.presentAlert('Error', 'No se pudo eliminar el usuario.');
     }
+  }
 
-     async updateUsuario(usuario: Usuario): Promise<void> {
+  async updateUsuario(usuario: Usuario): Promise<void> {
     const sql = `
       UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
       WHERE id_user = ?`;
@@ -722,7 +751,7 @@ export class DatabaseService {
     return from(this.database.executeSql(query, params));
   }
 
-  
+
 
   //para el admin-usuario
 
@@ -768,14 +797,6 @@ export class DatabaseService {
 
 
 
-    
-
-
-
-
-
-
-  
 
 
 
@@ -783,7 +804,15 @@ export class DatabaseService {
 
 
 
-    // Variables Observables para cada tabla
+
+
+
+
+
+
+
+
+  // Variables Observables para cada tabla
 
   // Roll
   private rollsSubject = new BehaviorSubject<Roll[]>([]);
@@ -818,297 +847,297 @@ export class DatabaseService {
   public detalles$: Observable<Detalle[]> = this.detallesSubject.asObservable();
 
 
-/*
+  /*
+    
+    // Método para obtener todos los rolls
+    fetchRolls() {
+      this.database.executeSql('SELECT * FROM roll', []).then(res => {
+        const rolls: Roll[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          rolls.push({
+            id_roll: res.rows.item(i).id_roll,
+            nombre: res.rows.item(i).nombre,
+          });
+        }
+        this.rollsSubject.next(rolls); // Emitir los rolls obtenidos
+      }).catch(e => {
+        this.presentAlert('fetchRolls()', 'Error al obtener los rolls: ' + JSON.stringify(e));
+      });
+    }
   
-  // Método para obtener todos los rolls
-  fetchRolls() {
-    this.database.executeSql('SELECT * FROM roll', []).then(res => {
-      const rolls: Roll[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        rolls.push({
-          id_roll: res.rows.item(i).id_roll,
-          nombre: res.rows.item(i).nombre,
-        });
-      }
-      this.rollsSubject.next(rolls); // Emitir los rolls obtenidos
-    }).catch(e => {
-      this.presentAlert('fetchRolls()', 'Error al obtener los rolls: ' + JSON.stringify(e));
-    });
-  }
-
-  // Método para obtener todos los usuarios
+    // Método para obtener todos los usuarios
+    
   
-
-  // Método para obtener todas las comunas
-  fetchComunas() {
-    this.database.executeSql('SELECT * FROM comuna', []).then(res => {
-      const comunas: Comuna[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        comunas.push({
-          id_comuna: res.rows.item(i).id_comuna,
-          nombre_comuna: res.rows.item(i).nombre_comuna
-        });
-      }
-      this.comunasSubject.next(comunas); // Emitir las comunas obtenidas
-    }).catch(e => {
-      this.presentAlert('fetchComunas()', 'Error al obtener las comunas: ' + JSON.stringify(e));
-    });
-  }
-
-  // Método para obtener todas las direcciones
-  fetchDirecciones() {
-    this.database.executeSql('SELECT * FROM direccion', []).then(res => {
-      const direcciones: Direccion[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        direcciones.push({
-          id_direccion: res.rows.item(i).id_direccion,
-          id_comuna: res.rows.item(i).id_comuna,
-          id_user: res.rows.item(i).id_user,
-          descripcion: res.rows.item(i).descripcion
-        });
-      }
-      this.direccionesSubject.next(direcciones); // Emitir las direcciones obtenidas
-    }).catch(e => {
-      this.presentAlert('fetchDirecciones()', 'Error al obtener las direcciones: ' + JSON.stringify(e));
-    });
-  }
-
-  // Método para obtener todas las categorías
-  fetchCategorias() {
-    this.database.executeSql('SELECT * FROM categoria', []).then(res => {
-      const categorias: Categoria[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        categorias.push({
-          id_cat: res.rows.item(i).id_cat,
-          nombre: res.rows.item(i).nombre
-        });
-      }
-      this.categoriasSubject.next(categorias); // Emitir las categorías obtenidas
-    }).catch(e => {
-      this.presentAlert('fetchCategorias()', 'Error al obtener las categorías: ' + JSON.stringify(e));
-    });
-  }
-
-  // Método para obtener todos los pedidos
-  fetchPedidos() {
-    this.database.executeSql('SELECT * FROM pedido', []).then(res => {
-      const pedidos: Pedido[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        pedidos.push({
-          id_pedido: res.rows.item(i).id_pedido,
-          f_pedido: res.rows.item(i).f_pedido,
-          id_user: res.rows.item(i).id_user,
-          id_direccion: res.rows.item(i).id_direccion,
-          total: res.rows.item(i).total,
-          id_user_resp: res.rows.item(i).id_user_resp,
-          estatus: res.rows.item(i).estatus
-        });
-      }
-      this.pedidosSubject.next(pedidos); // Emitir los pedidos obtenidos
-    }).catch(e => {
-      this.presentAlert('fetchPedidos()', 'Error al obtener los pedidos: ' + JSON.stringify(e));
-    });
-  }
-
-  // Método para obtener todos los detalles
-  fetchDetalles() {
-    this.database.executeSql('SELECT * FROM detalle', []).then(res => {
-      const detalles: Detalle[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        detalles.push({
-          id_detalle: res.rows.item(i).id_detalle,
-          id_pedido: res.rows.item(i).id_pedido,
-          id_prod: res.rows.item(i).id_prod,
-          cantidad: res.rows.item(i).cantidad,
-          subtotal: res.rows.item(i).subtotal
-        });
-      }
-      this.detallesSubject.next(detalles); // Emitir los detalles obtenidos
-    }).catch(e => {
-      this.presentAlert('fetchDetalles()', 'Error al obtener los detalles: ' + JSON.stringify(e));
-    });
-  }
-
-  // Método para obtener todos los autos
-  fetchAutos() {
-    this.database.executeSql('SELECT * FROM auto', []).then(res => {
-      const autos: Auto[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        autos.push({
-          id_auto: res.rows.item(i).id_auto,
-          placa: res.rows.item(i).placa,
-          modelo: res.rows.item(i).modelo,
-          color: res.rows.item(i).color,
-          id_user: res.rows.item(i).id_user
-        });
-      }
-      this.autosSubject.next(autos); // Emitir los autos obtenidos
-    }).catch(e => {
-      this.presentAlert('fetchAutos()', 'Error al obtener los autos: ' + JSON.stringify(e));
-    });
-  }  
-
-  async insertRoll(roll: Roll): Promise<void> {
-    const sql = "INSERT INTO roll (nombre) VALUES (?)";
-    try {
-      await this.database.executeSql(sql, [roll.nombre]);
-      this.refreshRollList();
-      this.presentAlert('Éxito', 'Roll añadido correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir el roll.');
+    // Método para obtener todas las comunas
+    fetchComunas() {
+      this.database.executeSql('SELECT * FROM comuna', []).then(res => {
+        const comunas: Comuna[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          comunas.push({
+            id_comuna: res.rows.item(i).id_comuna,
+            nombre_comuna: res.rows.item(i).nombre_comuna
+          });
+        }
+        this.comunasSubject.next(comunas); // Emitir las comunas obtenidas
+      }).catch(e => {
+        this.presentAlert('fetchComunas()', 'Error al obtener las comunas: ' + JSON.stringify(e));
+      });
     }
-  }
-
   
-
-  async insertComuna(comuna: Comuna): Promise<void> {
-    const sql = "INSERT INTO comuna (nombre_comuna) VALUES (?)";
-    try {
-      await this.database.executeSql(sql, [comuna.nombre_comuna]);
-      this.refreshComunaList();
-      this.presentAlert('Éxito', 'Comuna añadida correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir la comuna.');
+    // Método para obtener todas las direcciones
+    fetchDirecciones() {
+      this.database.executeSql('SELECT * FROM direccion', []).then(res => {
+        const direcciones: Direccion[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          direcciones.push({
+            id_direccion: res.rows.item(i).id_direccion,
+            id_comuna: res.rows.item(i).id_comuna,
+            id_user: res.rows.item(i).id_user,
+            descripcion: res.rows.item(i).descripcion
+          });
+        }
+        this.direccionesSubject.next(direcciones); // Emitir las direcciones obtenidas
+      }).catch(e => {
+        this.presentAlert('fetchDirecciones()', 'Error al obtener las direcciones: ' + JSON.stringify(e));
+      });
     }
-  }
-
-  async insertDireccion(direccion: Direccion): Promise<void> {
-    const sql = `
-      INSERT INTO direccion (id_comuna, id_user, descripcion) 
-      VALUES (?, ?, ?)`;
-    try {
-      await this.database.executeSql(sql, [direccion.id_comuna, direccion.id_user, direccion.descripcion]);
-      this.refreshDireccionList();
-      this.presentAlert('Éxito', 'Dirección añadida correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir la dirección.');
-    }
-  }
-
-  async insertAuto(auto: Auto): Promise<void> {
-    const sql = `
-      INSERT INTO auto (placa, modelo, color, id_user) 
-      VALUES (?, ?, ?)`;
-    try {
-      await this.database.executeSql(sql, [auto.placa, auto.modelo, auto.color, auto.id_user]);
-      this.refreshAutoList();
-      this.presentAlert('Éxito', 'Auto añadido correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir el auto.');
-    }
-  }
-
-  async insertCategoria(categoria: Categoria): Promise<void> {
-    const sql = "INSERT INTO categoria (nombre) VALUES (?)";
-    try {
-      await this.database.executeSql(sql, [categoria.nombre]);
-      this.refreshCategoriaList();
-      this.presentAlert('Éxito', 'Categoría añadida correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir la categoría.');
-    }
-  }
-
   
+    // Método para obtener todas las categorías
+    fetchCategorias() {
+      this.database.executeSql('SELECT * FROM categoria', []).then(res => {
+        const categorias: Categoria[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          categorias.push({
+            id_cat: res.rows.item(i).id_cat,
+            nombre: res.rows.item(i).nombre
+          });
+        }
+        this.categoriasSubject.next(categorias); // Emitir las categorías obtenidas
+      }).catch(e => {
+        this.presentAlert('fetchCategorias()', 'Error al obtener las categorías: ' + JSON.stringify(e));
+      });
+    }
   
-
-  insertPedido(total: number, id_user: number, id_direccion: number): Observable<number> {
-    const sql = `INSERT INTO pedido (f_pedido, id_user, id_direccion, total, estatus) VALUES (?, ?, ?, ?, ?)`;
-    const fecha = new Date().toISOString(); // Formato de fecha
+    // Método para obtener todos los pedidos
+    fetchPedidos() {
+      this.database.executeSql('SELECT * FROM pedido', []).then(res => {
+        const pedidos: Pedido[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          pedidos.push({
+            id_pedido: res.rows.item(i).id_pedido,
+            f_pedido: res.rows.item(i).f_pedido,
+            id_user: res.rows.item(i).id_user,
+            id_direccion: res.rows.item(i).id_direccion,
+            total: res.rows.item(i).total,
+            id_user_resp: res.rows.item(i).id_user_resp,
+            estatus: res.rows.item(i).estatus
+          });
+        }
+        this.pedidosSubject.next(pedidos); // Emitir los pedidos obtenidos
+      }).catch(e => {
+        this.presentAlert('fetchPedidos()', 'Error al obtener los pedidos: ' + JSON.stringify(e));
+      });
+    }
   
-    return new Observable((observer) => {
-      this.database.executeSql(sql, [fecha, id_user, id_direccion, total, 'Pendiente'])
-        .then((result) => {
-          const id_pedido = result.insertId; // ID del nuevo pedido
-          observer.next(id_pedido);
-          observer.complete();
-        })
-        .catch((error) => {
-          observer.error(error);
-        });
-    });
-  }
-
+    // Método para obtener todos los detalles
+    fetchDetalles() {
+      this.database.executeSql('SELECT * FROM detalle', []).then(res => {
+        const detalles: Detalle[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          detalles.push({
+            id_detalle: res.rows.item(i).id_detalle,
+            id_pedido: res.rows.item(i).id_pedido,
+            id_prod: res.rows.item(i).id_prod,
+            cantidad: res.rows.item(i).cantidad,
+            subtotal: res.rows.item(i).subtotal
+          });
+        }
+        this.detallesSubject.next(detalles); // Emitir los detalles obtenidos
+      }).catch(e => {
+        this.presentAlert('fetchDetalles()', 'Error al obtener los detalles: ' + JSON.stringify(e));
+      });
+    }
   
-
-  async insertDetalle(detalle: Detalle): Promise<void> {
-    const sql = `
-      INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) 
-      VALUES (?, ?, ?, ?)`;
-    try {
-      await this.database.executeSql(sql, [
-        detalle.id_pedido,
-        detalle.id_prod,
-        detalle.cantidad,
-        detalle.subtotal
-      ]);
-      this.refreshDetalleList();
-      this.presentAlert('Éxito', 'Detalle añadido correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir el detalle.');
+    // Método para obtener todos los autos
+    fetchAutos() {
+      this.database.executeSql('SELECT * FROM auto', []).then(res => {
+        const autos: Auto[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          autos.push({
+            id_auto: res.rows.item(i).id_auto,
+            placa: res.rows.item(i).placa,
+            modelo: res.rows.item(i).modelo,
+            color: res.rows.item(i).color,
+            id_user: res.rows.item(i).id_user
+          });
+        }
+        this.autosSubject.next(autos); // Emitir los autos obtenidos
+      }).catch(e => {
+        this.presentAlert('fetchAutos()', 'Error al obtener los autos: ' + JSON.stringify(e));
+      });
+    }  
+  
+    async insertRoll(roll: Roll): Promise<void> {
+      const sql = "INSERT INTO roll (nombre) VALUES (?)";
+      try {
+        await this.database.executeSql(sql, [roll.nombre]);
+        this.refreshRollList();
+        this.presentAlert('Éxito', 'Roll añadido correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo añadir el roll.');
+      }
     }
-  }
-
-  async updateRoll(roll: Roll): Promise<void> {
-    const sql = "UPDATE roll SET nombre = ? WHERE id_roll = ?";
-    try {
-      await this.database.executeSql(sql, [roll.nombre, roll.id_roll]);
-      this.refreshRollList();
-      this.presentAlert('Éxito', 'Roll actualizado correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo actualizar el roll.');
+  
+    
+  
+    async insertComuna(comuna: Comuna): Promise<void> {
+      const sql = "INSERT INTO comuna (nombre_comuna) VALUES (?)";
+      try {
+        await this.database.executeSql(sql, [comuna.nombre_comuna]);
+        this.refreshComunaList();
+        this.presentAlert('Éxito', 'Comuna añadida correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo añadir la comuna.');
+      }
     }
-  }
-
- 
-
-  async updateComuna(comuna: Comuna): Promise<void> {
-    const sql = "UPDATE comuna SET nombre_comuna = ? WHERE id_comuna = ?";
-    try {
-      await this.database.executeSql(sql, [comuna.nombre_comuna, comuna.id_comuna]);
-      this.refreshComunaList();
-      this.presentAlert('Éxito', 'Comuna actualizada correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo actualizar la comuna.');
+  
+    async insertDireccion(direccion: Direccion): Promise<void> {
+      const sql = `
+        INSERT INTO direccion (id_comuna, id_user, descripcion) 
+        VALUES (?, ?, ?)`;
+      try {
+        await this.database.executeSql(sql, [direccion.id_comuna, direccion.id_user, direccion.descripcion]);
+        this.refreshDireccionList();
+        this.presentAlert('Éxito', 'Dirección añadida correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo añadir la dirección.');
+      }
     }
-  }
-
-  async updateDireccion(direccion: Direccion): Promise<void> {
-    const sql = `
-      UPDATE direccion SET id_comuna = ?, id_user = ?, descripcion = ? WHERE id_direccion = ?`;
-    try {
-      await this.database.executeSql(sql, [direccion.id_comuna, direccion.id_user, direccion.descripcion, direccion.id_direccion]);
-      this.refreshDireccionList();
-      this.presentAlert('Éxito', 'Dirección actualizada correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo actualizar la dirección.');
+  
+    async insertAuto(auto: Auto): Promise<void> {
+      const sql = `
+        INSERT INTO auto (placa, modelo, color, id_user) 
+        VALUES (?, ?, ?)`;
+      try {
+        await this.database.executeSql(sql, [auto.placa, auto.modelo, auto.color, auto.id_user]);
+        this.refreshAutoList();
+        this.presentAlert('Éxito', 'Auto añadido correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo añadir el auto.');
+      }
     }
-  }
-
-  async updateAuto(auto: Auto): Promise<void> {
-    const sql = `
-      UPDATE auto SET placa = ?, modelo = ?, color = ? WHERE id_auto = ?`;
-    try {
-      await this.database.executeSql(sql, [auto.placa, auto.modelo, auto.color, auto.id_auto]);
-      this.refreshAutoList();
-      this.presentAlert('Éxito', 'Auto actualizado correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo actualizar el auto.');
+  
+    async insertCategoria(categoria: Categoria): Promise<void> {
+      const sql = "INSERT INTO categoria (nombre) VALUES (?)";
+      try {
+        await this.database.executeSql(sql, [categoria.nombre]);
+        this.refreshCategoriaList();
+        this.presentAlert('Éxito', 'Categoría añadida correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo añadir la categoría.');
+      }
     }
-  }
-
-  async updateCategoria(categoria: Categoria): Promise<void> {
-    const sql = "UPDATE categoria SET nombre = ? WHERE id_cat = ?";
-    try {
-      await this.database.executeSql(sql, [categoria.nombre, categoria.id_cat]);
-      this.refreshCategoriaList();
-      this.presentAlert('Éxito', 'Categoría actualizada correctamente.');
-    } catch (error) {
-      this.presentAlert('Error', 'No se pudo actualizar la categoría.');
+  
+    
+    
+  
+    insertPedido(total: number, id_user: number, id_direccion: number): Observable<number> {
+      const sql = `INSERT INTO pedido (f_pedido, id_user, id_direccion, total, estatus) VALUES (?, ?, ?, ?, ?)`;
+      const fecha = new Date().toISOString(); // Formato de fecha
+    
+      return new Observable((observer) => {
+        this.database.executeSql(sql, [fecha, id_user, id_direccion, total, 'Pendiente'])
+          .then((result) => {
+            const id_pedido = result.insertId; // ID del nuevo pedido
+            observer.next(id_pedido);
+            observer.complete();
+          })
+          .catch((error) => {
+            observer.error(error);
+          });
+      });
     }
-  } */
+  
+    
+  
+    async insertDetalle(detalle: Detalle): Promise<void> {
+      const sql = `
+        INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) 
+        VALUES (?, ?, ?, ?)`;
+      try {
+        await this.database.executeSql(sql, [
+          detalle.id_pedido,
+          detalle.id_prod,
+          detalle.cantidad,
+          detalle.subtotal
+        ]);
+        this.refreshDetalleList();
+        this.presentAlert('Éxito', 'Detalle añadido correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo añadir el detalle.');
+      }
+    }
+  
+    async updateRoll(roll: Roll): Promise<void> {
+      const sql = "UPDATE roll SET nombre = ? WHERE id_roll = ?";
+      try {
+        await this.database.executeSql(sql, [roll.nombre, roll.id_roll]);
+        this.refreshRollList();
+        this.presentAlert('Éxito', 'Roll actualizado correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo actualizar el roll.');
+      }
+    }
+  
+   
+  
+    async updateComuna(comuna: Comuna): Promise<void> {
+      const sql = "UPDATE comuna SET nombre_comuna = ? WHERE id_comuna = ?";
+      try {
+        await this.database.executeSql(sql, [comuna.nombre_comuna, comuna.id_comuna]);
+        this.refreshComunaList();
+        this.presentAlert('Éxito', 'Comuna actualizada correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo actualizar la comuna.');
+      }
+    }
+  
+    async updateDireccion(direccion: Direccion): Promise<void> {
+      const sql = `
+        UPDATE direccion SET id_comuna = ?, id_user = ?, descripcion = ? WHERE id_direccion = ?`;
+      try {
+        await this.database.executeSql(sql, [direccion.id_comuna, direccion.id_user, direccion.descripcion, direccion.id_direccion]);
+        this.refreshDireccionList();
+        this.presentAlert('Éxito', 'Dirección actualizada correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo actualizar la dirección.');
+      }
+    }
+  
+    async updateAuto(auto: Auto): Promise<void> {
+      const sql = `
+        UPDATE auto SET placa = ?, modelo = ?, color = ? WHERE id_auto = ?`;
+      try {
+        await this.database.executeSql(sql, [auto.placa, auto.modelo, auto.color, auto.id_auto]);
+        this.refreshAutoList();
+        this.presentAlert('Éxito', 'Auto actualizado correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo actualizar el auto.');
+      }
+    }
+  
+    async updateCategoria(categoria: Categoria): Promise<void> {
+      const sql = "UPDATE categoria SET nombre = ? WHERE id_cat = ?";
+      try {
+        await this.database.executeSql(sql, [categoria.nombre, categoria.id_cat]);
+        this.refreshCategoriaList();
+        this.presentAlert('Éxito', 'Categoría actualizada correctamente.');
+      } catch (error) {
+        this.presentAlert('Error', 'No se pudo actualizar la categoría.');
+      }
+    } */
 
- 
+
   /*
 
   async updatePedido(pedido: Pedido): Promise<void> {

@@ -16,13 +16,13 @@ export class UsuariosPage implements OnInit {
   email: string = '';
   id_roll: any = ''; // Puede ser 'repartidor', 'administrador', etc.
   usuarioActual: Usuario | null = null; // Para gestionar la edición
-  apellido: string= '';
-  rut: string= '';
-  clave: string= '';
-  
+  apellido: string = '';
+  rut: string = '';
+  clave: string = '';
+
   newUser: Usuario = new Usuario();
 
-  constructor(private dbService: DatabaseService,private alertController: AlertController) { }
+  constructor(private dbService: DatabaseService, private alertController: AlertController) { }
 
   ngOnInit() {
     this.cargarUsuarios();
@@ -37,7 +37,7 @@ export class UsuariosPage implements OnInit {
       }
     });
   }
-
+  //aqui para ver
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,
@@ -46,17 +46,17 @@ export class UsuariosPage implements OnInit {
     });
     await alert.present();
   }
-  addUsuario() {
-    this.dbService.addUsuario(this.newUser).subscribe({
-      next: (res) => {
-        // Muestra un alert cuando el usuario es creado exitosamente
-        this.presentAlert('Éxito', 'Usuario creado exitosamente');
-      },
-      error: (err) => {
-        // Muestra un alert cuando ocurre un error
-        this.presentAlert('Error', 'Error al crear usuario: ' + err.message);
-      }
-    });}
+  async addUsuario() {
+    try {
+      await this.dbService.insertUsuario(this.newUser); // Llama a la función insertUsuario
+      // Muestra un alert cuando el usuario es creado exitosamente
+      this.presentAlert('Éxito', 'Usuario creado exitosamente');
+    } catch (err) {
+      // Muestra un alert cuando ocurre un error
+      this.presentAlert('Error', 'Error al crear usuario: ' + err);
+    }
+  }
+
 
   cargarDatosUsuario(usuario: Usuario) {
     this.usuarioActual = usuario;
@@ -71,7 +71,7 @@ export class UsuariosPage implements OnInit {
       console.warn('Todos los campos son obligatorios');
       return;
     }
-  
+
     if (this.usuarioActual) {
       this.usuarioActual.nombre = this.nombre;
       this.usuarioActual.apellido = this.apellido; // Modificar el apellido
@@ -80,7 +80,7 @@ export class UsuariosPage implements OnInit {
       this.usuarioActual.clave = this.clave; // Modificar la clave
       this.usuarioActual.telefono = this.telefono;
       this.usuarioActual.id_roll = this.id_roll;
-  
+
       try {
         await this.dbService.updateUsuario(this.usuarioActual);
         await this.cargarUsuarios();
@@ -99,7 +99,7 @@ export class UsuariosPage implements OnInit {
       console.error("Error al eliminar el usuario:", error);
     }
   }
-  
+
 
   limpiarCampos() {
     this.nombre = '';
