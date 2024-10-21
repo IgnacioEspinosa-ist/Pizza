@@ -56,28 +56,27 @@ export class CartPage implements OnInit {
 
   async eliminarProductoDelCarrito(indice: number): Promise<void> {
     try {
-      const producto = await this.dbService.buscarProductoPorIndice(indice);
+      // Obtener el carrito almacenado desde Native Storage
+      const storedCarrito: Producto[] = await this.storage.get('selectedProductId') || [];
 
-      if (producto) {
-        // Lógica para eliminar el producto del carrito y manejar el almacenamiento
-        const storedCarrito: Producto[] = await this.storage.get('carrito') || [];
-        const posicion = storedCarrito.findIndex(p => p.id_prod === producto.id_prod);
+      // Verificar si el índice es válido
+      if (indice >= 0 && indice < storedCarrito.length) {
+        const productoEliminado = storedCarrito[indice]; // Obtener el producto a eliminar
 
-        if (posicion !== -1) {
-          storedCarrito.splice(posicion, 1);
-          await this.storage.set('carrito', storedCarrito);
+        // Eliminar el producto del carrito
+        storedCarrito.splice(indice, 1);
+        await this.storage.set('selectedProductId', storedCarrito);
 
-          const alert = await this.alertController.create({
-            header: 'Producto Eliminado',
-            message: `El producto "${producto.nombre}" ha sido eliminado del carrito.`,
-            buttons: ['Entendido']
-          });
-          await alert.present();
-        }
+        const alert = await this.alertController.create({
+          header: 'Producto Eliminado',
+          message: `El producto "${productoEliminado.nombre}" ha sido eliminado del carrito.`,
+          buttons: ['Entendido']
+        });
+        await alert.present();
       } else {
         const alert = await this.alertController.create({
-          header: 'Producto No Encontrado',
-          message: 'No se encontró el producto en la base de datos.',
+          header: 'Índice No Válido',
+          message: 'El índice especificado no es válido.',
           buttons: ['Entendido']
         });
         await alert.present();
@@ -91,6 +90,7 @@ export class CartPage implements OnInit {
       await alert.present();
     }
   }
+
 
 
   async presentAlert() {
