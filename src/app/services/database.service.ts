@@ -86,8 +86,8 @@ export class DatabaseService {
   registroComuna2: string ="INSERT INTO comuna (nombre_comuna) values ('Quilicura')"
 
   //
-  registroPedido1: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (sysdate,'1','1',12000,10,'pendiente')" 
-  registroPedido2: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (sysdate,'2','2',8000,10,'pendiente')" 
+  registroPedido1: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'1','1',12000,10,'pendiente')" 
+  registroPedido2: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'2','2',8000,10,'pendiente')" 
 
   registerRol1: string="INSERT INTO roll (nombre) values ('Usuario')"
   registerRol2: string="INSERT INTO roll (nombre) values ('Repartidor')"
