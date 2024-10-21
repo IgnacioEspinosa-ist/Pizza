@@ -28,8 +28,8 @@ export class CartPage implements OnInit {
   async ngOnInit() {
     await this.storage.create();
     
-    // Cargar productos del storage al carrito
-    const storedCarrito = await this.storage.get('carrito');
+  
+    const storedCarrito = await this.storage.get('selectedProductId');
     if (storedCarrito) {
         this.carrito = storedCarrito;
     }
@@ -63,7 +63,7 @@ export class CartPage implements OnInit {
 
   vaciarCarrito(): void {
     this.carritoService.vaciarCarrito();
-    this.storage.remove('carrito');
+    this.storage.remove('selectedProductId');
   }
 
   obtenerTotalCarrito(): number {
@@ -71,7 +71,7 @@ export class CartPage implements OnInit {
   }
 
   async actualizarStorage() {
-    await this.storage.set('carrito', this.carrito); // Almacenar el carrito completo
+    await this.storage.set('selectedProductId', this.carrito); // Almacenar el carrito completo
 }
 
   finalizarCompra() {
