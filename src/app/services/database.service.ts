@@ -87,10 +87,11 @@ export class DatabaseService {
 
   //
   registroPedido1: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (sysdate,'1','1',12000,10,'pendiente')" 
-  
   registroPedido2: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (sysdate,'2','2',8000,10,'pendiente')" 
 
-  
+  registerRol1: string="INSERT INTO roll (nombre) values ('Usuario')"
+  registerRol2: string="INSERT INTO roll (nombre) values ('Repartidor')"
+  registerRol3: string="INSERT INTO roll (nombre) values ('Admin')"
 
   //variable de tipo observable para ver el estado de la base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
