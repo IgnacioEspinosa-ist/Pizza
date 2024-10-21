@@ -29,6 +29,12 @@ export class CartPage implements OnInit {
     await this.storage.create();
     
     const storedCarrito = await this.storage.get('carrito'); // Cambiar a 'carrito'
+
+    this.alertController.create({
+      header: 'storedCarrito'+ JSON.stringify(storedCarrito),
+      buttons: ['entendido']
+    })
+
     if (storedCarrito) {
         this.carrito = storedCarrito;
     }
