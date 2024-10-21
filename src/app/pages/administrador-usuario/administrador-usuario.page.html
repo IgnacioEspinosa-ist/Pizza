@@ -46,8 +46,12 @@
 
   <ion-item>
     <ion-label>Foto</ion-label>
-    <ion-button (click)="tomarFoto()">Tomar Foto</ion-button>
+    <ion-button (click)="takePicture()">Tomar Foto</ion-button>
   </ion-item>
+
+  <div *ngIf="imagen">
+    <img [src]="imagen" alt="Foto del usuario" style="width: 100px; height: 100px; margin-top: 10px; border-radius: 5px;">
+  </div>
 
 
 
