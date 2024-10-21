@@ -54,41 +54,62 @@ export class CartPage implements OnInit {
   //aquiiiiiiiii
   //buscarProductoPorId
 
-  async buscarProductoPorId(id_prod: number): Promise<void> {
+  async eliminarProductoDelCarrito(posicion: number): Promise<void> {
     try {
       // Obtener el carrito almacenado
       const storedCarrito: Producto[] = await this.storage.get('carrito') || [];
 
-      // Buscar el producto por su id en el carrito
-      const productoEncontrado = storedCarrito.find(p => p.id_prod === id_prod);
+      // Verificar si la posición es válida
+      if (posicion >= 0 && posicion < storedCarrito.length) {
+        // Obtener el id_prod del producto que se va a eliminar
+        const id_prod = storedCarrito[posicion].id_prod;
 
-      if (productoEncontrado) {
-        // Si el producto es encontrado, mostrar alerta con detalles del producto
-        const alert = await this.alertController.create({
-          header: 'Producto Encontrado',
-          message: `Producto: ${productoEncontrado.nombre} \nPrecio: ${productoEncontrado.precio}`,
-          buttons: ['Entendido']
-        });
-        await alert.present();
+        // Verificar si el producto existe en la base de datos
+        const producto = await this.dbService.buscarProductoPorId(id_prod);
+
+        if (producto) {
+          // Si el producto existe, proceder a eliminarlo del carrito
+          storedCarrito.splice(posicion, 1);
+          await this.storage.set('carrito', storedCarrito);
+
+          const alert = await this.alertController.create({
+            header: 'Producto Eliminado',
+            message: `El producto "${producto.nombre}" ha sido eliminado del carrito.`,
+            buttons: ['Entendido']
+          });
+          await alert.present();
+
+          // Actualizar la lista de productos en el carrito
+          this.productos = await this.dbService.getProductosById(storedCarrito.map(p => p.id_prod));
+        } else {
+          // Si el producto no se encuentra en la base de datos, mostrar alerta
+          const alert = await this.alertController.create({
+            header: 'Producto No Encontrado',
+            message: `No se encontró el producto con ID: ${id_prod} en la base de datos.`,
+            buttons: ['Entendido']
+          });
+          await alert.present();
+        }
       } else {
-        // Si no se encuentra el producto, mostrar una alerta de error
+        // Manejo de posición inválida
         const alert = await this.alertController.create({
-          header: 'Producto No Encontrado',
-          message: `No se encontró un producto con el ID: ${id_prod}.`,
+          header: 'Posición No Válida',
+          message: `No se encontró un producto en la posición ${posicion + 1}.`,
           buttons: ['Entendido']
         });
         await alert.present();
       }
     } catch (error) {
-      // Manejo de errores en caso de fallo al acceder al almacenamiento o la base de datos
+      // Manejo de errores generales
       const alert = await this.alertController.create({
         header: 'Error',
-        message: `Ocurrió un error al intentar buscar el producto: ${error}`,
+        message: `Ocurrió un error al intentar eliminar el producto: ${error}`,
         buttons: ['Entendido']
       });
       await alert.present();
     }
   }
+
 
 
   async presentAlert() {
