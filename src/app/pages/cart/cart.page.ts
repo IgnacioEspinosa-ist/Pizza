@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class CartPage implements OnInit {
   carrito: Producto[] = [];
-  productos: Producto[] = []; 
+  productos: Producto[] = [];
   id_user: number | null = null;
   id_direccion: number | null = null;
 
@@ -27,27 +27,27 @@ export class CartPage implements OnInit {
 
   async ngOnInit() {
     await this.storage.create();
-    
+
     const storedCarrito = await this.storage.get('selectedProductId'); // Cambiar a 'carrito'
 
     this.alertController.create({
-      header: 'storedCarrito'+ JSON.stringify(storedCarrito),
+      header: 'storedCarrito' + JSON.stringify(storedCarrito),
       buttons: ['entendido']
     })
 
     this.productos = this.dbService.getProductosById(storedCarrito)
 
+
+    /*
+        if (storedCarrito) {
+            this.carrito = storedCarrito;
+        }
     
-/*
-    if (storedCarrito) {
-        this.carrito = storedCarrito;
-    }
-
-    this.dbService.productos$.subscribe((data: Producto[]) => {
-        this.productos = data; 
-    });
-
-    this.dbService.fetchProductos(); */
+        this.dbService.productos$.subscribe((data: Producto[]) => {
+            this.productos = data; 
+        });
+    
+        this.dbService.fetchProductos(); */
   }
 
   async presentAlert() {
@@ -70,7 +70,7 @@ export class CartPage implements OnInit {
   }
 
   vaciarCarrito(): void {
-    this.carritoService.vaciarCarrito();
+    this.dbService.vaciarCarrito();
     this.storage.remove('carrito'); // Cambiar a 'carrito'
   }
 
@@ -109,19 +109,19 @@ export class CartPage implements OnInit {
   }
 
   async agregarProductoAlCarrito() {
-    const productId = await this.storage.get('selectedProductId'); 
-    
+    const productId = await this.storage.get('selectedProductId');
+
     if (productId) {
-        const producto = this.productos.find(p => p.id_prod === productId);
-    
-        if (producto) {
-            this.carritoService.agregarProducto(producto);
-            await this.actualizarStorage(); // Asegúrate de esperar
-        } else {
-            console.error('Producto no encontrado');
-        }
+      const producto = this.productos.find(p => p.id_prod === productId);
+
+      if (producto) {
+        this.carritoService.agregarProducto(producto);
+        await this.actualizarStorage(); // Asegúrate de esperar
+      } else {
+        console.error('Producto no encontrado');
+      }
     }
-}
+  }
 
   async verDetalleProducto(producto: Producto) {
     await this.storage.set('selectedProductId', producto.id_prod);

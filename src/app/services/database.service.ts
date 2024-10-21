@@ -402,6 +402,11 @@ export class DatabaseService {
 
   }
 
+  vaciarCarrito(): void {
+    
+    this.productos = [];
+    console.log('Carrito vacío');
+  }
     
 
     
