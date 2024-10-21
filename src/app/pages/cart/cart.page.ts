@@ -28,13 +28,17 @@ export class CartPage implements OnInit {
   async ngOnInit() {
     await this.storage.create();
     
-    const storedCarrito = await this.storage.get('carrito'); // Cambiar a 'carrito'
+    const storedCarrito = await this.storage.get('selectedProductId'); // Cambiar a 'carrito'
 
     this.alertController.create({
       header: 'storedCarrito'+ JSON.stringify(storedCarrito),
       buttons: ['entendido']
     })
 
+    this.dbService.getProductoById(storedCarrito).subscribe(res=>{
+      this.productos.push(res)
+    })
+/*
     if (storedCarrito) {
         this.carrito = storedCarrito;
     }
@@ -43,7 +47,7 @@ export class CartPage implements OnInit {
         this.productos = data; 
     });
 
-    this.dbService.fetchProductos(); 
+    this.dbService.fetchProductos(); */
   }
 
   async presentAlert() {
