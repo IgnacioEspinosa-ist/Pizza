@@ -4,7 +4,7 @@ import { CarritoService } from 'src/app/services/carrito.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { Producto } from 'src/app/services/producto';
 import { Storage } from '@ionic/storage-angular';
-import { Router } from '@angular/router'; // Asegúrate de importar Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +13,7 @@ import { Router } from '@angular/router'; // Asegúrate de importar Router
 })
 export class CartPage implements OnInit {
   carrito: Producto[] = [];
-  productos: Producto[] = []; // Agregar un array para los productos disponibles
+  productos: Producto[] = []; 
   id_user: number | null = null;
   id_direccion: number | null = null;
 
@@ -22,25 +22,23 @@ export class CartPage implements OnInit {
     private carritoService: CarritoService,
     private dbService: DatabaseService,
     private storage: Storage,
-    private router: Router // Inyectar el Router
+    private router: Router
   ) { }
 
   async ngOnInit() {
     await this.storage.create();
     
-  
-    const storedCarrito = await this.storage.get('selectedProductId');
+    const storedCarrito = await this.storage.get('carrito'); // Cambiar a 'carrito'
     if (storedCarrito) {
         this.carrito = storedCarrito;
     }
 
-    // Cargar los productos de la base de datos
     this.dbService.productos$.subscribe((data: Producto[]) => {
-        this.productos = data; // Asignar los productos obtenidos a la variable
+        this.productos = data; 
     });
 
-    this.dbService.fetchProductos(); // Obtener productos desde la base de datos
-}
+    this.dbService.fetchProductos(); 
+  }
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -48,22 +46,22 @@ export class CartPage implements OnInit {
       buttons: ['Entendido'],
     });
 
-    await alert.present();
+    alert.present(); // Eliminar 'await'
   }
 
-  agregarProducto(producto: Producto): void {
+  async agregarProducto(producto: Producto): Promise<void> {
     this.carritoService.agregarProducto(producto);
-    this.actualizarStorage();
+    await this.actualizarStorage();
   }
 
-  eliminarProducto(id_prod: number): void {
+  async eliminarProducto(id_prod: number): Promise<void> {
     this.carritoService.quitarProducto(id_prod);
-    this.actualizarStorage();
+    await this.actualizarStorage();
   }
 
   vaciarCarrito(): void {
     this.carritoService.vaciarCarrito();
-    this.storage.remove('selectedProductId');
+    this.storage.remove('carrito'); // Cambiar a 'carrito'
   }
 
   obtenerTotalCarrito(): number {
@@ -71,8 +69,8 @@ export class CartPage implements OnInit {
   }
 
   async actualizarStorage() {
-    await this.storage.set('selectedProductId', this.carrito); // Almacenar el carrito completo
-}
+    await this.storage.set('carrito', this.carritoService.obtenerProductos()); // Cambiar a 'carrito'
+  }
 
   finalizarCompra() {
     if (this.id_user === null || this.id_direccion === null) {
@@ -100,30 +98,23 @@ export class CartPage implements OnInit {
     });
   }
 
-  
-
   async agregarProductoAlCarrito() {
-    const productId = await this.storage.get('selectedProductId'); // Recuperar el ID del producto
+    const productId = await this.storage.get('selectedProductId'); 
     
     if (productId) {
-        // Buscar el producto en la lista de productos cargados
         const producto = this.productos.find(p => p.id_prod === productId);
     
         if (producto) {
-            this.carritoService.agregarProducto(producto); // Agregar el producto al carrito
-            this.actualizarStorage(); // Actualizar el storage
+            this.carritoService.agregarProducto(producto);
+            await this.actualizarStorage(); // Asegúrate de esperar
         } else {
             console.error('Producto no encontrado');
         }
     }
 }
 
-
   async verDetalleProducto(producto: Producto) {
-    // Almacenar el id del producto en Storage
     await this.storage.set('selectedProductId', producto.id_prod);
-    // Navegar a la página de detalle del producto
     this.router.navigate(['/detalle-producto']);
   }
 }
-
