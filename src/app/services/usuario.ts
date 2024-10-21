@@ -5,8 +5,8 @@ export class Usuario {
     rut!: string;            
     correo!: string;        
     clave!: string;         
-    telefono?: string;       
-    id_roll?: number;        
+    telefono?: string | null;       
+    id_roll?: number | null;        
     foto?: any;           
 }
 

@@ -52,7 +52,7 @@ export class CartPage implements OnInit {
 
 
   //aquiiiiiiiii
-
+ //buscarProductoPorId
 
   async eliminarProductoDelCarrito(posicion: number): Promise<void> {
     await this.storage.create();
@@ -93,7 +93,7 @@ export class CartPage implements OnInit {
       buttons: ['Entendido'],
     });
 
-    alert.present(); // Eliminar 'await'
+    alert.present(); 
   }
 
   async agregarProducto(producto: Producto): Promise<void> {
@@ -108,15 +108,15 @@ export class CartPage implements OnInit {
 
   vaciarCarrito(): void {
     this.productos = []
-    this.storage.set('selectedProductId', []); // Cambiar a 'carrito'
+    this.storage.set('selectedProductId', []); 
   }
 
   obtenerTotalCarrito(): number {
-    return this.carritoService.obtenerTotalProductos();
+    return this.productos.reduce((total, producto) => total + (producto.precio * producto.stock), 0);
   }
 
   async actualizarStorage() {
-    await this.storage.set('carrito', this.carritoService.obtenerProductos()); // Cambiar a 'carrito'
+    await this.storage.set('carrito', this.carritoService.obtenerProductos()); 
   }
 
   finalizarCompra() {
@@ -153,7 +153,7 @@ export class CartPage implements OnInit {
 
       if (producto) {
         this.carritoService.agregarProducto(producto);
-        await this.actualizarStorage(); // Asegúrate de esperar
+        await this.actualizarStorage(); 
       } else {
         console.error('Producto no encontrado');
       }
