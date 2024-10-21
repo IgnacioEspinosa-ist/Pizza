@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DatabaseService } from '../../services/database.service'; // Importar tu servicio de base de datos
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+
 
 @Component({
   selector: 'app-login',
@@ -18,6 +20,9 @@ export class LoginPage {
       try {
         const usuarioValido = await this.dbService.validarUsuario(this.username, this.password);
         if (usuarioValido) {
+
+          await Haptics.impact({ style: ImpactStyle.Medium }); //vibra al iniciar sesion
+
           if (usuarioValido.id_roll === 1) {
             this.navCtrl.navigateForward('/home'); // Navegar al dashboard del usuario regular
           } else if (usuarioValido.id_roll === 2) {

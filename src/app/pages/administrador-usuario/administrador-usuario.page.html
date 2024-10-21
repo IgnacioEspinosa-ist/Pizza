@@ -30,5 +30,30 @@
     <ion-input [(ngModel)]="newUser.clave" required type="password"></ion-input>
   </ion-item>
 
+  <ion-item>
+    <ion-label position="floating">Teléfono</ion-label>
+    <ion-input [(ngModel)]="newUser.telefono" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Rol</ion-label>
+    <ion-select [(ngModel)]="newUser.id_roll" required>
+      <ion-select-option value="1">Usuario</ion-select-option>
+      <ion-select-option value="2">Repartidor</ion-select-option>
+      <ion-select-option value="3">Admin</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Foto</ion-label>
+    <ion-button (click)="takePicture()">Tomar Foto</ion-button>
+  </ion-item>
+
+  <div *ngIf="imagen">
+    <img [src]="imagen" alt="Foto del usuario" style="width: 100px; height: 100px; margin-top: 10px; border-radius: 5px;">
+  </div>
+
+
+
   <ion-button expand="full" (click)="addUsuario()">Guardar Usuario</ion-button>
 </ion-content>
