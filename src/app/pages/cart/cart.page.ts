@@ -50,6 +50,43 @@ export class CartPage implements OnInit {
         this.dbService.fetchProductos(); */
   }
 
+
+  //aquiiiiiiiii
+
+
+  async eliminarProductoDelCarrito(posicion: number): Promise<void> {
+    await this.storage.create();
+
+
+    const storedCarrito: Producto[] = await this.storage.get('carrito') || [];
+
+
+    if (posicion >= 0 && posicion < storedCarrito.length) {
+
+      storedCarrito.splice(posicion, 1);
+
+
+      await this.storage.set('carrito', storedCarrito);
+
+
+      this.alertController.create({
+        header: 'Producto Eliminado',
+        message: `El producto en la posición ${posicion + 1} ha sido eliminado del carrito.`,
+        buttons: ['Entendido']
+      }).then(alert => alert.present());
+
+
+      this.productos = await this.dbService.getProductosById(storedCarrito.map(p => p.id_prod));
+    } else {
+
+      this.alertController.create({
+        header: 'Posición No Válida',
+        message: `No se encontró un producto en la posición ${posicion + 1}.`,
+        buttons: ['Entendido']
+      }).then(alert => alert.present());
+    }
+  }
+
   async presentAlert() {
     const alert = await this.alertController.create({
       header: 'Compra Realizada Con Éxito',
@@ -70,8 +107,8 @@ export class CartPage implements OnInit {
   }
 
   vaciarCarrito(): void {
-    this.dbService.vaciarCarrito();
-    this.storage.remove('carrito'); // Cambiar a 'carrito'
+    this.productos = []
+    this.storage.set('selectedProductId', []); // Cambiar a 'carrito'
   }
 
   obtenerTotalCarrito(): number {
