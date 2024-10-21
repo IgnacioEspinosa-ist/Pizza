@@ -27,16 +27,20 @@ export class CartPage implements OnInit {
 
   async ngOnInit() {
     await this.storage.create();
-    this.carrito = this.carritoService.obtenerProductos(); // Obtener productos del carrito
+    
+    // Cargar productos del storage al carrito
+    const storedCarrito = await this.storage.get('carrito');
+    if (storedCarrito) {
+        this.carrito = storedCarrito;
+    }
 
-    // Suscribirse al observable de productos
+    // Cargar los productos de la base de datos
     this.dbService.productos$.subscribe((data: Producto[]) => {
-      this.productos = data; // Asignar los productos obtenidos a la variable
+        this.productos = data; // Asignar los productos obtenidos a la variable
     });
 
-    // Llamar al método para obtener los productos
-    this.dbService.fetchProductos();
-  }
+    this.dbService.fetchProductos(); // Obtener productos desde la base de datos
+}
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -67,9 +71,8 @@ export class CartPage implements OnInit {
   }
 
   async actualizarStorage() {
-    const idsCarrito = this.carrito.map(p => p.id_prod);
-    await this.storage.set('carrito', idsCarrito);
-  }
+    await this.storage.set('carrito', this.carrito); // Almacenar el carrito completo
+}
 
   finalizarCompra() {
     if (this.id_user === null || this.id_direccion === null) {
@@ -97,21 +100,24 @@ export class CartPage implements OnInit {
     });
   }
 
+  
+
   async agregarProductoAlCarrito() {
     const productId = await this.storage.get('selectedProductId'); // Recuperar el ID del producto
-  
+    
     if (productId) {
-      // Aquí deberías buscar el producto en tu lista de productos o base de datos
-      const producto = this.productos.find(p => p.id_prod === productId);
-  
-      if (producto) {
-        // Llamar al servicio para agregar el producto al carrito
-        await this.carritoService.agregarProducto(producto);
-      } else {
-        console.error('Producto no encontrado');
-      }
+        // Buscar el producto en la lista de productos cargados
+        const producto = this.productos.find(p => p.id_prod === productId);
+    
+        if (producto) {
+            this.carritoService.agregarProducto(producto); // Agregar el producto al carrito
+            this.actualizarStorage(); // Actualizar el storage
+        } else {
+            console.error('Producto no encontrado');
+        }
     }
-  }
+}
+
 
   async verDetalleProducto(producto: Producto) {
     // Almacenar el id del producto en Storage
@@ -120,3 +126,4 @@ export class CartPage implements OnInit {
     this.router.navigate(['/detalle-producto']);
   }
 }
+
