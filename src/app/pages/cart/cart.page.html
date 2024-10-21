@@ -10,7 +10,7 @@
       <ion-label>
         <h2>{{ producto.nombre }}</h2>
         <p>Precio: {{ producto.precio | currency }}</p>
-        <p>Cantidad: {{ producto.stock }}</p>
+        
       </ion-label>
       <ion-buttons slot="end">
         <ion-button (click)="eliminarProductoDelCarrito(producto.id_prod)">
