@@ -33,7 +33,15 @@ export class HomePage {
 
   async verDetalleProducto(producto: Producto) {
     // Almacenar el id del producto en Storage
-    await this.storage.set('selectedProductId', producto.id_prod);
+    try {
+      const arregloProductos = await this.storage.get('selectedProductId');
+      arregloProductos.push(producto.id_prod)
+      await this.storage.set('selectedProductId', arregloProductos);
+    } catch (error) {
+      const arregloProductos = [producto.id_prod]
+      await this.storage.set('selectedProductId', arregloProductos);
+    }
+    
 
     // Navegar a la página de detalle del producto
     this.router.navigate(['/detalle-producto']);

@@ -35,9 +35,9 @@ export class CartPage implements OnInit {
       buttons: ['entendido']
     })
 
-    this.dbService.getProductoById(storedCarrito).subscribe(res=>{
-      this.productos.push(res)
-    })
+    this.productos = this.dbService.getProductoById(storedCarrito)
+
+    
 /*
     if (storedCarrito) {
         this.carrito = storedCarrito;
