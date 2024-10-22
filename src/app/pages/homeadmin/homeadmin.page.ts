@@ -14,6 +14,7 @@ export class AdminPage implements OnInit {
   precio: number = 0;
   stock: number = 0;
   productoActual: Producto | null = null; // Para gestionar la edición
+  nuevoProducto: Producto  = new Producto ();
 
   constructor(private dbService: DatabaseService, private route: ActivatedRoute) {} // Asegúrate de inyectar ActivatedRoute aquí
 
@@ -28,22 +29,12 @@ export class AdminPage implements OnInit {
   }
 
   async agregarProducto() {
-    if (!this.nombre || this.precio == null || this.stock == null) {
-      console.warn('Todos los campos son obligatorios');
-      return;
-    }
+   
 
-    const nuevoProducto: Producto = {
-      id_prod: 0, 
-      nombre: this.nombre,
-      precio: this.precio,
-      stock: this.stock,
-      
-    
-    };
+   
 
     try {
-      await this.dbService.insertProducto(nuevoProducto);
+      await this.dbService.insertProducto(this.nuevoProducto);
       this.limpiarCampos(); // Limpiar los campos después de agregar
       this.dbService.fetchProductos(); // Actualizar la lista de productos
     } catch (error) {
