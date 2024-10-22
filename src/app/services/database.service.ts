@@ -680,6 +680,7 @@ export class DatabaseService {
   }
 
   async insertUsuario(usuario: Usuario): Promise<void> {
+    this.presentAlert('prueba', JSON.stringify(usuario))
     const sql = `
         INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
