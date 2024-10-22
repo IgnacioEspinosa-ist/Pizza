@@ -728,21 +728,10 @@ export class DatabaseService {
 
   async updateUsuario(usuario: Usuario): Promise<void> {
     const sql = `
-      UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
+      UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto_u = ? 
       WHERE id_user = ?`;
 
-    console.log(sql, [
-      usuario.nombre,
-      usuario.apellido,
-      usuario.rut,
-      usuario.correo,
-      usuario.clave,
-      usuario.telefono,
-      usuario.id_roll,
-      usuario.foto,
-      usuario.id_user
-    ]); // Log para depuración
-
+   
     try {
       const result = await this.database.executeSql(sql, [
         usuario.nombre,
