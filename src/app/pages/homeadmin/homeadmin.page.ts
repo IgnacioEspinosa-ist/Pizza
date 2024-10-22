@@ -14,6 +14,7 @@ export class AdminPage implements OnInit {
   descripcion: string = '';
   precio: number = 0;
   stock: number = 0;
+  imagen: string = '';
   productoActual: Producto | null = null; // Para gestionar la edición
   nuevoProducto: Producto  = new Producto ();
 
