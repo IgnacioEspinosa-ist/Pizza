@@ -825,7 +825,10 @@ addPedido(total: number, id_user: number) {
   }
 
 
-
+  public insertUsuarioR(usuario: Usuario): Promise<any> {
+    const sql = 'INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) VALUES (?, ?, ?, ?, ?, ?, 1, ?)';
+    return this.database.executeSql(sql, [usuario.nombre, usuario.apellido, usuario.rut, usuario.correo, usuario.clave, usuario.telefono, usuario.id_roll, usuario.foto]);
+  }
 
 
 
