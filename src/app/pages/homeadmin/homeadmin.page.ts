@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AdminPage implements OnInit {
   productos: Producto[] = [];
   nombre: string = '';
+  descripcion! :Text ;
   precio: number = 0;
   stock: number = 0;
   productoActual: Producto | null = null; // Para gestionar la edición
