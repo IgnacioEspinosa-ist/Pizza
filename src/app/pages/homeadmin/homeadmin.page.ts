@@ -14,18 +14,20 @@ export class AdminPage implements OnInit {
   descripcion: string = '';
   precio: number = 0;
   stock: number = 0;
+  imagen: string = '';
   productoActual: Producto | null = null; // Para gestionar la edición
+  nuevoProducto: Producto  = new Producto ();
 
-  constructor(private dbService: DatabaseService, private route: ActivatedRoute) {} 
+  constructor(private dbService: DatabaseService, private route: ActivatedRoute) {} // Asegúrate de inyectar ActivatedRoute aquí
 
   ngOnInit() {
-   
+    // Suscribirse al observable productos$
     this.dbService.productos$.subscribe((productos: Producto[]) => {
       this.productos = productos;
     });
 
-   
-    this.dbService.fetchProductos(); 
+    // Cargar los productos desde la base de datos
+    this.dbService.fetchProductos(); // Llamada que actualiza el observable
   }
 
   async agregarProducto() {
@@ -34,7 +36,7 @@ export class AdminPage implements OnInit {
    
 
     try {
-      await this.dbService.insertProducto(nuevoProducto);
+      await this.dbService.insertProducto(this.nuevoProducto);
       this.limpiarCampos(); // Limpiar los campos después de agregar
       this.dbService.fetchProductos(); // Actualizar la lista de productos
     } catch (error) {
@@ -45,7 +47,7 @@ export class AdminPage implements OnInit {
   async eliminarProducto(id: number) {
     try {
       await this.dbService.deleteProducto(id);
-      this.dbService.fetchProductos(); 
+      this.dbService.fetchProductos(); // Actualizar la lista de productos después de eliminar
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
@@ -65,7 +67,7 @@ export class AdminPage implements OnInit {
     }
 
     if (this.productoActual) {
-      
+      // Actualizar los valores del producto actual
       this.productoActual.nombre = this.nombre;
       this.productoActual.precio = this.precio;
       this.productoActual.stock = this.stock;
@@ -73,7 +75,7 @@ export class AdminPage implements OnInit {
       try {
         await this.dbService.updateProducto(this.productoActual);
         this.limpiarCampos();
-        this.dbService.fetchProductos(); 
+        this.dbService.fetchProductos(); // Actualizar la lista de productos
       } catch (error) {
         console.error("Error al modificar el producto:", error);
       }
