@@ -127,14 +127,15 @@ export class CartPage implements OnInit {
   }
 
   finalizarCompra() {
-    if (this.id_user === null || this.id_direccion === null) {
-      console.warn('ID de usuario o dirección no disponibles');
+    if (this.id_user === null) {
+      console.warn('ID de usuario no disponible');
       return;
     }
-
+  
     const total = this.obtenerTotalCarrito();
-
-    this.dbService.addPedido(total, this.id_user, this.id_direccion).subscribe({
+  
+    // Insertar el pedido sin la dirección
+    this.dbService.addPedido(total, this.id_user, null!).subscribe({
       next: (id_pedido: number) => {
         this.dbService.addDetallePedido(id_pedido, this.carrito).subscribe({
           next: () => {
@@ -151,6 +152,7 @@ export class CartPage implements OnInit {
       }
     });
   }
+
 
   async agregarProductoAlCarrito() {
     const productId = await this.storage.get('selectedProductId');

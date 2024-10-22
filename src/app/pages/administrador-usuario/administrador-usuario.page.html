@@ -53,6 +53,8 @@
     <img [src]="imagen" alt="Foto del usuario" style="width: 100px; height: 100px; margin-top: 10px; border-radius: 5px;">
   </div>
 
+  <ion-button expand="full" (click)="addUsuario()">Guardar Usuario</ion-button>
+
   <ion-list>
     <ion-item *ngFor="let usuario of usuarios">
       <ion-thumbnail slot="start">
@@ -74,5 +76,5 @@
 
 
 
-  <ion-button expand="full" (click)="addUsuario()">Guardar Usuario</ion-button>
+  
 </ion-content>
