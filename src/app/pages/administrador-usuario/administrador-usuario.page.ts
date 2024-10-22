@@ -55,9 +55,9 @@ export class UsuariosPage implements OnInit {
    
 
     try {
-      await this.dbService.insertUsuario(this.newUser); // Llama a la función insertUsuario
+      await this.dbService.insertUsuario(this.newUser); 
       this.presentAlert('Éxito', 'Usuario creado exitosamente');
-      this.limpiarCampos(); // Limpiar campos después de crear el usuario
+       
     } catch (err) {
       this.presentAlert('Error', 'Error al crear usuario: ' + err);
     }
@@ -98,7 +98,7 @@ export class UsuariosPage implements OnInit {
       try {
         await this.dbService.updateUsuario(this.usuarioActual);
         await this.cargarUsuarios();
-        this.limpiarCampos();
+        
       } catch (error) {
         console.error("Error al modificar el usuario:", error);
       }
@@ -127,12 +127,5 @@ export class UsuariosPage implements OnInit {
     // Si deseas actualizar la vista inmediatamente, puedes usar un método para hacerlo
   }
 
-  limpiarCampos() {
-    this.nombre = '';
-    this.telefono = '';
-    this.email = '';
-    this.id_roll = 0; // Cambiar a null
-    this.usuarioActual = null;
-    this.imagen = ''; // Limpiar imagen
-  }
+ 
 }
