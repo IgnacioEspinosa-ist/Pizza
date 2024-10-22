@@ -620,7 +620,7 @@ export class DatabaseService {
 
   insertProducto(producto: Producto): void {
     const sql = `
-        INSERT INTO producto (nombre, precio, stock, foto, id_cat) 
+        INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
         VALUES (?, ?, ?, ?, ?)`;
 
     this.database.executeSql(sql, [
@@ -731,7 +731,7 @@ export class DatabaseService {
       UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto_u = ? 
       WHERE id_user = ?`;
 
-   
+
     try {
       const result = await this.database.executeSql(sql, [
         usuario.nombre,
