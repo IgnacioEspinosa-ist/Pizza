@@ -292,7 +292,7 @@ export class DatabaseService {
         productos.push({
           id_prod: res.rows.item(i).id_prod,
           nombre: res.rows.item(i).nombre,
-
+          descripcion: res.rows.item(i).descripcion,
           precio: res.rows.item(i).precio,
           stock: res.rows.item(i).stock,
           foto: res.rows.item(i).foto_PRODUCTO,
@@ -377,7 +377,7 @@ export class DatabaseService {
             const producto: Producto = {
               id_prod: res.rows.item(0).id_prod,
               nombre: res.rows.item(0).nombre,
-
+              descripcion: res.rows.item(0).descripcion,
               precio: res.rows.item(0).precio,
               stock: res.rows.item(0).stock,
               foto: res.rows.item(0).foto_PRODUCTO,
@@ -405,7 +405,7 @@ export class DatabaseService {
             const producto: Producto = {
               id_prod: res.rows.item(0).id_prod,
               nombre: res.rows.item(0).nombre,
-
+              descripcion: res.rows.item(0).descripcion,
               precio: res.rows.item(0).precio,
               stock: res.rows.item(0).stock,
               foto: res.rows.item(0).foto_PRODUCTO,
@@ -433,6 +433,7 @@ export class DatabaseService {
             const producto: Producto = {
               id_prod: res.rows.item(0).id_prod,
               nombre: res.rows.item(0).nombre,
+              descripcion: res.rows.item(0).descripcion,
               precio: res.rows.item(0).precio,
               stock: res.rows.item(0).stock,
               foto: res.rows.item(0).foto_PRODUCTO,
@@ -626,6 +627,7 @@ export class DatabaseService {
 
     this.database.executeSql(sql, [
       producto.nombre,
+      producto.descripcion,
       producto.precio,
       producto.stock,
       producto.foto,
