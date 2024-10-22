@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
 import { Producto } from 'src/app/services/producto';
 import { ActivatedRoute } from '@angular/router';
+import { Camera, CameraResultType } from '@capacitor/camera';
+
 
 @Component({
   selector: 'app-admin',
@@ -80,6 +82,18 @@ export class AdminPage implements OnInit {
         console.error("Error al modificar el producto:", error);
       }
     }
+  }
+
+  async takePicture() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+    });
+
+    this.imagen = image.webPath ?? 'assets/perfil1.jpg'; 
+
+   
   }
 
   limpiarCampos() {
