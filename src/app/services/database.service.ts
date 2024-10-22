@@ -683,7 +683,7 @@ export class DatabaseService {
   }
 
   async insertUsuario(usuario: Usuario): Promise<void> {
-    this.presentAlert('prueba', JSON.stringify(usuario))
+
     const sql = `
         INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
@@ -701,7 +701,7 @@ export class DatabaseService {
       this.refreshUsuarioList();
       this.presentAlert('Éxito', 'Usuario añadido correctamente.');
     } catch (error) {
-      this.presentAlert('Error', JSON.stringify(error));
+
     }
   }
 
