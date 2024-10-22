@@ -19,6 +19,11 @@
         <ion-label position="floating">Nombre</ion-label>
         <ion-input [(ngModel)]="nombre" type="text" required></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">descripcion</ion-label>
+        <ion-input [(ngModel)]="descripcion" type="text" required></ion-input>
+      </ion-item>
     
       <ion-item>
         <ion-label position="floating">Precio</ion-label>
@@ -28,6 +33,17 @@
         <ion-label position="floating">Stock</ion-label>
         <ion-input [(ngModel)]="stock" type="number" min="0" required></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-label>Foto</ion-label>
+        <ion-button (click)="takePicture()">Tomar Foto</ion-button>
+      </ion-item>
+    
+      <div *ngIf="imagen">
+        <img [src]="imagen" alt="Foto del usuario" style="width: 100px; height: 100px; margin-top: 10px; border-radius: 5px;">
+      </div>
+
+
 
       <ion-button expand="full" (click)="productoActual ? modificarProducto() : agregarProducto()">
         {{ productoActual ? 'Guardar Cambios' : 'Agregar Producto' }}
