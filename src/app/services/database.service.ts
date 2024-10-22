@@ -682,7 +682,7 @@ export class DatabaseService {
   async insertUsuario(usuario: Usuario): Promise<void> {
     this.presentAlert('prueba', JSON.stringify(usuario))
     const sql = `
-        INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) 
+        INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
     try {
       await this.database.executeSql(sql, [
