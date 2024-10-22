@@ -53,7 +53,7 @@ export class HomerepaPage {
 
   irAMapaRepartidor(pedido: Pedido) {
     // Navegar a la página del mapa, pasando el pedido seleccionado
-    this.router.navigate(['/maparepa'], {
+    this.router.navigate(['/maparapi'], {
       queryParams: {
         id_pedido: pedido.id_pedido,
         id_user: pedido.id_user,
