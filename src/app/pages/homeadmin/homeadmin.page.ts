@@ -34,10 +34,12 @@ export class AdminPage implements OnInit {
     }
 
     const nuevoProducto: Producto = {
-      id_prod: 0, // Asumiendo que el ID será generado por la base de datos
+      id_prod: 0, 
       nombre: this.nombre,
       precio: this.precio,
       stock: this.stock,
+      
+    
     };
 
     try {
