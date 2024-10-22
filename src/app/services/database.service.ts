@@ -698,7 +698,7 @@ export class DatabaseService {
       this.refreshUsuarioList();
       this.presentAlert('Éxito', 'Usuario añadido correctamente.');
     } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir el usuario.');
+      this.presentAlert('Error', JSON.stringify(error));
     }
   }
 
