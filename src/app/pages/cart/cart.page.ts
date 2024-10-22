@@ -54,14 +54,15 @@ export class CartPage implements OnInit {
   //aquiiiiiiiii
   //buscarProductoPorId
 
-  async eliminarProductoDelCarrito(indice: number): Promise<void> {
+  async eliminarProductoDelCarrito(id_prod: number): Promise<void> {
     try {
       // Obtener el carrito almacenado desde Native Storage
       const storedCarrito: Producto[] = await this.storage.get('selectedProductId') || [];
+      const indice = storedCarrito.findIndex(producto => producto.id_prod === id_prod);
 
       // Verificar si el índice es válido
-      if (indice >= 0 && indice < storedCarrito.length) {
-        const productoEliminado = storedCarrito[indice]; // Obtener el producto a eliminar
+      if (indice !== -1) {
+        const productoEliminado = storedCarrito[indice]
 
         // Eliminar el producto del carrito
         storedCarrito.splice(indice, 1);
