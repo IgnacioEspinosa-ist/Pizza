@@ -52,15 +52,7 @@ export class UsuariosPage implements OnInit {
   }
 
   async addUsuario() {
-    // Asegúrate de asignar las propiedades nuevas al nuevo usuario
-    this.newUser.telefono = this.telefono;
-    this.newUser.id_roll = this.id_roll;
-    this.newUser.foto = this.imagen; 
-    this.newUser.nombre = this.nombre; 
-    this.newUser.apellido = this.apellido;
-    this.newUser.rut = this.rut;
-    this.newUser.correo = this.email;
-    this.newUser.clave = this.clave; 
+   
 
     try {
       await this.dbService.insertUsuario(this.newUser); // Llama a la función insertUsuario
