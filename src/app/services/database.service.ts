@@ -292,7 +292,7 @@ export class DatabaseService {
         productos.push({
           id_prod: res.rows.item(i).id_prod,
           nombre: res.rows.item(i).nombre,
-
+          descripcion: res.rows.item(i).descripcion,
           precio: res.rows.item(i).precio,
           stock: res.rows.item(i).stock,
           foto: res.rows.item(i).foto_PRODUCTO,
@@ -377,7 +377,7 @@ export class DatabaseService {
             const producto: Producto = {
               id_prod: res.rows.item(0).id_prod,
               nombre: res.rows.item(0).nombre,
-
+              descripcion: res.rows.item(0).descripcion,
               precio: res.rows.item(0).precio,
               stock: res.rows.item(0).stock,
               foto: res.rows.item(0).foto_PRODUCTO,
@@ -405,7 +405,7 @@ export class DatabaseService {
             const producto: Producto = {
               id_prod: res.rows.item(0).id_prod,
               nombre: res.rows.item(0).nombre,
-
+              descripcion: res.rows.item(0).descripcion,
               precio: res.rows.item(0).precio,
               stock: res.rows.item(0).stock,
               foto: res.rows.item(0).foto_PRODUCTO,
@@ -433,6 +433,7 @@ export class DatabaseService {
             const producto: Producto = {
               id_prod: res.rows.item(0).id_prod,
               nombre: res.rows.item(0).nombre,
+              descripcion: res.rows.item(0).descripcion,
               precio: res.rows.item(0).precio,
               stock: res.rows.item(0).stock,
               foto: res.rows.item(0).foto_PRODUCTO,
@@ -619,12 +620,14 @@ export class DatabaseService {
   }
 
   insertProducto(producto: Producto): void {
+    this.presentAlert('prueba', JSON.stringify(producto))
     const sql = `
-        INSERT INTO producto (nombre, precio, stock, foto, id_cat) 
+        INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
         VALUES (?, ?, ?, ?, ?)`;
 
     this.database.executeSql(sql, [
       producto.nombre,
+      producto.descripcion,
       producto.precio,
       producto.stock,
       producto.foto,
@@ -638,7 +641,7 @@ export class DatabaseService {
       })
       .catch((error) => {
         this.presentAlert('Error', 'No se pudo añadir el producto.');
-        console.error('Error al añadir producto:', error);
+        this.presentAlert('prueba', JSON.stringify(error))
       });
   }
 
@@ -680,9 +683,9 @@ export class DatabaseService {
   }
 
   async insertUsuario(usuario: Usuario): Promise<void> {
-    this.presentAlert('prueba', JSON.stringify(usuario))
+
     const sql = `
-        INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) 
+        INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
     try {
       await this.database.executeSql(sql, [
@@ -698,7 +701,7 @@ export class DatabaseService {
       this.refreshUsuarioList();
       this.presentAlert('Éxito', 'Usuario añadido correctamente.');
     } catch (error) {
-      this.presentAlert('Error', 'No se pudo añadir el usuario.');
+
     }
   }
 
@@ -728,20 +731,9 @@ export class DatabaseService {
 
   async updateUsuario(usuario: Usuario): Promise<void> {
     const sql = `
-      UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
+      UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto_u = ? 
       WHERE id_user = ?`;
 
-    console.log(sql, [
-      usuario.nombre,
-      usuario.apellido,
-      usuario.rut,
-      usuario.correo,
-      usuario.clave,
-      usuario.telefono,
-      usuario.id_roll,
-      usuario.foto,
-      usuario.id_user
-    ]); // Log para depuración
 
     try {
       const result = await this.database.executeSql(sql, [
