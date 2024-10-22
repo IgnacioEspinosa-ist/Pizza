@@ -128,30 +128,31 @@ export class CartPage implements OnInit {
 
   finalizarCompra() {
     if (this.id_user === null) {
-      console.warn('ID de usuario no disponible');
-      return;
+        console.warn('ID de usuario no disponible');
+        return;
     }
-  
+
     const total = this.obtenerTotalCarrito();
-  
-    // Insertar el pedido sin la dirección
-    this.dbService.addPedido(total, this.id_user, null!).subscribe({
-      next: (id_pedido: number) => {
-        this.dbService.addDetallePedido(id_pedido, this.carrito).subscribe({
-          next: () => {
-            this.presentAlert();
-            this.vaciarCarrito();
-          },
-          error: (error) => {
-            console.error('Error al agregar detalles del pedido:', error);
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error al agregar el pedido:', error);
-      }
+
+    // Llamar a addPedido sin el id_direccion
+    this.dbService.addPedido(total, this.id_user).subscribe({
+        next: (id_pedido: number) => {
+            this.dbService.addDetallePedido(id_pedido, this.carrito).subscribe({
+                next: () => {
+                    this.presentAlert();
+                    this.vaciarCarrito();
+                },
+                error: (error) => {
+                    console.error('Error al agregar detalles del pedido:', error);
+                }
+            });
+        },
+        error: (error) => {
+            console.error('Error al agregar el pedido:', error);
+        }
     });
-  }
+}
+
 
 
   async agregarProductoAlCarrito() {

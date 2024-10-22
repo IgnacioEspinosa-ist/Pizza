@@ -456,25 +456,26 @@ export class DatabaseService {
 
 
 
-  addPedido(total: number, id_user: number, id_direccion: number) {
-    return new Observable<number>((observer) => {
+addPedido(total: number, id_user: number) {
+  return new Observable<number>((observer) => {
       const f_pedido = new Date().toISOString(); // Fecha del pedido
       const estatus = 'pendiente'; // Estado del pedido
 
-      // Insertar el pedido en la tabla 'pedido'
-      this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, id_direccion, total, estatus) VALUES (?, ?, ?, ?, ?)',
-        [f_pedido, id_user, id_direccion, total, estatus])
-        .then(result => {
-          const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
-          observer.next(id_pedido); // Emitir el ID del pedido
-          observer.complete();
-        })
-        .catch(error => {
-          console.error('Error al agregar pedido:', error);
-          observer.error(error);
-        });
-    });
-  }
+      // Insertar el pedido en la tabla 'pedido' sin dirección
+      this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, total, estatus) VALUES (?, ?, ?, ?)',
+          [f_pedido, id_user, total, estatus])
+          .then(result => {
+              const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
+              observer.next(id_pedido); // Emitir el ID del pedido
+              observer.complete();
+          })
+          .catch(error => {
+              console.error('Error al agregar pedido:', error);
+              observer.error(error);
+          });
+  });
+}
+
 
   addDetallePedido(id_pedido: number, carrito: Producto[]): Observable<void> {
     const sql = `INSERT INTO detalle (id_pedido, id_prod, cantidad, subtotal) VALUES (?, ?, ?, ?)`;
