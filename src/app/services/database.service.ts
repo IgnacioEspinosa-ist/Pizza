@@ -82,16 +82,16 @@ export class DatabaseService {
   VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3)`
 
   //
-  registroComuna1: string ="INSERT INTO comuna (nombre_comuna) values ('Conchali')"
-  registroComuna2: string ="INSERT INTO comuna (nombre_comuna) values ('Quilicura')"
+  registroComuna1: string = "INSERT INTO comuna (nombre_comuna) values ('Conchali')"
+  registroComuna2: string = "INSERT INTO comuna (nombre_comuna) values ('Quilicura')"
 
   //
-  registroPedido1: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'1','1',12000,10,'pendiente')" 
-  registroPedido2: string="INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'2','2',8000,10,'pendiente')" 
+  registroPedido1: string = "INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'1','1',12000,10,'pendiente')"
+  registroPedido2: string = "INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'2','2',8000,10,'pendiente')"
 
-  registerRol1: string="INSERT INTO roll (nombre) values ('Usuario')"
-  registerRol2: string="INSERT INTO roll (nombre) values ('Repartidor')"
-  registerRol3: string="INSERT INTO roll (nombre) values ('Admin')"
+  registerRol1: string = "INSERT INTO roll (nombre) values ('Usuario')"
+  registerRol2: string = "INSERT INTO roll (nombre) values ('Repartidor')"
+  registerRol3: string = "INSERT INTO roll (nombre) values ('Admin')"
 
   //variable de tipo observable para ver el estado de la base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -425,56 +425,56 @@ export class DatabaseService {
 
   buscarProductoPorIndice(indice: number): Promise<Producto | null> {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM producto ORDER BY id_prod LIMIT 1 OFFSET ?';
-        
-        this.database.executeSql(query, [indice])
-            .then(res => {
-                if (res.rows.length > 0) {
-                    const producto: Producto = {
-                        id_prod: res.rows.item(0).id_prod,
-                        nombre: res.rows.item(0).nombre,
-                        precio: res.rows.item(0).precio,
-                        stock: res.rows.item(0).stock,
-                        foto: res.rows.item(0).foto_PRODUCTO,
-                        id_cat: res.rows.item(0).id_cat
-                    };
-                    resolve(producto);
-                } else {
-                    resolve(null); // No se encontró el producto
-                }
-            })
-            .catch(error => {
-                reject(error); // Manejo de errores
-            });
+      const query = 'SELECT * FROM producto ORDER BY id_prod LIMIT 1 OFFSET ?';
+
+      this.database.executeSql(query, [indice])
+        .then(res => {
+          if (res.rows.length > 0) {
+            const producto: Producto = {
+              id_prod: res.rows.item(0).id_prod,
+              nombre: res.rows.item(0).nombre,
+              precio: res.rows.item(0).precio,
+              stock: res.rows.item(0).stock,
+              foto: res.rows.item(0).foto_PRODUCTO,
+              id_cat: res.rows.item(0).id_cat
+            };
+            resolve(producto);
+          } else {
+            resolve(null); // No se encontró el producto
+          }
+        })
+        .catch(error => {
+          reject(error); // Manejo de errores
+        });
     });
-}
-
-  
-
-  
+  }
 
 
 
 
-addPedido(total: number, id_user: number) {
-  return new Observable<number>((observer) => {
+
+
+
+
+  addPedido(total: number, id_user: number) {
+    return new Observable<number>((observer) => {
       const f_pedido = new Date().toISOString(); // Fecha del pedido
       const estatus = 'pendiente'; // Estado del pedido
 
       // Insertar el pedido en la tabla 'pedido' sin dirección
       this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, total, estatus) VALUES (?, ?, ?, ?)',
-          [f_pedido, id_user, total, estatus])
-          .then(result => {
-              const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
-              observer.next(id_pedido); // Emitir el ID del pedido
-              observer.complete();
-          })
-          .catch(error => {
-              console.error('Error al agregar pedido:', error);
-              observer.error(error);
-          });
-  });
-}
+        [f_pedido, id_user, total, estatus])
+        .then(result => {
+          const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
+          observer.next(id_pedido); // Emitir el ID del pedido
+          observer.complete();
+        })
+        .catch(error => {
+          console.error('Error al agregar pedido:', error);
+          observer.error(error);
+        });
+    });
+  }
 
 
   addDetallePedido(id_pedido: number, carrito: Producto[]): Observable<void> {
@@ -682,7 +682,7 @@ addPedido(total: number, id_user: number) {
   async insertUsuario(usuario: Usuario): Promise<void> {
     const sql = `
         INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
     try {
       await this.database.executeSql(sql, [
         usuario.nombre,
@@ -729,7 +729,7 @@ addPedido(total: number, id_user: number) {
     const sql = `
       UPDATE usuario SET nombre = ?, apellido = ?, rut = ?, correo = ?, clave = ?, telefono = ?, id_roll = ?, foto = ? 
       WHERE id_user = ?`;
-    
+
     console.log(sql, [
       usuario.nombre,
       usuario.apellido,
@@ -741,7 +741,7 @@ addPedido(total: number, id_user: number) {
       usuario.foto,
       usuario.id_user
     ]); // Log para depuración
-  
+
     try {
       const result = await this.database.executeSql(sql, [
         usuario.nombre,
@@ -754,7 +754,7 @@ addPedido(total: number, id_user: number) {
         usuario.foto,
         usuario.id_user
       ]);
-      
+
       if (result.rowsAffected > 0) {
         this.refreshUsuarioList();
         this.presentAlert('Éxito', 'Usuario actualizado correctamente.');
@@ -763,7 +763,7 @@ addPedido(total: number, id_user: number) {
       }
     } catch (error) {
       console.error("Error en la actualización de usuario:", error);
-      
+
     }
   }
 
