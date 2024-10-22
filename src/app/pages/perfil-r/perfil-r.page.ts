@@ -10,7 +10,7 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 export class PerfilRPage implements OnInit {
   imagen: string | null = null;
-  id_user: number = 2; // ID del repartidor (asegúrate de tener el ID correcto)
+  id_user: number = 2; 
   repartidorNombre: string = '';
   repartidorTelefono: string = '';
 
@@ -24,7 +24,7 @@ export class PerfilRPage implements OnInit {
   async ngOnInit() {
     
 
-      // Cargar los datos del repartidor
+      
       this.dbService.getUsuarioById(this.id_user).subscribe({
         next: (usuario: any) => {
           this.repartidorNombre = usuario.nombre;
@@ -37,25 +37,25 @@ export class PerfilRPage implements OnInit {
     
   }
 
-  // Activar o desactivar la edición de los campos
+
   activarEdicion(campo: 'nombre' | 'telefono') {
     this.editableCampos[campo] = true;
   }
 
-  // Método para guardar los cambios en la base de datos
+  
   guardarCambios() {
     if (this.id_user) {
       this.dbService.updatePerfil(this.id_user,this.repartidorNombre, this.repartidorTelefono).subscribe({
         next: () => {
           console.log('Datos actualizados correctamente');
-          // Desactivar la edición después de guardar
+          
           this.editableCampos.nombre = false;
           this.editableCampos.telefono = false;
-          // Opcional: agregar una alerta o mensaje de éxito
+          
         },
         error: (error: any) => {
           console.error('Error al actualizar los datos del repartidor:', error);
-          // Opcional: manejar el error y mostrar un mensaje al usuario
+          
         }
       });
     }

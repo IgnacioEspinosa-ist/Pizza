@@ -8,9 +8,9 @@ import { DatabaseService } from 'src/app/services/database.service';
   styleUrls: ['./perfil.page.scss'],
 })
 export class PerfilPage implements OnInit {
-  imagen: string | null = null; // Inicializa la imagen como null
-  id_user: number = 1; // ID del usuario actual
-  usuario: any = {}; // Objeto para almacenar los datos del usuario
+  imagen: string | null = null; 
+  id_user: number = 1; 
+  usuario: any = {}; 
   editableCampos = {
     nombre: false,
     apellido: false,
@@ -21,11 +21,11 @@ export class PerfilPage implements OnInit {
   constructor(private dbService: DatabaseService) {}
 
   ngOnInit() {
-    // Cargar los datos del usuario al inicializar el componente
+  
     this.dbService.getUsuarioById(this.id_user).subscribe({
       next: (usuario: any) => {
-        this.usuario = usuario; // Asignar el usuario a la propiedad
-        this.imagen = usuario.foto; // Establecer la imagen del usuario
+        this.usuario = usuario; 
+        this.imagen = usuario.foto; 
       },
       error: (error: any) => {
         console.error('Error al cargar los datos del usuario:', error);
@@ -33,15 +33,15 @@ export class PerfilPage implements OnInit {
     });
   }
 
-  // Activar o desactivar la edición de los campos
+ 
   activarEdicion(campo: 'nombre' | 'apellido' | 'telefono' | 'rut') {
     this.editableCampos[campo] = true;
   }
 
-  // Método para guardar los cambios en la base de datos
+  
   guardarCambios(campo: 'nombre' | 'apellido' | 'telefono' | 'rut') {
     if (this.id_user) {
-      // Llamar al método updatePerfil con los datos actuales del usuario
+      
       this.dbService.updatePerfilU(
         this.id_user,
         this.usuario.nombre,
@@ -51,7 +51,7 @@ export class PerfilPage implements OnInit {
       ).subscribe({
         next: () => {
           console.log(`Campo ${campo} actualizado correctamente`);
-          // Desactivar la edición del campo específico
+          
           this.editableCampos[campo] = false;
         },
         error: (error: any) => {
