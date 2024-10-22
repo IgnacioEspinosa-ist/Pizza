@@ -12,9 +12,9 @@ import { AlertController } from '@ionic/angular';
 export class UsuariosPage implements OnInit {
   usuarios: Usuario[] = []; 
   nombre: string = '';
-  telefono!: string  // Cambiar tipo a string
+  telefono!: string 
   email: string = '';
-  id_roll: number = 0 ; // Cambiar a tipo number o null
+  id_roll: number = 0 ; 
   usuarioActual: Usuario | null = null; 
   apellido: string = '';
   rut: string = '';
@@ -34,7 +34,7 @@ export class UsuariosPage implements OnInit {
   async cargarUsuarios() {
     this.dbService.fetchUsuarios().subscribe({
       next: (usuarios: Usuario[]) => {
-        this.usuarios = usuarios; // Asignar los usuarios cargados
+        this.usuarios = usuarios; 
       },
       error: (error) => {
         console.error("Error al cargar los usuarios:", error);
@@ -108,7 +108,7 @@ export class UsuariosPage implements OnInit {
 
   async eliminarUsuario(id: number) {
     try {
-      await this.dbService.deleteUsuario(id); // Asegúrate de que este método esté en tu servicio
+      await this.dbService.deleteUsuario(id); 
       await this.cargarUsuarios();
     } catch (error) {
       console.error("Error al eliminar el usuario:", error);
@@ -122,17 +122,17 @@ export class UsuariosPage implements OnInit {
       resultType: CameraResultType.Uri,
     });
 
-    this.imagen = image.webPath ?? 'assets/perfil1.jpg'; // Guardar la foto en una variable
+    this.imagen = image.webPath ?? 'assets/perfil1.jpg'; 
 
-    // Si deseas actualizar la vista inmediatamente, puedes usar un método para hacerlo
+   
   }
 
   limpiarCampos() {
     this.nombre = '';
     this.telefono = '';
     this.email = '';
-    this.id_roll = 0; // Cambiar a null
+    this.id_roll = 0; 
     this.usuarioActual = null;
-    this.imagen = ''; // Limpiar imagen
+    this.imagen = ''; 
   }
 }

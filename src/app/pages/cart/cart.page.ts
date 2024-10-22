@@ -28,7 +28,7 @@ export class CartPage implements OnInit {
   async ngOnInit() {
     await this.storage.create();
 
-    const storedCarrito = await this.storage.get('selectedProductId'); // Cambiar a 'carrito'
+    const storedCarrito = await this.storage.get('selectedProductId'); 
 
     this.alertController.create({
       header: 'storedCarrito' + JSON.stringify(storedCarrito),
@@ -56,15 +56,15 @@ export class CartPage implements OnInit {
 
   async eliminarProductoDelCarrito(id_prod: number): Promise<void> {
     try {
-      // Obtener el carrito almacenado desde Native Storage
+      
       const storedCarrito: Producto[] = await this.storage.get('selectedProductId') || [];
       const indice = storedCarrito.findIndex(producto => producto.id_prod === id_prod);
 
-      // Verificar si el índice es válido
+     
       if (indice !== -1) {
         const productoEliminado = storedCarrito[indice]
 
-        // Eliminar el producto del carrito
+       
         storedCarrito.splice(indice, 1);
         await this.storage.set('selectedProductId', storedCarrito);
 
@@ -134,7 +134,7 @@ export class CartPage implements OnInit {
 
     const total = this.obtenerTotalCarrito();
 
-    // Llamar a addPedido sin el id_direccion
+    
     this.dbService.addPedido(total, this.id_user).subscribe({
         next: (id_pedido: number) => {
             this.dbService.addDetallePedido(id_pedido, this.carrito).subscribe({
