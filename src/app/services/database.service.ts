@@ -623,7 +623,7 @@ export class DatabaseService {
     this.presentAlert('prueba', JSON.stringify(producto))
     const sql = `
         INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
-        VALUES (?, ?, ?, ?, ?)`;
+        VALUES (?, ?, ?, ?, ?);`;
 
     this.database.executeSql(sql, [
       producto.nombre,
