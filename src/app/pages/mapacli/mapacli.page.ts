@@ -29,11 +29,11 @@ export class MapacliPage {
   
 
   ngOnInit() {
-    // Inicializar el mapa aquí con el ID del contenedor
-    this.mapaService.initializeMap('map'); // Llama al método del servicio
+    
+    this.mapaService.initializeMap('map'); 
   }
 
   ngOnDestroy() {
-    this.mapaService.ngOnDestroy(); // Limpia el mapa si es necesario
+    this.mapaService.ngOnDestroy(); 
   }
 }  

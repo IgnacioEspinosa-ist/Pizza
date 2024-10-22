@@ -24,7 +24,7 @@ export class MapaComponent implements OnInit, OnDestroy {
   
 
   ngOnDestroy() {
-    this.mapaService.ngOnDestroy(); // Limpia el mapa si es necesario
+    this.mapaService.ngOnDestroy(); 
   }
 
   async presentAlert() {
@@ -43,7 +43,7 @@ export class MapaComponent implements OnInit, OnDestroy {
  
 
   ngOnInit() {
-    // Inicializar el mapa aquí con el ID del contenedor
+    
     this.mapaService.initializeMap('mapContainer');
     this.route.queryParams.subscribe(params => {
       this.id_pedido = params['id_pedido'];
@@ -54,7 +54,7 @@ export class MapaComponent implements OnInit, OnDestroy {
   
 
   async marcarComoEntregado(id_pedido: number) {
-    // Mostrar un mensaje de confirmación antes de marcar como entregado
+    
     const alert = await this.alertController.create({
       header: 'Confirmar Entrega',
       message: '¿Estás seguro de que quieres marcar este pedido como entregado?',
@@ -66,10 +66,10 @@ export class MapaComponent implements OnInit, OnDestroy {
         {
           text: 'Sí, entregar',
           handler: () => {
-            // Actualizar el estado del pedido a "entregado"
+            
             this.dbService.marcarPedidoComoEntregado(id_pedido).subscribe({
               next: () => {
-                // Actualizar la lista de pedidos pendientes
+                
                 this.dbService.obtenerPedidosPendientes();
                 this.mostrarAlertExito();
                 this.router.navigate(['/homerepa']);

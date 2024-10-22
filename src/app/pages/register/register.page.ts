@@ -40,7 +40,7 @@ export class RegisterPage {
     this.emailError = '';
     this.rutError = '';
     this.passwordError = '';
-    this.passwordMismatchError = ''; // Cambiado aquí para reiniciar el mensaje
+    this.passwordMismatchError = ''; 
   
     // Validaciones del correo
     if (!this.email) {
