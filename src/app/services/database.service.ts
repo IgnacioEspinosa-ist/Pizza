@@ -619,6 +619,7 @@ export class DatabaseService {
   }
 
   insertProducto(producto: Producto): void {
+    this.presentAlert('prueba', JSON.stringify(producto))
     const sql = `
         INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
         VALUES (?, ?, ?, ?, ?)`;
@@ -638,7 +639,7 @@ export class DatabaseService {
       })
       .catch((error) => {
         this.presentAlert('Error', 'No se pudo añadir el producto.');
-        console.error('Error al añadir producto:', error);
+        this.presentAlert('prueba', JSON.stringify(error))
       });
   }
 
