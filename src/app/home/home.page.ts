@@ -21,7 +21,7 @@ export class HomePage {
   ) {}
 
   async ngOnInit() {
-    await this.storage.create(); // Inicializar Storage
+    await this.storage.create(); 
     // Suscribirse al observable de productos
     this.dbService.productos$.subscribe((data: Producto[]) => {
       this.productos = data;

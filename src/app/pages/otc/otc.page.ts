@@ -22,7 +22,7 @@ export class OtcPage implements OnInit {
 
     if (emailExists) {
       await this.presentAlert('Correo encontrado', 'Se ha enviado un correo de recuperación.');
-      // Lógica para enviar el correo de recuperación (no implementada aquí)
+     
     } else {
       await this.presentAlert('Correo no encontrado', 'El correo no está registrado en nuestra base de datos.');
     }

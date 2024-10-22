@@ -21,14 +21,14 @@ export class LoginPage {
         const usuarioValido = await this.dbService.validarUsuario(this.username, this.password);
         if (usuarioValido) {
 
-          await Haptics.impact({ style: ImpactStyle.Medium }); //vibra al iniciar sesion
+          await Haptics.impact({ style: ImpactStyle.Medium }); 
 
           if (usuarioValido.id_roll === 1) {
-            this.navCtrl.navigateForward('/home'); // Navegar al dashboard del usuario regular
+            this.navCtrl.navigateForward('/home'); 
           } else if (usuarioValido.id_roll === 2) {
-            this.navCtrl.navigateForward('/homerepa'); // Navegar al dashboard del repartidor
+            this.navCtrl.navigateForward('/homerepa'); 
           }else if (usuarioValido.id_roll === 3) {
-            this.navCtrl.navigateForward('/homeadmin'); // Navegar al dashboard del repartidor
+            this.navCtrl.navigateForward('/homeadmin'); 
           }
         } else {
           alert('Este Usuario No Existe, Revise Los Datos');

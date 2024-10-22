@@ -41,18 +41,18 @@ export class HomerepaPage {
   ) {}
 
   ngOnInit() {
-    // Obtener los pedidos pendientes al cargar la página
+    
     this.dbService.pedidosPendientes$.subscribe((data: Pedido[]) => {
       this.pedidosPendientes = data;
     });
-    this.dbService.obtenerPedidosPendientes(); // Llamar al método para obtener los pedidos
+    this.dbService.obtenerPedidosPendientes(); 
   }
   openMenuSecundario() {
     this.menu.open('menuSecundario'); 
   }
 
   irAMapaRepartidor(pedido: Pedido) {
-    // Navegar a la página del mapa, pasando el pedido seleccionado
+    
     this.router.navigate(['/maparapi'], {
       queryParams: {
         id_pedido: pedido.id_pedido,
