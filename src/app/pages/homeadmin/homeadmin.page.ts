@@ -11,9 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 export class AdminPage implements OnInit {
   productos: Producto[] = [];
   nombre: string = '';
+  descripcion: string = '';
   precio: number = 0;
   stock: number = 0;
-  productoActual: Producto | null = null; 
+  productoActual: Producto | null = null; // Para gestionar la edición
 
   constructor(private dbService: DatabaseService, private route: ActivatedRoute) {} 
 
@@ -28,24 +29,14 @@ export class AdminPage implements OnInit {
   }
 
   async agregarProducto() {
-    if (!this.nombre || this.precio == null || this.stock == null) {
-      console.warn('Todos los campos son obligatorios');
-      return;
-    }
+   
 
-    const nuevoProducto: Producto = {
-      id_prod: 0, 
-      nombre: this.nombre,
-      precio: this.precio,
-      stock: this.stock,
-      
-    
-    };
+   
 
     try {
       await this.dbService.insertProducto(nuevoProducto);
-      this.limpiarCampos(); 
-      this.dbService.fetchProductos(); 
+      this.limpiarCampos(); // Limpiar los campos después de agregar
+      this.dbService.fetchProductos(); // Actualizar la lista de productos
     } catch (error) {
       console.error("Error al agregar el producto:", error);
     }
