@@ -87,24 +87,18 @@ const routes: Routes = [
   },
 
   {
-<<<<<<< HEAD
     path: 'admin',
     loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
   },
 
   {
-=======
->>>>>>> 1085e3d40755edad5bbc127605bdced2b040019c
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
   
 
-<<<<<<< HEAD
   
 
-=======
->>>>>>> 1085e3d40755edad5bbc127605bdced2b040019c
  
 
 
