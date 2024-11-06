@@ -1,4 +1,12 @@
 <ion-app>
+<<<<<<< HEAD
+  <ion-menu contentId="menu-content" menuId="menuP">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+=======
   
     <ion-menu contentId="menu-content" menuId="menuP">
       <ion-header>
@@ -18,29 +26,98 @@
             <ion-icon name="cart-outline"></ion-icon>
             <ion-label>Carrito</ion-label>
           </ion-item>
+>>>>>>> 1085e3d40755edad5bbc127605bdced2b040019c
 
-          <ion-item [routerDirection]="'root'" [routerLink]="'/perfil'">
-            <ion-icon name="person-outline"></ion-icon>
-            <ion-label>Perfil</ion-label>
-          </ion-item>
+    <ion-content>
+      <ion-list>
+        <ion-item (click)="closeMenu('menuP')" [routerDirection]="'root'" [routerLink]="'/home'">
+          <ion-icon name="arrow-up-circle-outline"></ion-icon>
+          <ion-label>Página Home</ion-label>
+        </ion-item>
 
+        <ion-item (click)="closeMenu('menuP')" [routerDirection]="'root'" [routerLink]="'/cart'">
+          <ion-icon name="cart-outline"></ion-icon>
+          <ion-label>Carrito</ion-label>
+        </ion-item>
 
-          <ion-footer>
-          <ion-item class="abajo" [routerDirection]="'root'" [routerLink]="'/login'">
+        <ion-item (click)="closeMenu('menuP')" [routerDirection]="'root'" [routerLink]="'/perfil'">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-item>
+
+        <ion-footer>
+          <ion-item class="abajo" (click)="closeMenu('menuP')" [routerDirection]="'root'" [routerLink]="'/login'">
             <ion-icon name="person-outline"></ion-icon>
             <ion-label>Cerrar Sesion</ion-label>
           </ion-item>
-          </ion-footer>
+        </ion-footer>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
 
+  <ion-menu contentId="menuSecundario" menuId="menuSecundario">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
- 
+    <ion-content>
+      <ion-list>
+        <ion-item (click)="closeMenu('menuSecundario')" [routerDirection]="'root'" [routerLink]="'/homerepa'">
+          <ion-icon name="arrow-up-circle-outline"></ion-icon>
+          <ion-label>Página Home</ion-label>
+        </ion-item>
+        <ion-item (click)="closeMenu('menuSecundario')" [routerDirection]="'root'" [routerLink]="'/perfil-r'">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-item>
 
+        <ion-footer>
+          <ion-item class="abajo" (click)="closeMenu('menuSecundario')" [routerDirection]="'root'" [routerLink]="'/login'">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-label>Cerrar Sesion</ion-label>
+          </ion-item>
+        </ion-footer>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
 
+<<<<<<< HEAD
+  <ion-menu contentId="menuadmin" menuId="menuadmin">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+=======
         </ion-list>
       </ion-content>
     </ion-menu>
   
+>>>>>>> 1085e3d40755edad5bbc127605bdced2b040019c
 
+    <ion-content>
+      <ion-list>
+        <ion-item (click)="closeMenu('menuadmin')" [routerDirection]="'root'" [routerLink]="'/home'">
+          <ion-icon name="arrow-up-circle-outline"></ion-icon>
+          <ion-label>Página Home</ion-label>
+        </ion-item>
+
+        <ion-item (click)="closeMenu('menuadmin')" [routerDirection]="'root'" [routerLink]="'/perfil'">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-item>
+
+        <ion-footer>
+          <ion-item class="abajo" (click)="closeMenu('menuadmin')" [routerDirection]="'root'" [routerLink]="'/login'">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-label>Cerrar Sesion</ion-label>
+          </ion-item>
+        </ion-footer>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
 
 
 
@@ -118,6 +195,9 @@
   <ion-router-outlet id="menuSecundario"></ion-router-outlet>
   <ion-router-outlet id="menuadmin"></ion-router-outlet>
 </ion-app>
+<<<<<<< HEAD
+=======
 
 
 
+>>>>>>> 1085e3d40755edad5bbc127605bdced2b040019c
