@@ -1,9 +1,7 @@
 <ion-header>
   <div class="head">
     <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button menu="menuadmin"></ion-menu-button>
-      </ion-buttons>
+      
       <img src="assets/logo.png" class="logo" slot="end">
     </ion-toolbar>
   </div>
@@ -19,7 +17,7 @@
       </ion-card-header>
     </ion-card>
 
-    <ion-button size="small" color="light" class="admin-button" routerLink="/homeadmin">
+    <ion-button (click)="navigateToHomeAdmin()" size="small" color="light" class="admin-button" >
       <div class="button-background">
         <img src="assets/logo.png" class="button-logo">
       </div>

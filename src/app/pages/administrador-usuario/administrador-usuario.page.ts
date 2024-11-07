@@ -57,6 +57,8 @@ export class UsuariosPage implements OnInit {
     try {
       await this.dbService.insertUsuario(this.newUser);
       this.presentAlert('Éxito', 'Usuario creado exitosamente');
+      await this.cargarUsuarios();
+
 
     } catch (err) {
       this.presentAlert('Error', 'Error al crear usuario: ' + err);
