@@ -28,7 +28,7 @@ export class LoginPage {
           } else if (usuarioValido.id_roll === 2) {
             this.navCtrl.navigateForward('/homerepa'); 
           }else if (usuarioValido.id_roll === 3) {
-            this.navCtrl.navigateForward('/homeadmin'); 
+            this.navCtrl.navigateForward('/admin'); 
           }
         } else {
           alert('Este Usuario No Existe, Revise Los Datos');
