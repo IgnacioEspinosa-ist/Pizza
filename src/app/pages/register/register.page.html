@@ -10,48 +10,50 @@
 <ion-content>
 
 
-  <img src="assets/logo.png" >
+  <div >
 
-  
-
-  <form (ngSubmit)="register()">
-    <ion-item>
-      <ion-label position="floating">Correo Electrónico</ion-label>
-      <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
-    </ion-item>
-    <div *ngIf="emailError" class="error-message">
-      <ion-text color="danger">{{ emailError }}</ion-text>
-    </div>
-   
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
-    </ion-item>
-    <div *ngIf="passwordError" class="error-message">
-      <ion-text color="danger">{{ passwordError }}</ion-text>
-    </div>
-
-    <ion-item>
-      <ion-label position="floating">Repetir Contraseña</ion-label>
-      <ion-input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"></ion-input>
-    </ion-item>
-    <div *ngIf="passwordMismatchError" class="error-message">
-      <ion-text color="danger">{{ passwordMismatchError }}</ion-text>
-    </div>
-
-    <ion-item>
-      <ion-label position="floating">RUT</ion-label>
-      <ion-input type="text" [(ngModel)]="rut" name="rut"></ion-input>
-    </ion-item>
-    <div *ngIf="rutError" class="error-message">
-      <ion-text color="danger">{{ rutError }}</ion-text>
-    </div>
+    <img src="assets/logo.png" >
 
     
 
+    <form (ngSubmit)="register()" class="fondo-g" style="padding-bottom: 220px;">
+      <ion-item>
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
+      </ion-item>
+      <div *ngIf="emailError" class="error-message">
+        <ion-text color="danger">{{ emailError }}</ion-text>
+      </div>
+    
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
+      </ion-item>
+      <div *ngIf="passwordError" class="error-message">
+        <ion-text color="danger">{{ passwordError }}</ion-text>
+      </div>
 
-    <ion-button  expand="block" type="submit">Registrar</ion-button>
-  </form>
+      <ion-item>
+        <ion-label position="floating">Repetir Contraseña</ion-label>
+        <ion-input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"></ion-input>
+      </ion-item>
+      <div *ngIf="passwordMismatchError" class="error-message">
+        <ion-text color="danger">{{ passwordMismatchError }}</ion-text>
+      </div>
 
+      <ion-item>
+        <ion-label position="floating">RUT</ion-label>
+        <ion-input type="text" [(ngModel)]="rut" name="rut"></ion-input>
+      </ion-item>
+      <div *ngIf="rutError" class="error-message">
+        <ion-text color="danger">{{ rutError }}</ion-text>
+      </div>
+
+      
+
+
+      <ion-button  expand="block" type="submit">Registrar</ion-button>
+    </form>
+  </div>
   
 </ion-content>
