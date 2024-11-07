@@ -1,8 +1,31 @@
 .fondo{
-  position: absolute; 
-  top: 0;             
-  left: 0;           
-  width: 100%;       
-  height: 100%;       
-  background-color: #ef8320;
+   background-image: url('/assets/fondo.png'); // Ajusta la ruta si es diferente
+    background-size: cover;     // Ajusta el tamaño de la imagen para cubrir todo el fondo
+    background-position: center; // Centra la imagen
+    background-repeat: repeat; // Evita que la imagen se repita
+    padding-bottom: 75vh;
+  }
+  
+  .logo{
+
+    width: 50px;
+   
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  ion-content {
+    --padding-bottom: 56px; /* Deja espacio para el footer si se desplaza */
+    height: calc(100vh - 56px); /* Ajusta la altura para que el contenido no se sobreponga */
+  }
+  
+  ion-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
   }
