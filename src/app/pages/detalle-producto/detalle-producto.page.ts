@@ -16,13 +16,24 @@ export class DetalleProductoPage implements OnInit {
   constructor(private dbService: DatabaseService, private storage: Storage, private router: Router, private alertController: AlertController) { }
 
   async presentAlert() {
+
+    // Obtén los IDs de los productos en el carrito o inicializa un arreglo vacío si no hay productos
+    const cartItems = (await this.storage.get('cartItems')) || [];
+
+    // Agrega el ID del producto actual al carrito si no está ya incluido
+    if (this.producto && !cartItems.includes(this.producto.id_prod)) {
+      cartItems.push(this.producto.id_prod); // Añade el ID del producto actual
+      await this.storage.set('cartItems', cartItems); // Guarda el carrito actualizado en el Storage
+    }
+
     const alert = await this.alertController.create({
       header: 'Se Ha Añadido Al Carro',
       buttons: ['Entendido'],
     });
 
     await alert.present();
-    await this.router.navigate(['/cart']);
+    await this.router.navigate(['/cart'])
+
   }
 
   async ngOnInit() {
