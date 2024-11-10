@@ -26,58 +26,49 @@ export class CartPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    await this.storage.create();
+    await this.storage.create(); // Inicializar Storage
 
-    const storedCarrito = await this.storage.get('selectedProductId'); 
+    // Obtener los IDs de los productos en el carrito desde Storage
+    const storedCarrito: number[] = await this.storage.get('cartItems') || [];
 
-    this.alertController.create({
-      header: 'storedCarrito' + JSON.stringify(storedCarrito),
-      buttons: ['entendido']
-    })
-
-    this.productos = this.dbService.getProductosById(storedCarrito)
-
-
-    /*
-        if (storedCarrito) {
-            this.carrito = storedCarrito;
+    // Para cada ID, obtener los detalles del producto desde la base de datos
+    for (const id of storedCarrito) {
+      this.dbService.getProductoById(id).subscribe({
+        next: (producto: Producto) => {
+          this.productos.push(producto); // Añadir cada producto a la lista de productos en el carrito
+        },
+        error: (error: any) => {
+          console.error('Error al cargar el producto:', error);
         }
-    
-        this.dbService.productos$.subscribe((data: Producto[]) => {
-            this.productos = data; 
-        });
-    
-        this.dbService.fetchProductos(); */
+      });
+    }
   }
-
-
-  //aquiiiiiiiii
-  //buscarProductoPorId
 
   async eliminarProductoDelCarrito(id_prod: number): Promise<void> {
     try {
+      // Obtener el carrito almacenado
+      const storedCarrito: number[] = await this.storage.get('cartItems') || [];
       
-      const storedCarrito: Producto[] = await this.storage.get('selectedProductId') || [];
-      const indice = storedCarrito.findIndex(producto => producto.id_prod === id_prod);
-
-     
+      // Eliminar el ID del producto del carrito
+      const indice = storedCarrito.indexOf(id_prod);
       if (indice !== -1) {
-        const productoEliminado = storedCarrito[indice]
-
-       
         storedCarrito.splice(indice, 1);
-        await this.storage.set('selectedProductId', storedCarrito);
+        await this.storage.set('cartItems', storedCarrito);
 
+        // Eliminar el producto de la lista de productos mostrada
+        this.productos = this.productos.filter(producto => producto.id_prod !== id_prod);
+
+        // Mostrar alerta de confirmación
         const alert = await this.alertController.create({
           header: 'Producto Eliminado',
-          message: `El producto "${productoEliminado.nombre}" ha sido eliminado del carrito.`,
+          message: `El producto ha sido eliminado del carrito.`,
           buttons: ['Entendido']
         });
         await alert.present();
       } else {
         const alert = await this.alertController.create({
-          header: 'Índice No Válido',
-          message: 'El índice especificado no es válido.',
+          header: 'Producto no encontrado',
+          message: 'El producto no se encontró en el carrito.',
           buttons: ['Entendido']
         });
         await alert.present();
@@ -92,82 +83,70 @@ export class CartPage implements OnInit {
     }
   }
 
+  async agregarProductoAlCarrito() {
+    const productId = await this.storage.get('selectedProductId');
 
+    if (productId) {
+      // Agregar el ID del producto al carrito en Storage
+      const cartItems: number[] = await this.storage.get('cartItems') || [];
+      if (!cartItems.includes(productId)) {
+        cartItems.push(productId);
+        await this.storage.set('cartItems', cartItems);
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Compra Realizada Con Éxito',
-      buttons: ['Entendido'],
-    });
-
-    alert.present();
-  }
-
-  async agregarProducto(producto: Producto): Promise<void> {
-    this.carritoService.agregarProducto(producto);
-    await this.actualizarStorage();
-  }
-
-  async eliminarProducto(id_prod: number): Promise<void> {
-    this.carritoService.quitarProducto(id_prod);
-    await this.actualizarStorage();
+        // Obtener los detalles del producto y añadirlo a la lista de productos en el carrito
+        this.dbService.getProductoById(productId).subscribe({
+          next: (producto: Producto) => {
+            this.productos.push(producto);
+          },
+          error: (error) => {
+            console.error('Error al cargar el producto:', error);
+          }
+        });
+      }
+    }
   }
 
   vaciarCarrito(): void {
-    this.productos = []
-    this.storage.set('selectedProductId', []);
+    this.productos = [];
+    this.storage.set('cartItems', []);
   }
 
   obtenerTotalCarrito(): number {
     return this.productos.reduce((total, producto) => total + (producto.precio * producto.stock), 0);
   }
 
-  async actualizarStorage() {
-    await this.storage.set('carrito', this.carritoService.obtenerProductos());
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Compra Realizada Con Éxito',
+      buttons: ['Entendido'],
+    });
+    await alert.present();
   }
 
   finalizarCompra() {
     if (this.id_user === null) {
-        console.warn('ID de usuario no disponible');
-        return;
+      console.warn('ID de usuario no disponible');
+      return;
     }
 
     const total = this.obtenerTotalCarrito();
-
     
     this.dbService.addPedido(total, this.id_user).subscribe({
-        next: (id_pedido: number) => {
-            this.dbService.addDetallePedido(id_pedido, this.carrito).subscribe({
-                next: () => {
-                    this.presentAlert();
-                    this.vaciarCarrito();
-                },
-                error: (error) => {
-                    console.error('Error al agregar detalles del pedido:', error);
-                }
-            });
-        },
-        error: (error) => {
-            console.error('Error al agregar el pedido:', error);
-        }
-    });
-}
-
-
-
-  async agregarProductoAlCarrito() {
-    const productId = await this.storage.get('selectedProductId');
-
-    if (productId) {
-      const producto = this.productos.find(p => p.id_prod === productId);
-
-      if (producto) {
-        this.carritoService.agregarProducto(producto);
-        await this.actualizarStorage();
-      } else {
-        console.error('Producto no encontrado');
+      next: (id_pedido: number) => {
+        this.dbService.addDetallePedido(id_pedido, this.carrito).subscribe({
+          next: () => {
+            this.presentAlert();
+            this.vaciarCarrito();
+          },
+          error: (error) => {
+            console.error('Error al agregar detalles del pedido:', error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error al agregar el pedido:', error);
       }
-    }
+    });
   }
 
   async verDetalleProducto(producto: Producto) {

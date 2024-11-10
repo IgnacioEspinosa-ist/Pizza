@@ -200,7 +200,7 @@ export class DatabaseService {
 
   ];
 
-
+  
 
   async verificarInserciones(): Promise<boolean> {
     try {
@@ -273,7 +273,7 @@ export class DatabaseService {
     if (!existe) {
       for (const insert of this.inserciones) {
         await this.database.executeSql(insert, []);
-        this.presentAlert("","");
+        
       }
     } else {
       console.log("Los datos ya existen, no se realizará la inserción nuevamente.");
