@@ -411,30 +411,32 @@ export class DatabaseService {
     });
   }
 
-  getProductosById(productos: number[]) {
-    let arregloProductos: Producto[] = []
-    for (let i = 0; i < productos.length; i++) {
-      this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [productos[i]])
-        .then(res => {
-          if (res.rows.length > 0) {
-            const producto: Producto = {
-              id_prod: res.rows.item(0).id_prod,
-              nombre: res.rows.item(0).nombre,
-              descripcion: res.rows.item(0).descripcion,
-              precio: res.rows.item(0).precio,
-              stock: res.rows.item(0).stock,
-              foto: res.rows.item(0).foto_PRODUCTO,
-              id_cat: res.rows.item(0).id_cat
-            };
-            arregloProductos.push(producto)
-
-
-          }
-        })
-    }
+  async getProductosByIds(productos: number[]): Promise<Producto[]> {
+    const arregloProductos: Producto[] = [];
+  
+    // Usamos Promise.all para esperar que todas las consultas se resuelvan
+    const queries = productos.map(async (productoId) => {
+      const res = await this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [productoId]);
+      if (res.rows.length > 0) {
+        const producto: Producto = {
+          id_prod: res.rows.item(0).id_prod,
+          nombre: res.rows.item(0).nombre,
+          descripcion: res.rows.item(0).descripcion,
+          precio: res.rows.item(0).precio,
+          stock: res.rows.item(0).stock,
+          foto: res.rows.item(0).foto_PRODUCTO,
+          id_cat: res.rows.item(0).id_cat,
+        };
+        arregloProductos.push(producto);
+      }
+    });
+  
+    // Esperar a que todas las consultas terminen
+    await Promise.all(queries);
+  
     return arregloProductos;
-
   }
+  
 
   //aqui
 
