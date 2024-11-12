@@ -322,19 +322,13 @@ export class DatabaseService {
   }
 
   async validarUsuario(username: string, password: string): Promise<any> {
-    try {
-      const query = 'SELECT * FROM usuario WHERE correo = ? AND clave = ?';
-      const res = await this.database.executeSql(query, [username, password]);
-      if (res.rows.length > 0) {
-        // Si existe el usuario, devolver el primer resultado
-        return res.rows.item(0);
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.error('Error en la validación del usuario:', error);
-      throw error;
+    const sql = `SELECT id_user FROM usuario WHERE correo = ? AND clave = ?`;
+    const result = await this.database.executeSql(sql, [username, password]);
+  
+    if (result.rows.length > 0) {
+      return result.rows.item(0).id_user; // Retorna solo el id_user
     }
+    return null; // Devuelve null si no hay coincidencia
   }
 
 
@@ -701,24 +695,24 @@ export class DatabaseService {
 
     const sql = `
         INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+        VALUES (?, ?, ?, ?, ?, ?, 2, ?);`;
     try {
-      await this.database.executeSql(sql, [
-        usuario.nombre,
-        usuario.apellido,
-        usuario.rut,
-        usuario.correo,
-        usuario.clave,
-        usuario.telefono,
-        usuario.id_roll,
-        usuario.foto
-      ]);
-      this.refreshUsuarioList();
-      this.presentAlert('Éxito', 'Usuario añadido correctamente.');
+        await this.database.executeSql(sql, [
+            usuario.nombre,
+            usuario.apellido,
+            usuario.rut,
+            usuario.correo,
+            usuario.clave,
+            usuario.telefono,
+            usuario.foto
+        ]);
+        this.refreshUsuarioList();
+        this.presentAlert('Éxito', 'Usuario añadido correctamente.');
     } catch (error) {
-
+        console.error('Error al insertar usuario:', error);
     }
-  }
+}
+
 
   private async refreshUsuarioList(): Promise<void> {
     const sql = "SELECT * FROM usuario";
