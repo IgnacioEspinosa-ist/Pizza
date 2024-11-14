@@ -638,7 +638,7 @@ export class DatabaseService {
     this.presentAlert('prueba', JSON.stringify(producto))
     const sql = `
         INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
-        VALUES (?, ?, ?, ?, ?);`;
+        VALUES (?, ?, ?, ?, ?, 1);`;
 
     this.database.executeSql(sql, [
       producto.nombre,
@@ -646,7 +646,7 @@ export class DatabaseService {
       producto.precio,
       producto.stock,
       producto.foto,
-      producto.id_cat
+      
     ])
       .then(() => {
         return this.refreshProductoList();  // Actualiza la lista de productos
