@@ -14,8 +14,12 @@ export class LoginPage {
   username: string = '';
   password: string = '';
 
-  constructor(private navCtrl: NavController, private dbService: DatabaseService,private storage: Storage) {
-    this.storage.create();
+  constructor(private navCtrl: NavController, private dbService: DatabaseService, private storage: Storage) {
+    this.initStorage();
+  }
+  
+  async initStorage() {
+    await this.storage.create(); // Asegura la inicialización completa
   }
 
   async login() {
@@ -23,10 +27,11 @@ export class LoginPage {
       try {
         const usuarioValido = await this.dbService.validarUsuario(this.username, this.password);
         if (usuarioValido) {
-          await this.storage.set('id_user', usuarioValido.id_user);
+          await this.storage.set('id_user', usuarioValido.id_user); // Guardar el ID del usuario en Storage
   
           await Haptics.impact({ style: ImpactStyle.Medium });
   
+          // Redirigir según el id_roll del usuario
           if (usuarioValido.id_roll === 1) {
             this.navCtrl.navigateForward('/home');
           } else if (usuarioValido.id_roll === 2) {
@@ -45,4 +50,6 @@ export class LoginPage {
       alert('Ingrese el Nombre y Contraseña Correcta');
     }
   }
+  
+  
 }

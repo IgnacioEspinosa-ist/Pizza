@@ -273,7 +273,7 @@ export class DatabaseService {
     if (!existe) {
       for (const insert of this.inserciones) {
         await this.database.executeSql(insert, []);
-        this.presentAlert("","");
+       
       }
     } else {
       console.log("Los datos ya existen, no se realizará la inserción nuevamente.");
@@ -322,13 +322,19 @@ export class DatabaseService {
   }
 
   async validarUsuario(username: string, password: string): Promise<any> {
-    const sql = `SELECT id_user FROM usuario WHERE correo = ? AND clave = ?`;
-    const result = await this.database.executeSql(sql, [username, password]);
-  
-    if (result.rows.length > 0) {
-      return result.rows.item(0).id_user; // Retorna solo el id_user
+    try {
+      const query = 'SELECT * FROM usuario WHERE correo = ? AND clave = ?';
+      const res = await this.database.executeSql(query, [username, password]);
+      if (res.rows.length > 0) {
+        // Si existe el usuario, devolver el primer resultado
+        return res.rows.item(0);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error en la validación del usuario:', error);
+      throw error;
     }
-    return null; // Devuelve null si no hay coincidencia
   }
 
 
