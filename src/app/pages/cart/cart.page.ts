@@ -56,18 +56,24 @@ export class CartPage implements OnInit {
 
   async eliminarProductoDelCarrito(id_prod: number): Promise<void> {
     try {
-      
+      // Obtener el carrito almacenado
       const storedCarrito: Producto[] = await this.storage.get('selectedProductId') || [];
+  
+      // Encontrar el índice del producto que se desea eliminar
       const indice = storedCarrito.findIndex(producto => producto.id_prod === id_prod);
-
-     
+  
       if (indice !== -1) {
-        const productoEliminado = storedCarrito[indice]
-
-       
+        // Guardar el producto eliminado para mostrar el nombre en la alerta
+        const productoEliminado = storedCarrito[indice];
+  
+        // Eliminar el producto del carrito
         storedCarrito.splice(indice, 1);
         await this.storage.set('selectedProductId', storedCarrito);
-
+  
+        // Actualizar la lista de productos mostrada
+        this.productos = this.productos.filter(producto => producto.id_prod !== id_prod);
+  
+        // Mostrar alerta de confirmación
         const alert = await this.alertController.create({
           header: 'Producto Eliminado',
           message: `El producto "${productoEliminado.nombre}" ha sido eliminado del carrito.`,
@@ -76,8 +82,8 @@ export class CartPage implements OnInit {
         await alert.present();
       } else {
         const alert = await this.alertController.create({
-          header: 'Índice No Válido',
-          message: 'El índice especificado no es válido.',
+          header: 'Producto no encontrado',
+          message: 'El producto no se encontró en el carrito.',
           buttons: ['Entendido']
         });
         await alert.present();
@@ -91,6 +97,7 @@ export class CartPage implements OnInit {
       await alert.present();
     }
   }
+  
 
 
 
