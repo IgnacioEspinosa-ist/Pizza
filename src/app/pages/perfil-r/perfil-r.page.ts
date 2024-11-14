@@ -73,22 +73,32 @@ export class PerfilRPage implements OnInit {
   }
 
   async takePicture() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.Uri,
-    });
-
-    this.imagen = image.webPath ?? 'assets/perfil1.jpg';
-
-    if (image.path) {
-      await this.guardarFotoEnDB(image.path);
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,  // Usamos DataUrl para obtener la imagen como cadena
+      });
+  
+      // La imagen estará en image.dataUrl
+      this.imagen = image.dataUrl ?? 'assets/perfil1.jpg'; // Si no hay imagen, usamos la predeterminada
+  
+      // Mostramos la imagen en la consola
+      console.log("Imagen capturada:", this.imagen);
+  
+      // Ahora puedes guardar la imagen en la base de datos si es necesario
+      await this.guardarFotoEnDB(this.imagen);
+    } catch (error) {
+      console.error("Error al tomar la foto:", error);
+      this.imagen = 'assets/perfil1.jpg'; // Usamos la imagen predeterminada en caso de error
     }
   }
-
+  
+  
   async guardarFotoEnDB(foto: string) {
     try {
       if (this.id_user) {
+        // Aquí estamos pasando la ruta de la imagen para que se guarde en la base de datos
         await this.dbService.updateUsuarioFoto(this.id_user, foto);
         console.log('Foto actualizada exitosamente');
       } else {
@@ -98,6 +108,7 @@ export class PerfilRPage implements OnInit {
       console.error('Error al guardar la foto en la base de datos:', error);
     }
   }
+  
 
   openMenuSecundario() {
     this.menu.open('menuSecundario');
