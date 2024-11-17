@@ -6,4 +6,5 @@ export class Producto {
     stock!: number;
     foto?: any;
     id_cat?: number;
+    cantidad?: number;
 }

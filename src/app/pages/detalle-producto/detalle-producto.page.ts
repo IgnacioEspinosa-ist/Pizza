@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { DatabaseService } from 'src/app/services/database.service';
 import { Producto } from 'src/app/services/producto';
+import { CarritoService } from 'src/app/services/carrito.service'; // Suponiendo que tienes un CarritoService
 
 @Component({
   selector: 'app-detalle-producto',
@@ -13,8 +14,15 @@ import { Producto } from 'src/app/services/producto';
 export class DetalleProductoPage implements OnInit {
   producto: Producto | null = null;
 
-  constructor(private dbService: DatabaseService, private storage: Storage, private router: Router, private alertController: AlertController) { }
+  constructor(
+    private dbService: DatabaseService,
+    private storage: Storage,
+    private router: Router,
+    private alertController: AlertController,
+    private carritoService: CarritoService // Agregar CarritoService
+  ) {}
 
+  // Mostrar alerta cuando se agrega el producto al carrito
   async presentAlert() {
     const alert = await this.alertController.create({
       header: 'Se Ha Añadido Al Carro',
@@ -22,7 +30,11 @@ export class DetalleProductoPage implements OnInit {
     });
 
     await alert.present();
-    await this.router.navigate(['/cart']);
+
+    // Navegar al carrito pasando el producto como parámetro
+    if (this.producto) {
+      this.router.navigate(['/cart']);
+    }
   }
 
   async ngOnInit() {
@@ -44,11 +56,17 @@ export class DetalleProductoPage implements OnInit {
     }
   }
 
-  /*agregarAlCarrito() {
+  // Función para agregar el producto al carrito
+  agregarAlCarrito() {
     if (this.producto) {
-      this.dbService.agregarProductoAlCarrito(this.producto); // Agregar producto al carrito
-      this.storage.set('carrito', this.producto.id_prod); // Guardar la ID del producto en el Storage
-      this.presentAlert();// Mostrar alerta
+      // Usar el servicio de carrito para agregar el producto completo
+      this.carritoService.agregarProducto(this.producto);  // Añadir el producto al carrito
+
+      // Mostrar alerta
+      this.presentAlert();
+
+      // Navegar al carrito
+      this.router.navigate(['/cart']);
     }
-  }*/
+  }
 }

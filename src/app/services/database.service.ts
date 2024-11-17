@@ -70,7 +70,7 @@ export class DatabaseService {
 
 
   registroUsuario: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ñamñamñam','123456',1)`
+  VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ignacio123','123456',1)`
 
   registroRepartidor1: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
   VALUES ('Pedro','Espinoza','217845965-0','pedro@gmail.com','miaumiaumiau','123456',2)`
@@ -138,6 +138,7 @@ export class DatabaseService {
       stock INTEGER NOT NULL,
       foto_PRODUCTO BLOB,
       id_cat INTEGER,
+      
       FOREIGN KEY(id_cat) REFERENCES categoria(id_cat)
   );`;
 
@@ -472,25 +473,28 @@ export class DatabaseService {
 
 
 
-  addPedido(total: number, id_user: number) {
-    return new Observable<number>((observer) => {
-      const f_pedido = new Date().toISOString(); // Fecha del pedido
-      const estatus = 'pendiente'; // Estado del pedido
-
-      // Insertar el pedido en la tabla 'pedido' sin dirección
-      this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, total, estatus) VALUES (?, ?, ?, ?)',
-        [f_pedido, id_user, total, estatus])
-        .then(result => {
-          const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
-          observer.next(id_pedido); // Emitir el ID del pedido
-          observer.complete();
-        })
-        .catch(error => {
-          console.error('Error al agregar pedido:', error);
-          observer.error(error);
-        });
-    });
+  async agregarPedido(pedido: { f_pedido: string; id_user: number; id_direccion: number; total: number; id_user_resp?: number; estatus: string }): Promise<void> {
+    const query = `
+      INSERT INTO pedido (f_pedido, id_user, id_direccion, total, id_user_resp, estatus)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    const values = [
+      pedido.f_pedido,
+      pedido.id_user,
+      pedido.id_direccion,
+      pedido.total,
+      pedido.id_user_resp ?? null, // Si no se pasa, usar null
+      pedido.estatus
+    ];
+  
+    try {
+      await this.database.executeSql(query, values);
+      console.log('Pedido añadido correctamente');
+    } catch (error) {
+      console.error('Error al insertar el pedido:', error);
+    }
   }
+  
 
 
   addDetallePedido(id_pedido: number, carrito: Producto[]): Observable<void> {
