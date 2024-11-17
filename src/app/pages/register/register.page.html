@@ -45,6 +45,15 @@
       Correo debe tener un formato válido.
     </ion-note>
 
+    <!-- Teléfono -->
+    <ion-item>
+      <ion-label position="floating">Teléfono</ion-label>
+      <ion-input [(ngModel)]="registerUser.telefono" name="telefono" required pattern="^[0-9]+$" #telefono="ngModel"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="telefono.invalid && telefono.touched" color="danger">
+      El teléfono debe contener solo números.
+    </ion-note>
+
     <!-- Contraseña -->
     <ion-item>
       <ion-label position="floating">Clave</ion-label>
@@ -54,14 +63,22 @@
       La clave es requerida y debe tener al menos 8 caracteres.
     </ion-note>
 
-    <!-- Teléfono -->
+    <!-- Repetir contraseña -->
     <ion-item>
-      <ion-label position="floating">Teléfono</ion-label>
-      <ion-input [(ngModel)]="registerUser.telefono" name="telefono" required pattern="^[0-9]+$" #telefono="ngModel"></ion-input>
+      <ion-label position="floating">Repetir clave</ion-label>
+      <ion-input [(ngModel)]="registerUser.repeatedClave" name="repeatedClave" required minlength="8" type="password" #repeatedClave="ngModel"></ion-input>
     </ion-item>
-    <ion-note *ngIf="telefono.invalid && telefono.touched" color="danger">
-      El teléfono debe contener solo números.
+    <ion-note *ngIf="repeatedClave.invalid && repeatedClave.touched" color="danger">
+      La repetición de la clave es requerida y debe tener al menos 8 caracteres.
     </ion-note>
+
+    <!-- Validar que las contraseñas coincidan -->
+    <ion-note *ngIf="clave.value !== repeatedClave.value && repeatedClave.touched" color="danger">
+      Las contraseñas no coinciden.
+    </ion-note>
+    
+
+    
 
     <ion-button expand="full" (click)="registerUserAction()">Registrarse</ion-button>
   </div>

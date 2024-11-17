@@ -15,6 +15,7 @@ export class RegisterPage {
     rut: '',
     correo: '',
     clave: '',
+    repeatedClave: '',  // Campo para repetir la clave
     telefono: '',
   };
 
@@ -25,7 +26,13 @@ export class RegisterPage {
   ) {}
 
   async registerUserAction() {
-    // Validaciones antes de guardar
+    // Validación de contraseñas
+    if (this.registerUser.clave !== this.registerUser.repeatedClave) {
+      await this.presentAlert('Las contraseñas no coinciden.');
+      return;
+    }
+
+    // Validaciones generales antes de guardar
     if (
       !this.registerUser.nombre ||
       !this.registerUser.apellido ||
@@ -47,7 +54,7 @@ export class RegisterPage {
       clave: this.registerUser.clave,
       telefono: this.registerUser.telefono,
       id_roll: 1, // Cliente por defecto
-      foto: null, // Foto opcional, puede ser NULL
+      foto: null, // Foto opcional
     };
 
     try {
