@@ -57,6 +57,7 @@
       El teléfono debe contener solo números.
     </ion-note>
     
+    <!--
     <ion-item>
       <ion-label position="floating">Rol</ion-label>
       <ion-select [(ngModel)]="newUser.id_roll" name="id_roll" required #id_roll="ngModel">
@@ -68,7 +69,9 @@
     <ion-note *ngIf="id_roll.invalid && id_roll.touched" color="danger">
       Selecciona un rol.
     </ion-note>
+    -->
 
+    
     <ion-item>
       <ion-label>Foto</ion-label>
       <ion-button (click)="takePicture()">Tomar Foto</ion-button>
