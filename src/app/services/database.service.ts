@@ -859,10 +859,15 @@ async insertUsuarioU(usuario: Usuario): Promise<void> {
   }
 
 
-  public insertUsuarioR(usuario: Usuario): Promise<any> {
-    const sql = 'INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) VALUES (?, ?, ?, ?, ?, ?, 1, ?)';
-    return this.database.executeSql(sql, [usuario.nombre, usuario.apellido, usuario.rut, usuario.correo, usuario.clave, usuario.telefono, usuario.id_roll, usuario.foto]);
+  updatePassword(email: string, newPassword: string): Observable<any> {
+    const query = `UPDATE usuario SET clave = ? WHERE correo = ?`;
+    const params = [newPassword, email];
+  
+ 
+    return from(this.database.executeSql(query, params));
   }
+  
+  
 
 
 

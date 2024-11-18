@@ -22,35 +22,45 @@ export class LoginPage {
   }
 
   async login() {
-    if (this.username && this.password) {
-      try {
-        // Convertir el nombre de usuario (correo) a minúsculas y eliminar espacios
-        const usernameTrimmed = this.username.trim().toLowerCase();
-  
-        const usuarioValido = await this.dbService.validarUsuario(usernameTrimmed, this.password);
-        if (usuarioValido) {
-          await this.storage.set('id_user', usuarioValido.id_user); // Guardar el ID del usuario en Storage
-          
-          await Haptics.impact({ style: ImpactStyle.Medium });
-  
-          // Redirigir según el id_roll del usuario
-          if (usuarioValido.id_roll === 1) {
-            this.navCtrl.navigateForward('/home');
-          } else if (usuarioValido.id_roll === 2) {
-            this.navCtrl.navigateForward('/homerepa');
-          } else if (usuarioValido.id_roll === 3) {
-            this.navCtrl.navigateForward('/admin');
-          }
-        } else {
-          alert('Este Usuario No Existe, Revise Los Datos');
-        }
-      } catch (error) {
-        console.error("Error durante el proceso de login:", error);
-        alert('Hubo un problema al verificar el usuario.');
-      }
-    } else {
+    // Verificar si los campos están vacíos
+    if (!this.username || !this.password) {
       alert('Ingrese el Nombre y Contraseña Correcta');
+      return;
+    }
+  
+    // Verificar la longitud de la contraseña
+    if (this.password.length < 8) {
+      alert('La contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+  
+    try {
+      // Convertir el nombre de usuario (correo) a minúsculas y eliminar espacios
+      const usernameTrimmed = this.username.trim().toLowerCase();
+  
+      // Llamar al servicio de validación del usuario
+      const usuarioValido = await this.dbService.validarUsuario(usernameTrimmed, this.password);
+      if (usuarioValido) {
+        await this.storage.set('id_user', usuarioValido.id_user); // Guardar el ID del usuario en Storage
+  
+        await Haptics.impact({ style: ImpactStyle.Medium });
+  
+        // Redirigir según el id_roll del usuario
+        if (usuarioValido.id_roll === 1) {
+          this.navCtrl.navigateForward('/home');
+        } else if (usuarioValido.id_roll === 2) {
+          this.navCtrl.navigateForward('/homerepa');
+        } else if (usuarioValido.id_roll === 3) {
+          this.navCtrl.navigateForward('/admin');
+        }
+      } else {
+        alert('Este Usuario No Existe, Revise Los Datos');
+      }
+    } catch (error) {
+      console.error('Error durante el proceso de login:', error);
+      alert('Hubo un problema al verificar el usuario.');
     }
   }
+  
   
 }

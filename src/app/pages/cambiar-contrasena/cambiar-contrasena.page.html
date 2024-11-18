@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cambiar Contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Actualiza tu Contraseña</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form (submit)="changePassword()">
+        <!-- Nueva Contraseña -->
+        <ion-item>
+          <ion-label position="floating">Nueva Contraseña</ion-label>
+          <ion-input
+            type="password"
+            [(ngModel)]="newPassword"
+            name="newPassword"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <!-- Confirmar Contraseña -->
+        <ion-item>
+          <ion-label position="floating">Confirmar Contraseña</ion-label>
+          <ion-input
+            type="password"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <!-- Botón Cambiar Contraseña -->
+        <ion-button
+          expand="block"
+          type="submit"
+          color="primary"
+          [disabled]="!newPassword || !confirmPassword"
+        >
+          Cambiar Contraseña
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -60,4 +60,31 @@ describe('LoginPage', () => {
 
     expect(spy).toHaveBeenCalledWith('test@example.com', 'password123'); // Verifica que el servicio sea llamado con el username sin espacios
   });
+  it('debería mostrar error si los campos están vacíos', async () => {
+    const spyAlert = spyOn(window, 'alert'); // Espiar la función alert
+    const spyDbService = spyOn(dbService, 'validarUsuario'); // Espiar el servicio validarUsuario
+
+    // Dejar los campos vacíos
+    component.username = '';
+    component.password = '';
+
+    await component.login(); // Llamar al método login
+
+    expect(spyDbService).not.toHaveBeenCalled(); // El servicio no debe ser llamado
+    expect(spyAlert).toHaveBeenCalledWith('Ingrese el Nombre y Contraseña Correcta');});
+
+  it('debería mostrar error si la contraseña tiene menos de 8 caracteres', async () => {
+    const spyAlert = spyOn(window, 'alert'); // Espiar la función alert
+    const spyDbService = spyOn(dbService, 'validarUsuario'); // Espiar el servicio validarUsuario
+  
+    // Configurar username válido y contraseña corta
+    component.username = 'test@example.com';
+    component.password = '12345'; // Contraseña menor a 8 caracteres
+  
+    await component.login(); // Llamar al método login
+  
+    expect(spyDbService).not.toHaveBeenCalled(); // El servicio no debe ser llamado
+    expect(spyAlert).toHaveBeenCalledWith('La contraseña debe tener al menos 8 caracteres'); // Verifica el mensaje de error
+  });
+  
 });
