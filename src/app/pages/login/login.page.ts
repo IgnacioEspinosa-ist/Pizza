@@ -4,7 +4,6 @@ import { DatabaseService } from '../../services/database.service'; // Importar t
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Storage } from '@ionic/storage-angular';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -17,7 +16,7 @@ export class LoginPage {
   constructor(private navCtrl: NavController, private dbService: DatabaseService, private storage: Storage) {
     this.initStorage();
   }
-  
+
   async initStorage() {
     await this.storage.create(); // Asegura la inicialización completa
   }
@@ -25,10 +24,13 @@ export class LoginPage {
   async login() {
     if (this.username && this.password) {
       try {
-        const usuarioValido = await this.dbService.validarUsuario(this.username, this.password);
+        // Convertir el nombre de usuario (correo) a minúsculas y eliminar espacios
+        const usernameTrimmed = this.username.trim().toLowerCase();
+  
+        const usuarioValido = await this.dbService.validarUsuario(usernameTrimmed, this.password);
         if (usuarioValido) {
           await this.storage.set('id_user', usuarioValido.id_user); // Guardar el ID del usuario en Storage
-  
+          
           await Haptics.impact({ style: ImpactStyle.Medium });
   
           // Redirigir según el id_roll del usuario
@@ -50,6 +52,5 @@ export class LoginPage {
       alert('Ingrese el Nombre y Contraseña Correcta');
     }
   }
-  
   
 }
