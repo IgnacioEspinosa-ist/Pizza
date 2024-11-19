@@ -39,16 +39,19 @@ export class AdminPage implements OnInit {
       console.warn('Todos los campos son obligatorios');
       return;
     }
-
+  
     if (this.productoActual) {
       this.productoActual.nombre = this.nuevoProducto.nombre;
       this.productoActual.descripcion = this.nuevoProducto.descripcion;
       this.productoActual.precio = this.nuevoProducto.precio;
       this.productoActual.stock = this.nuevoProducto.stock;
       this.productoActual.foto = this.nuevoProducto.foto;
-
+  
       try {
         await this.dbService.updateProducto(this.productoActual);
+        console.log("Producto actualizado correctamente");
+  
+        // Limpiar campos y refrescar la lista
         this.limpiarCampos();
         this.dbService.fetchProductos(); // Actualizar la lista de productos
       } catch (error) {
@@ -56,6 +59,15 @@ export class AdminPage implements OnInit {
       }
     }
   }
+  
+  
+  
+
+  ionViewWillEnter() {
+    this.dbService.fetchProductos();
+  }
+  
+  
 
   cargarDatosProducto(producto: Producto) {
     this.productoActual = producto;
