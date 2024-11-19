@@ -45,11 +45,14 @@
         <ion-button size="medium" (click)="vaciarCarrito()">Vaciar Carrito</ion-button>
       </ion-buttons>
       <ion-buttons slot="end" style="font-size: 12px; padding: 5px 10px; width: auto; height: auto; border-radius: 5px;">
-        <ion-button (click)="finalizarCompra()" [routerLink]="['/mapacli']">Finalizar Compra</ion-button>
+        <ion-button 
+          (click)="finalizarCompra()" 
+          [routerLink]="['/mapacli']"
+          [disabled]="productos.length === 0">
+          Finalizar Compra
+        </ion-button>
       </ion-buttons>
-    
-      
     </ion-toolbar>
-    
   </ion-footer>
+  
 </ion-content>

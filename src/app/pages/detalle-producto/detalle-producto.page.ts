@@ -69,4 +69,9 @@ export class DetalleProductoPage implements OnInit {
       this.router.navigate(['/cart']);
     }
   }
+
+  async ngOnDestroy() {
+    await this.storage.remove('selectedProductId');
+    console.log('Producto seleccionado eliminado del storage');
+  }
 }
