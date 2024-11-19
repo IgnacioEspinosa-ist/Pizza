@@ -94,7 +94,6 @@ export class UsuariosPage implements OnInit {
       this.usuarioActual.correo = this.email;
       this.usuarioActual.clave = this.clave;
       this.usuarioActual.telefono = this.telefono;
-      this.usuarioActual.id_roll = this.id_roll;
       this.usuarioActual.foto = this.imagen;
 
       try {

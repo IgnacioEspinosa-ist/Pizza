@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
+
 
 @Component({
   selector: 'app-register',
@@ -8,74 +9,71 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage {
- 
-  email: string = '';
-  rut: string = '';
-  password: string = '';
-  esDelivery: boolean = false;
-  passwordMismatchError: string = '';
+  registerUser = {
+    nombre: '',
+    apellido: '',
+    rut: '',
+    correo: '',
+    clave: '',
+    repeatedClave: '',  // Campo para repetir la clave
+    telefono: '',
+  };
 
- 
-  emailError: string = '';
-  rutError: string = '';
-  passwordError: string = '';
-  confirmPassword: string ='';
+  constructor(
+    private dbService: DatabaseService,
+    private alertController: AlertController,
+    private navCtrl: NavController
+  ) {}
 
-  constructor(private alertController: AlertController,private router: Router) { }
+  async registerUserAction() {
+    // Validación de contraseñas
+    if (this.registerUser.clave !== this.registerUser.repeatedClave) {
+      await this.presentAlert('Las contraseñas no coinciden.');
+      return;
+    }
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Se Ha Registrado Correctamente',
-      buttons: ['Entendido'],
-      
-    });
+    // Validaciones generales antes de guardar
+    if (
+      !this.registerUser.nombre ||
+      !this.registerUser.apellido ||
+      !this.registerUser.rut ||
+      !this.registerUser.correo ||
+      !this.registerUser.clave ||
+      !this.registerUser.telefono
+    ) {
+      await this.presentAlert('Todos los campos son obligatorios.');
+      return;
+    }
 
- 
-    
+    // Inserta el usuario con rol por defecto
+    const nuevoUsuario = {
+      nombre: this.registerUser.nombre,
+      apellido: this.registerUser.apellido,
+      rut: this.registerUser.rut,
+      correo: this.registerUser.correo,
+      clave: this.registerUser.clave,
+      telefono: this.registerUser.telefono,
+      id_roll: 1, // Cliente por defecto
+      foto: null, // Foto opcional
+    };
 
-    await alert.present();
+    try {
+      await this.dbService.insertUsuarioU(nuevoUsuario);
+      await this.presentAlert('Usuario registrado con éxito.');
+      this.navCtrl.navigateBack('/login');
+    } catch (error) {
+      console.error('Error al registrar usuario:', error);
+      await this.presentAlert('Error al registrar usuario.');
+    }
   }
 
-  async register() {
-    this.emailError = '';
-    this.rutError = '';
-    this.passwordError = '';
-    this.passwordMismatchError = ''; 
-  
-    // Validaciones del correo
-    if (!this.email) {
-      this.emailError = 'El correo es requerido.';
-    } else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.email)) {
-      this.emailError = 'Correo inválido.';
-    }
-  
-    // Validaciones del RUT
-    if (!this.rut) {
-      this.rutError = 'El RUT es requerido.';
-    } else if (!/^\d{1,2}\d{3}\d{3}[-]{1}[0-9kK]{1}$/.test(this.rut)) {
-      this.rutError = 'Formato de RUT inválido. Solo números y guion son permitidos.';
-    }
-  
-    // Validaciones de la contraseña
-    if (!this.password) {
-      this.passwordError = 'La contraseña es requerida.';
-    } else if (this.password.length < 8) {
-      this.passwordError = 'La contraseña debe tener al menos 8 caracteres.';
-    }
-  
-    // Validación de coincidencia de contraseñas
-    if (this.password !== this.confirmPassword) {
-      this.passwordMismatchError = 'Las contraseñas no coinciden';
-      return; // Asegúrate de retornar aquí para evitar que se registre el usuario
-    }
-  
-    // Si todas las validaciones son correctas
-    if (!this.emailError && !this.rutError && !this.passwordError && !this.passwordMismatchError) {
-      console.log('Formulario válido:', { email: this.email, rut: this.rut, password: this.password });
-      await this.presentAlert();
-      this.router.navigate(['/login']);
-    } else {
-      console.log('Formulario inválido');
-    }
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Registro',
+      message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 }

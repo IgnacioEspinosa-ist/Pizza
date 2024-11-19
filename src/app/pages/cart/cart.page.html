@@ -11,20 +11,23 @@
 
 <ion-content class="fondo">
   <div class="fondo">
-    <ion-list *ngIf="carrito.length > 0; else emptyCart">
-      <ion-item *ngFor="let producto of carrito">
+    <ion-list *ngIf="productos.length > 0; else emptyCart">
+      <ion-item *ngFor="let producto of productos">
         <ion-label>
           <h2>{{ producto.nombre }}</h2>
+          <p>Cantidad: {{ producto.cantidad }}</p>
           <p>Precio: {{ producto.precio | currency }}</p>
         </ion-label>
-        <ion-buttons slot="end">
-          <ion-button (click)="eliminarProductoDelCarrito(producto.id_prod)">
-            <ion-icon name="trash"></ion-icon>
-          </ion-button>
-        </ion-buttons>
+        <ion-button (click)="disminuirCantidad(producto.id_prod, producto.cantidad)">-</ion-button>
+        <ion-button (click)="aumentarCantidad(producto.id_prod, producto.cantidad)">+</ion-button>
+        <ion-button (click)="eliminarProductoDelCarrito(producto.id_prod)">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
       </ion-item>
     </ion-list>
-
+    <div class="rectangulo-blanco">
+      <ion-title>Total: {{ totalCarrito | currency }}</ion-title>
+    </div>
     <ng-template #emptyCart>
       <ion-card>
         <ion-card-header>
@@ -35,19 +38,18 @@
         </ion-card-content>
       </ion-card>
     </ng-template>
-
-    <ion-footer>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-button (click)="vaciarCarrito()">Vaciar Carrito</ion-button>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button (click)="finalizarCompra()">Finalizar Compra</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-      <div>
-        <ion-title>Total: {{ obtenerTotalCarrito() | currency }}</ion-title>
-      </div>
-    </ion-footer>
   </div>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-buttons slot="start" style="font-size: 12px; padding: 5px 10px; width: auto; height: auto; border-radius: 5px;">
+        <ion-button size="medium" (click)="vaciarCarrito()">Vaciar Carrito</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end" style="font-size: 12px; padding: 5px 10px; width: auto; height: auto; border-radius: 5px;">
+        <ion-button (click)="finalizarCompra()" [routerLink]="['/mapacli']">Finalizar Compra</ion-button>
+      </ion-buttons>
+    
+      
+    </ion-toolbar>
+    
+  </ion-footer>
 </ion-content>

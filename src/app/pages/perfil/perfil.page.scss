@@ -35,3 +35,39 @@ ion-title{
     margin: top;
     
 }
+
+.head {
+    display: flex;
+    justify-content: space-between; /* Asegura que el logo esté a la derecha y el menú a la izquierda */
+  }
+  
+  .logo {
+    height: 40px; /* Ajusta el tamaño del logo según sea necesario */
+  }
+  
+  .perfil {
+    padding: 20px;
+  }
+  
+  .perfil-imagen {
+    text-align: center; /* Centra la imagen de perfil */
+    margin-bottom: 20px;
+  }
+  
+  ion-item {
+    display: flex;
+    justify-content: space-between; /* Alinea los elementos a los lados */
+    align-items: center; /* Centra verticalmente */
+    margin-bottom: 10px;
+  }
+  
+  ion-label {
+    flex-grow: 1; /* Hace que el label ocupe el espacio disponible */
+    text-align: left; /* Alinea el texto a la izquierda */
+  }
+  
+  ion-input, ion-text {
+    flex-grow: 2; /* Hace que el input o texto ocupe el espacio disponible */
+    text-align: right; /* Alinea el texto a la derecha */
+  }
+  

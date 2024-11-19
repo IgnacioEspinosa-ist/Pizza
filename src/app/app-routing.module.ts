@@ -92,9 +92,18 @@ const routes: Routes = [
   },
 
   {
+    path: 'rescontrasena',
+    loadChildren: () => import('./pages/rescontrasena/rescontrasena.module').then( m => m.RescontrasenaPageModule)
+  },
+  {
+    path: 'cambiar-contrasena',
+    loadChildren: () => import('./pages/cambiar-contrasena/cambiar-contrasena.module').then( m => m.CambiarContrasenaPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+
   
 
   

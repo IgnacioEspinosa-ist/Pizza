@@ -1,17 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { OtcPage } from './otc.page';
+import { TestBed } from '@angular/core/testing';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { DatabaseService } from 'src/app/services/database.service';
+import { SQLiteMock } from 'src/app/services/sqlite-mock.service';
+// Asegúrate de importar el mock
 
-describe('OtcPage', () => {
-  let component: OtcPage;
-  let fixture: ComponentFixture<OtcPage>;
+describe('DatabaseService', () => {
+  let service: DatabaseService;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OtcPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    TestBed.configureTestingModule({
+      providers: [
+        DatabaseService,
+        { provide: SQLite, useClass: SQLiteMock } // Proporciona el mock aquí
+      ]
+    });
+    service = TestBed.inject(DatabaseService);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be created', () => {
+    expect(service).toBeTruthy();
   });
 });
