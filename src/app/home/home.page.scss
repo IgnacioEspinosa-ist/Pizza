@@ -1,40 +1,64 @@
-/* Estilo global para que el ion-content permita scroll */
-ion-content {
-  --background: #f8f8f8;
-  overflow-y: auto;
-}
-
-/* Asegurar que las imágenes de los productos tengan tamaño ajustado */
-.producto-imagen {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-/* Añadir márgenes entre los productos */
-.producto-card {
-  margin-bottom: 16px;
-}
-
-/* Ajustar el contenedor principal */
-.productos-container {
-  padding: 16px;
-}
-
-img {
-  width: 100%;  /* Para que la imagen ocupe todo el contenedor */
-  height: 150px; /* Ajusta la altura */
-  object-fit: cover; /* Asegura que la imagen mantenga las proporciones */
- }
-
- .logo{
-
+.logo{
   width: 50px;
- 
-
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+}  
+/* Fondo general */
+ion-content {
+  --background: transparent; /* Fondo transparente para ver la imagen personalizada */
+  overflow-y: auto;
+  padding: 0; /* Elimina padding adicional */
 }
+
+
+/* Contenedor de los productos */
+.productos-container {
+  padding: 0; /* Elimina cualquier espacio interno adicional */
+  margin: 0 auto; /* Centra el contenido */
+  max-width: 100%; /* Asegura que ocupe todo el ancho */
+}
+
+/* Tarjetas de producto */
+.producto-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 12px; /* Espaciado interno */
+  height: 200px; /* Ajusta la altura de las tarjetas */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sutil sombra */
+  text-align: center;
+  background-color: #ffffff; /* Fondo blanco */
+  border: none; /* Sin bordes */
+}
+
+/* Imágenes de productos */
+.producto-imagen {
+  width: 100%;
+  max-height: 90px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+
+/* Nombre del producto */
+.producto-nombre {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+/* Precio del producto */
+.producto-precio {
+  font-size: 12px;
+  color: #555;
+  margin: 0;
+}
+
+
+
