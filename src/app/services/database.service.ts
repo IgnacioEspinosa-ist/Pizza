@@ -618,29 +618,32 @@ export class DatabaseService {
     }));
   }
 
-  updateProducto(producto: Producto): void {
-    const sql = `
-        UPDATE producto SET nombre = ?, precio = ?, stock = ?, foto = ?, id_cat = ? WHERE id_prod = ?`;
-
-    this.database.executeSql(sql, [
+  updateProducto(producto: Producto): Promise<void> {
+    const query = `
+      UPDATE producto
+      SET nombre = ?, descripcion = ?, precio = ?, stock = ?, foto_PRODUCTO = ?
+      WHERE id_prod = ?
+    `;
+    const params = [
       producto.nombre,
+      producto.descripcion,
       producto.precio,
       producto.stock,
-      producto.foto,
-      producto.id_cat,
-      producto.id_prod
-    ])
+      producto.foto, 
+      producto.id_prod,
+    ];
+  
+    return this.database.executeSql(query, params)
       .then(() => {
-        return this.refreshProductoList(); // Actualiza la lista de productos
+        console.log('Producto actualizado en la base de datos.');
       })
-      .then(() => {
-        this.presentAlert('Éxito', 'Producto actualizado correctamente.');
-      })
-      .catch((error) => {
-        this.presentAlert('Error', 'No se pudo actualizar el producto.');
-        console.error('Error al actualizar producto:', error);
+      .catch(error => {
+        console.error('Error al actualizar el producto:', error);
+        throw error; 
       });
   }
+  
+  
 
   private refreshProductoList(): Promise<void> {
     const sql = "SELECT * FROM producto";
@@ -671,14 +674,14 @@ export class DatabaseService {
       
     ])
       .then(() => {
-        return this.refreshProductoList();  // Actualiza la lista de productos
+        return this.refreshProductoList();  
       })
       .then(() => {
         this.presentAlert('Éxito', 'Producto añadido correctamente.');
       })
       .catch((error) => {
         this.presentAlert('Error', 'No se pudo añadir el producto.');
-        this.presentAlert('prueba', JSON.stringify(error))
+        
       });
   }
 
