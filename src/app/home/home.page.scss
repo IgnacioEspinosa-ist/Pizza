@@ -1,71 +1,25 @@
-
-#container {
-  text-align: center;
-  padding-right: 20px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  
+/* Estilo global para que el ion-content permita scroll */
+ion-content {
+  --background: #f8f8f8;
+  overflow-y: auto;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+/* Asegurar que las imágenes de los productos tengan tamaño ajustado */
+.producto-imagen {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
- 
-  margin: 0;
+/* Añadir márgenes entre los productos */
+.producto-card {
+  margin-bottom: 16px;
 }
 
-#container a {
-  text-decoration: none;
-
-}
-
-ion-grid {
-  margin-top: 16px;
- 
-}
-
-ion-slides {
-  height: 200px;
-}
-
-ion-row {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; /* Permite que las tarjetas se ajusten en varias filas */
-}
-
-ion-col {
-  padding: 8px;
-  flex: 0 0 calc(50% - 16px); /* Dos tarjetas por fila */
-  max-width: calc(50% - 16px); /* Asegura que no se desborden */
-}
-
-ion-card {
-  background-color: white;
-  width: 95%;
-  height: 100%;  /* Hace que las tarjetas ocupen todo el espacio disponible */
-  
-  flex-direction: column;
-  
-}
-
-ion-card-title {
-  font-size: 1.2em;
-  text-align: center;
-}
-
-ion-card-content {
-  text-align: center;
-  
+/* Ajustar el contenedor principal */
+.productos-container {
+  padding: 16px;
 }
 
 img {
@@ -74,23 +28,7 @@ img {
   object-fit: cover; /* Asegura que la imagen mantenga las proporciones */
  }
 
-.fondo{
-  padding-top: 50px;
-  background-color: #ef8320;
-  padding-bottom: 200px;
-}
-
-.head{
-
-  background-color: rgb(218, 0, 0);
-}
-
-ion-toolbar{
-
-  background-color: rgb(255, 0, 0);
-}
-
-.logo{
+ .logo{
 
   width: 50px;
  

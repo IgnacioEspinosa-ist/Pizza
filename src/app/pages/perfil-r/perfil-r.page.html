@@ -12,8 +12,10 @@
 <ion-content>
   <div class="perfil">
     <div class="perfil-imagen">
-      <img [src]="imagen || 'assets/perfil1.jpg'" class="perfil" alt="Foto de Perfil" (click)="takePicture()">
+      <img [src]="imagen" class="perfil" alt="Foto de Perfil" (click)="takePicture()">
     </div>
+
+    {{this.id_user}}
 
     <ion-list>
       <ion-item (click)="activarEdicion('nombre')">
@@ -26,6 +28,8 @@
         <ion-input [(ngModel)]="repartidorTelefono" [readonly]="!editableCampos.telefono" type="tel"></ion-input>
       </ion-item>
     </ion-list>
+
+    <ion-button expand="full" [routerLink]="['/otc']">Olvidaste Tu Contraseña</ion-button>
 
     <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
   </div>

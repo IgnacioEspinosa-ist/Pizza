@@ -69,17 +69,17 @@ export class DatabaseService {
   //Los Usuarios
 
 
-  registroUsuario: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ñamñamñam','123456',1)`
+  registroUsuario: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ignacio123','123456',1,'assets/perfil1.jpg')`
 
-  registroRepartidor1: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Pedro','Espinoza','217845965-0','pedro@gmail.com','miaumiaumiau','123456',2)`
+  registroRepartidor1: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('Pedro','Espinoza','217845965-0','pedro@gmail.com','miaumiaumiau','123456',2,'assets/perfil1.jpg')`
 
-  registroRepartidor2: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Javier','Soto','18789652-0','javier@gmail.com','enwarhammer','123456',2)`
+  registroRepartidor2: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('Javier','Soto','18789652-0','javier@gmail.com','enwarhammer','123456',2,'assets/perfil1.jpg')`
 
-  registroAdmin: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3)`
+  registroAdmin: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3,'assets/perfil1.jpg')`
 
   //
   registroComuna1: string = "INSERT INTO comuna (nombre_comuna) values ('Conchali')"
@@ -138,6 +138,7 @@ export class DatabaseService {
       stock INTEGER NOT NULL,
       foto_PRODUCTO BLOB,
       id_cat INTEGER,
+      
       FOREIGN KEY(id_cat) REFERENCES categoria(id_cat)
   );`;
 
@@ -200,7 +201,7 @@ export class DatabaseService {
 
   ];
 
-  
+
 
   async verificarInserciones(): Promise<boolean> {
     try {
@@ -273,7 +274,7 @@ export class DatabaseService {
     if (!existe) {
       for (const insert of this.inserciones) {
         await this.database.executeSql(insert, []);
-        
+       
       }
     } else {
       console.log("Los datos ya existen, no se realizará la inserción nuevamente.");
@@ -370,18 +371,36 @@ export class DatabaseService {
     });
   }
 
-  async updateUsuarioFoto(id_user: number, foto: string) {
+  async insertUsuarioFoto(id_user: number, foto: string) {
     return new Promise<void>((resolve, reject) => {
-      this.database.executeSql('UPDATE usuario SET foto = ? WHERE id_user = ?', [foto, id_user])
+      this.database.executeSql('UPDATE usuario SET foto_U = ? WHERE id_user = ?', [foto, id_user])
         .then(() => {
-          resolve(); // Resuelve la promesa al completar
+          console.log('Foto de usuario actualizada');
+          resolve();
         })
         .catch((error) => {
           console.error('Error al actualizar la foto del usuario:', error);
-          reject(error); // Rechaza la promesa en caso de error
+          reject(error);
         });
     });
   }
+  
+  getUsuarioFoto(id_user: number): Promise<string | null> {
+    return this.database.executeSql('SELECT foto_U FROM usuario WHERE id_user = ?', [id_user])
+      .then((data) => {
+        if (data.rows.length > 0) {
+          return data.rows.item(0).foto_U; // Retorna la foto si existe
+        } else {
+          return null; // No hay foto para el usuario
+        }
+      })
+      .catch((error) => {
+        console.error('Error al obtener la foto del usuario:', error);
+        return null;
+      });
+  }
+  
+  
 
 
   getProductoById(id_prod: number) {
@@ -411,32 +430,30 @@ export class DatabaseService {
     });
   }
 
-  async getProductosByIds(productos: number[]): Promise<Producto[]> {
-    const arregloProductos: Producto[] = [];
-  
-    // Usamos Promise.all para esperar que todas las consultas se resuelvan
-    const queries = productos.map(async (productoId) => {
-      const res = await this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [productoId]);
-      if (res.rows.length > 0) {
-        const producto: Producto = {
-          id_prod: res.rows.item(0).id_prod,
-          nombre: res.rows.item(0).nombre,
-          descripcion: res.rows.item(0).descripcion,
-          precio: res.rows.item(0).precio,
-          stock: res.rows.item(0).stock,
-          foto: res.rows.item(0).foto_PRODUCTO,
-          id_cat: res.rows.item(0).id_cat,
-        };
-        arregloProductos.push(producto);
-      }
-    });
-  
-    // Esperar a que todas las consultas terminen
-    await Promise.all(queries);
-  
+  getProductosById(productos: number[]) {
+    let arregloProductos: Producto[] = []
+    for (let i = 0; i < productos.length; i++) {
+      this.database.executeSql('SELECT * FROM producto WHERE id_prod = ?', [productos[i]])
+        .then(res => {
+          if (res.rows.length > 0) {
+            const producto: Producto = {
+              id_prod: res.rows.item(0).id_prod,
+              nombre: res.rows.item(0).nombre,
+              descripcion: res.rows.item(0).descripcion,
+              precio: res.rows.item(0).precio,
+              stock: res.rows.item(0).stock,
+              foto: res.rows.item(0).foto_PRODUCTO,
+              id_cat: res.rows.item(0).id_cat
+            };
+            arregloProductos.push(producto)
+
+
+          }
+        })
+    }
     return arregloProductos;
+
   }
-  
 
   //aqui
 
@@ -474,25 +491,28 @@ export class DatabaseService {
 
 
 
-  addPedido(total: number, id_user: number) {
-    return new Observable<number>((observer) => {
-      const f_pedido = new Date().toISOString(); // Fecha del pedido
-      const estatus = 'pendiente'; // Estado del pedido
-
-      // Insertar el pedido en la tabla 'pedido' sin dirección
-      this.database.executeSql('INSERT INTO pedido (f_pedido, id_user, total, estatus) VALUES (?, ?, ?, ?)',
-        [f_pedido, id_user, total, estatus])
-        .then(result => {
-          const id_pedido = result.insertId; // Obtener el ID del pedido recién insertado
-          observer.next(id_pedido); // Emitir el ID del pedido
-          observer.complete();
-        })
-        .catch(error => {
-          console.error('Error al agregar pedido:', error);
-          observer.error(error);
-        });
-    });
+  async agregarPedido(pedido: { f_pedido: string; id_user: number; id_direccion: number; total: number; id_user_resp?: number; estatus: string }): Promise<void> {
+    const query = `
+      INSERT INTO pedido (f_pedido, id_user, id_direccion, total, id_user_resp, estatus)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    const values = [
+      pedido.f_pedido,
+      pedido.id_user,
+      pedido.id_direccion,
+      pedido.total,
+      pedido.id_user_resp ?? null, // Si no se pasa, usar null
+      pedido.estatus
+    ];
+  
+    try {
+      await this.database.executeSql(query, values);
+      console.log('Pedido añadido correctamente');
+    } catch (error) {
+      console.error('Error al insertar el pedido:', error);
+    }
   }
+  
 
 
   addDetallePedido(id_pedido: number, carrito: Producto[]): Observable<void> {
@@ -640,7 +660,7 @@ export class DatabaseService {
     this.presentAlert('prueba', JSON.stringify(producto))
     const sql = `
         INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
-        VALUES (?, ?, ?, ?, ?);`;
+        VALUES (?, ?, ?, ?, ?, 1);`;
 
     this.database.executeSql(sql, [
       producto.nombre,
@@ -648,7 +668,7 @@ export class DatabaseService {
       producto.precio,
       producto.stock,
       producto.foto,
-      producto.id_cat
+      
     ])
       .then(() => {
         return this.refreshProductoList();  // Actualiza la lista de productos
@@ -703,24 +723,46 @@ export class DatabaseService {
 
     const sql = `
         INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+        VALUES (?, ?, ?, ?, ?, ?, 2, ?);`;
     try {
+        await this.database.executeSql(sql, [
+            usuario.nombre,
+            usuario.apellido,
+            usuario.rut,
+            usuario.correo,
+            usuario.clave,
+            usuario.telefono,
+            usuario.foto
+        ]);
+        this.refreshUsuarioList();
+        this.presentAlert('Éxito', 'Usuario añadido correctamente.');
+    } catch (error) {
+        console.error('Error al insertar usuario:', error);
+    }
+}
+
+async insertUsuarioU(usuario: Usuario): Promise<void> {
+
+  const sql = `
+      INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
+      VALUES (?, ?, ?, ?, ?, ?, 1, ?);`;
+  try {
       await this.database.executeSql(sql, [
-        usuario.nombre,
-        usuario.apellido,
-        usuario.rut,
-        usuario.correo,
-        usuario.clave,
-        usuario.telefono,
-        usuario.id_roll,
-        usuario.foto
+          usuario.nombre,
+          usuario.apellido,
+          usuario.rut,
+          usuario.correo,
+          usuario.clave,
+          usuario.telefono,
+          usuario.foto
       ]);
       this.refreshUsuarioList();
       this.presentAlert('Éxito', 'Usuario añadido correctamente.');
-    } catch (error) {
-
-    }
+  } catch (error) {
+      console.error('Error al insertar usuario:', error);
   }
+}
+
 
   private async refreshUsuarioList(): Promise<void> {
     const sql = "SELECT * FROM usuario";
@@ -835,10 +877,15 @@ export class DatabaseService {
   }
 
 
-  public insertUsuarioR(usuario: Usuario): Promise<any> {
-    const sql = 'INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto) VALUES (?, ?, ?, ?, ?, ?, 1, ?)';
-    return this.database.executeSql(sql, [usuario.nombre, usuario.apellido, usuario.rut, usuario.correo, usuario.clave, usuario.telefono, usuario.id_roll, usuario.foto]);
+  updatePassword(email: string, newPassword: string): Observable<any> {
+    const query = `UPDATE usuario SET clave = ? WHERE correo = ?`;
+    const params = [newPassword, email];
+  
+ 
+    return from(this.database.executeSql(query, params));
   }
+  
+  
 
 
 

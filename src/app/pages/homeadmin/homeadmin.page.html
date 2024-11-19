@@ -7,55 +7,45 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-  
-  
   <div class="fondo-g">
+    <form (submit)="productoActual ? modificarProducto() : agregarProducto()">
+      <ion-item>
+        <ion-label position="floating">Nombre del Producto</ion-label>
+        <ion-input [(ngModel)]="nuevoProducto.nombre" name="nombre" required></ion-input>
+      </ion-item>
 
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>{{ productoActual ? 'Editar Producto' : 'Agregar Producto' }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
-          <ion-input [(ngModel)]="nombre" type="text" required></ion-input>
-        </ion-item>
+      <ion-item>
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-textarea [(ngModel)]="nuevoProducto.descripcion" name="descripcion"></ion-textarea>
+      </ion-item>
 
-        <ion-item>
-          <ion-label position="floating">descripcion</ion-label>
-          <ion-input [(ngModel)]="descripcion" type="text" required></ion-input>
-        </ion-item>
-      
-        <ion-item>
-          <ion-label position="floating">Precio</ion-label>
-          <ion-input [(ngModel)]="precio" type="number" min="0" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Stock</ion-label>
-          <ion-input [(ngModel)]="stock" type="number" min="0" required></ion-input>
-        </ion-item>
+      <ion-item>
+        <ion-label position="floating">Precio</ion-label>
+        <ion-input type="number" [(ngModel)]="nuevoProducto.precio" name="precio" required></ion-input>
+      </ion-item>
 
-        <ion-item>
-          <ion-label>Foto</ion-label>
-          <ion-button (click)="takePicture()">Tomar Foto</ion-button>
-        </ion-item>
-      
-        <div *ngIf="imagen">
-          <img [src]="imagen" alt="Foto del usuario" style="width: 100px; height: 100px; margin-top: 10px; border-radius: 5px;">
-        </div>
+      <ion-item>
+        <ion-label position="floating">Stock</ion-label>
+        <ion-input type="number" [(ngModel)]="nuevoProducto.stock" name="stock" required></ion-input>
+      </ion-item>
 
+      <ion-item>
+        <ion-label>Foto</ion-label>
+        <ion-button (click)="takePicture()">Tomar Foto</ion-button>
+      </ion-item>
 
+      <div *ngIf="nuevoProducto.foto">
+        <img [src]="nuevoProducto.foto" alt="Foto del producto" style="width: 100px; height: 100px; margin-top: 10px; border-radius: 5px;">
+      </div>
 
-        <ion-button expand="full" (click)="productoActual ? modificarProducto() : agregarProducto()">
-          {{ productoActual ? 'Guardar Cambios' : 'Agregar Producto' }}
-        </ion-button>
-        <ion-button expand="full" color="medium" (click)="limpiarCampos()" *ngIf="productoActual">
-          Cancelar Edición
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
+      <ion-button expand="full" type="submit">
+        {{ productoActual ? 'Guardar Cambios' : 'Agregar Producto' }}
+      </ion-button>
+      <ion-button expand="full" color="medium" (click)="limpiarCampos()" *ngIf="productoActual">
+        Cancelar Edición
+      </ion-button>
+    </form>
 
     <!-- Lista de productos -->
     <ion-list>
@@ -66,7 +56,6 @@
       <ion-item *ngFor="let producto of productos">
         <ion-label>
           <h2>{{ producto.nombre }}</h2>
-          
           <p>Precio: ${{ producto.precio }}</p>
           <p>Stock: {{ producto.stock }}</p>
         </ion-label>

@@ -1,17 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+ // Asegúrate de que tu servicio esté correctamente importado
+// Importa el mock de SQLite
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { DatabaseService } from 'src/app/services/database.service';
+import { SQLiteMock } from 'src/app/services/sqlite-mock.service';
 import { AdminPage } from './homeadmin.page';
 
-describe('HomeadminPage', () => {
-  let component: AdminPage;
-  let fixture: ComponentFixture<AdminPage>;
+describe('Adminpage', () => {
+  let service: AdminPage;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    TestBed.configureTestingModule({
+      providers: [
+        AdminPage,
+        { provide: SQLite, useClass: SQLiteMock } // Asegúrate de proporcionar el mock aquí
+      ]
+    });
+    service = TestBed.inject(AdminPage);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be created', () => {
+    expect(service).toBeTruthy();
   });
 });

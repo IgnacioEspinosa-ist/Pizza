@@ -1,26 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Olvidaste tu Contraseña</ion-title>
+    <ion-title>Olvidaste Tu Contraseña</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/login"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="form">
-  
-    <img src="assets/logo.png" width="200px" height="200px" style="display: block;
-  margin: auto;">
+  <form (ngSubmit)="onResetPassword()" class="form">
+    <ion-item>
+      <ion-label position="floating">Correo Electrónico</ion-label>
+      <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Correo Electrónico</ion-label>
-    <ion-input type="email" [(ngModel)]="email" placeholder="correo@dominio.com"></ion-input>
-  </ion-item>
-
-  <ion-button expand="full" (click)="onResetPassword()">
-    Restablecer Contraseña
-  </ion-button>
-
-</div>
+    <ion-button expand="full" type="submit" [disabled]="!email">Enviar Código</ion-button>
+  </form>
 </ion-content>

@@ -2,58 +2,84 @@
   <ion-toolbar>
     <ion-title>Registro</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/login"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="fondo-g">
+  <div class="fondo-g">
+    <!-- Nombre -->
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="registerUser.nombre" name="nombre" required minlength="2" #nombre="ngModel"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="nombre.invalid && nombre.touched" color="danger">
+      Nombre es requerido y debe tener al menos 2 caracteres.
+    </ion-note>
 
+    <!-- Apellido -->
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input [(ngModel)]="registerUser.apellido" name="apellido" required minlength="2" #apellido="ngModel"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="apellido.invalid && apellido.touched" color="danger">
+      Apellido es requerido y debe tener al menos 2 caracteres.
+    </ion-note>
 
-  <div >
+    <!-- RUT -->
+    <ion-item>
+      <ion-label position="floating">RUT</ion-label>
+      <ion-input [(ngModel)]="registerUser.rut" name="rut" required pattern="[0-9]{7,8}-[0-9Kk]" #rut="ngModel"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="rut.invalid && rut.touched" color="danger">
+      RUT debe tener un formato válido (Ejemplo: 12345678-9).
+    </ion-note>
 
-    <img src="assets/logo.png" >
+    <!-- Correo -->
+    <ion-item>
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input [(ngModel)]="registerUser.correo" name="correo" required email #correo="ngModel"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="correo.invalid && correo.touched" color="danger">
+      Correo debe tener un formato válido.
+    </ion-note>
+
+    <!-- Teléfono -->
+    <ion-item>
+      <ion-label position="floating">Teléfono</ion-label>
+      <ion-input [(ngModel)]="registerUser.telefono" name="telefono" required pattern="^[0-9]+$" #telefono="ngModel"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="telefono.invalid && telefono.touched" color="danger">
+      El teléfono debe contener solo números.
+    </ion-note>
+
+    <!-- Contraseña -->
+    <ion-item>
+      <ion-label position="floating">Clave</ion-label>
+      <ion-input [(ngModel)]="registerUser.clave" name="clave" required minlength="8" type="password" #clave="ngModel"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="clave.invalid && clave.touched" color="danger">
+      La clave es requerida y debe tener al menos 8 caracteres.
+    </ion-note>
+
+    <!-- Repetir contraseña -->
+    <ion-item>
+      <ion-label position="floating">Repetir clave</ion-label>
+      <ion-input [(ngModel)]="registerUser.repeatedClave" name="repeatedClave" required minlength="8" type="password" #repeatedClave="ngModel"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="repeatedClave.invalid && repeatedClave.touched" color="danger">
+      La repetición de la clave es requerida y debe tener al menos 8 caracteres.
+    </ion-note>
+
+    <!-- Validar que las contraseñas coincidan -->
+    <ion-note *ngIf="clave.value !== repeatedClave.value && repeatedClave.touched" color="danger">
+      Las contraseñas no coinciden.
+    </ion-note>
+    
 
     
 
-    <form (ngSubmit)="register()" class="fondo-g" style="padding-bottom: 220px;">
-      <ion-item>
-        <ion-label position="floating">Correo Electrónico</ion-label>
-        <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
-      </ion-item>
-      <div *ngIf="emailError" class="error-message">
-        <ion-text color="danger">{{ emailError }}</ion-text>
-      </div>
-    
-      <ion-item>
-        <ion-label position="floating">Contraseña</ion-label>
-        <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
-      </ion-item>
-      <div *ngIf="passwordError" class="error-message">
-        <ion-text color="danger">{{ passwordError }}</ion-text>
-      </div>
-
-      <ion-item>
-        <ion-label position="floating">Repetir Contraseña</ion-label>
-        <ion-input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"></ion-input>
-      </ion-item>
-      <div *ngIf="passwordMismatchError" class="error-message">
-        <ion-text color="danger">{{ passwordMismatchError }}</ion-text>
-      </div>
-
-      <ion-item>
-        <ion-label position="floating">RUT</ion-label>
-        <ion-input type="text" [(ngModel)]="rut" name="rut"></ion-input>
-      </ion-item>
-      <div *ngIf="rutError" class="error-message">
-        <ion-text color="danger">{{ rutError }}</ion-text>
-      </div>
-
-      
-
-
-      <ion-button  expand="block" type="submit">Registrar</ion-button>
-    </form>
+    <ion-button expand="full" (click)="registerUserAction()">Registrarse</ion-button>
   </div>
-  
 </ion-content>
