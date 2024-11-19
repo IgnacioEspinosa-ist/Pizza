@@ -69,17 +69,17 @@ export class DatabaseService {
   //Los Usuarios
 
 
-  registroUsuario: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ignacio123','123456',1)`
+  registroUsuario: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('Ignacio','Espinosa','21841456-0','ignacio@gmail.com','ignacio123','123456',1,'assets/perfil1.jpg')`
 
-  registroRepartidor1: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Pedro','Espinoza','217845965-0','pedro@gmail.com','miaumiaumiau','123456',2)`
+  registroRepartidor1: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('Pedro','Espinoza','217845965-0','pedro@gmail.com','miaumiaumiau','123456',2,'assets/perfil1.jpg')`
 
-  registroRepartidor2: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Javier','Soto','18789652-0','javier@gmail.com','enwarhammer','123456',2)`
+  registroRepartidor2: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('Javier','Soto','18789652-0','javier@gmail.com','enwarhammer','123456',2,'assets/perfil1.jpg')`
 
-  registroAdmin: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll) 
-  VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3)`
+  registroAdmin: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3,'assets/perfil1.jpg')`
 
   //
   registroComuna1: string = "INSERT INTO comuna (nombre_comuna) values ('Conchali')"
@@ -371,18 +371,36 @@ export class DatabaseService {
     });
   }
 
-  async updateUsuarioFoto(id_user: number, foto: string) {
+  async insertUsuarioFoto(id_user: number, foto: string) {
     return new Promise<void>((resolve, reject) => {
       this.database.executeSql('UPDATE usuario SET foto_U = ? WHERE id_user = ?', [foto, id_user])
         .then(() => {
-          resolve(); // Resuelve la promesa al completar
+          console.log('Foto de usuario actualizada');
+          resolve();
         })
         .catch((error) => {
           console.error('Error al actualizar la foto del usuario:', error);
-          reject(error); // Rechaza la promesa en caso de error
+          reject(error);
         });
     });
   }
+  
+  getUsuarioFoto(id_user: number): Promise<string | null> {
+    return this.database.executeSql('SELECT foto_U FROM usuario WHERE id_user = ?', [id_user])
+      .then((data) => {
+        if (data.rows.length > 0) {
+          return data.rows.item(0).foto_U; // Retorna la foto si existe
+        } else {
+          return null; // No hay foto para el usuario
+        }
+      })
+      .catch((error) => {
+        console.error('Error al obtener la foto del usuario:', error);
+        return null;
+      });
+  }
+  
+  
 
 
   getProductoById(id_prod: number) {

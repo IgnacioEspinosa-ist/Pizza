@@ -15,7 +15,8 @@
     <div class="perfil">
       <div class="perfil-imagen">
         <!-- Cambia la imagen de perfil al tomar una foto -->
-        <img [src]="imagen || 'assets/perfil1.jpg'" class="perfil" alt="Foto de Perfil" (click)="takePicture()">
+        <img [src]="imagen" class="perfil" alt="Foto de Perfil" (click)="takePicture()">
+ 
       </div>
 
       <ion-list *ngIf="usuario">
