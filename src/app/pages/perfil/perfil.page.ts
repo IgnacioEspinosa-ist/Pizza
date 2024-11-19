@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { DatabaseService } from 'src/app/services/database.service';
 import { Storage } from '@ionic/storage-angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-perfil',
@@ -19,7 +20,7 @@ export class PerfilPage implements OnInit {
     rut: false
   };
 
-  constructor(private dbService: DatabaseService, private storage: Storage) {}
+  constructor(private dbService: DatabaseService, private storage: Storage, private toastController: ToastController) {}
 
   async ngOnInit() {
     try {
@@ -87,6 +88,19 @@ export class PerfilPage implements OnInit {
           }
         });
     }
+  }
+
+  async confirmarCambios() {
+    // Lógica para actualizar los datos del usuario (esto puede incluir la base de datos o algún otro servicio)
+    console.log('Cambios confirmados:', this.usuario);
+
+    // Mostrar el mensaje de confirmación
+    const toast = await this.toastController.create({
+      message: 'Los cambios se han guardado correctamente.',
+      duration: 2000,  // Duración en milisegundos (2 segundos)
+      position: 'bottom',  // Posición del mensaje en la pantalla
+    });
+    toast.present();
   }
   
 

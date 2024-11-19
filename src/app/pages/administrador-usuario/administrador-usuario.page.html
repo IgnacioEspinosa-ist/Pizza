@@ -90,7 +90,7 @@
           <img [src]="usuario.foto || 'assets/perfil1.jpg'" alt="Foto de perfil">
         </ion-thumbnail>
         <ion-label>
-          <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+          <h5>{{ usuario.nombre }} {{ usuario.apellido }}</h5>
           <p>{{ usuario.correo }}</p>
           <p>Teléfono: {{ usuario.telefono }}</p>
           <p>Rol: {{ usuario.id_roll === 1 ? 'Usuario' : usuario.id_roll === 2 ? 'Repartidor' : 'Admin' }}</p>

@@ -25,7 +25,9 @@
         </ion-button>
       </ion-item>
     </ion-list>
-
+    <div class="rectangulo-blanco">
+      <ion-title>Total: {{ totalCarrito | currency }}</ion-title>
+    </div>
     <ng-template #emptyCart>
       <ion-card>
         <ion-card-header>
@@ -39,15 +41,15 @@
   </div>
   <ion-footer>
     <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-button (click)="vaciarCarrito()">Vaciar Carrito</ion-button>
+      <ion-buttons slot="start" style="font-size: 12px; padding: 5px 10px; width: auto; height: auto; border-radius: 5px;">
+        <ion-button size="medium" (click)="vaciarCarrito()">Vaciar Carrito</ion-button>
       </ion-buttons>
-      <ion-buttons slot="end">
+      <ion-buttons slot="end" style="font-size: 12px; padding: 5px 10px; width: auto; height: auto; border-radius: 5px;">
         <ion-button (click)="finalizarCompra()" [routerLink]="['/mapacli']">Finalizar Compra</ion-button>
       </ion-buttons>
+    
+      
     </ion-toolbar>
-    <div>
-      <ion-title>Total: {{ totalCarrito | currency }}</ion-title>
-    </div>
+    
   </ion-footer>
 </ion-content>
