@@ -20,12 +20,14 @@
     <ion-list>
       <ion-item (click)="activarEdicion('nombre')">
         <ion-label>Nombre:</ion-label>
-        <ion-input [(ngModel)]="repartidorNombre" [readonly]="!editableCampos.nombre"></ion-input>
+        <ion-input [(ngModel)]="repartidorNombre" ></ion-input>
       </ion-item>
 
       <ion-item (click)="activarEdicion('telefono')">
         <ion-label>Teléfono:</ion-label>
-        <ion-input [(ngModel)]="repartidorTelefono" [readonly]="!editableCampos.telefono" type="tel"></ion-input>
+        <ion-input [(ngModel)]="repartidorTelefono" type="tel"
+        pattern="[0-9]*"
+        maxlength="13" [readonly]="!editableCampos.telefono" type="tel"></ion-input>
       </ion-item>
     </ion-list>
 
