@@ -11,16 +11,16 @@
   
   <div class="fondo">
 
-    <ion-content *ngIf="producto">
+    <ion-content *ngIf="producto" class="fondo-g">
       <ion-card>
         <img [src]="producto.foto" alt="Imagen del producto">
         <ion-card-header>
           <ion-card-title>{{ producto.nombre }}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>
+        <ion-card-content >
           
           <p>Precio: {{ producto.precio | currency }}</p>
-          <p>Stock: {{ producto.stock }}</p>
+          <p>Descripcion: {{ producto.descripcion }}</p>
         </ion-card-content>
       </ion-card>
     </ion-content>

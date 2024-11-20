@@ -13,11 +13,15 @@ export class PerfilRPage implements OnInit {
   imagen: string | null = null; // Ruta de la imagen del repartidor
   id_user: number | null = null;
   repartidorNombre: string = '';
+  repartidorApellido: string = ''; // Añadimos el apellido
   repartidorTelefono: string = '';
+  repartidorRut: string = ''; // Añadimos el rut
 
   editableCampos = {
     nombre: false,
+    apellido: false, // Añadimos el campo de apellido
     telefono: false,
+    rut: false, // Añadimos el campo de rut
   };
 
   constructor(
@@ -40,7 +44,9 @@ export class PerfilRPage implements OnInit {
         this.dbService.getUsuarioById(this.id_user!).subscribe({
           next: async (usuario: any) => {
             this.repartidorNombre = usuario.nombre;
+            this.repartidorApellido = usuario.apellido; // Cargar apellido
             this.repartidorTelefono = usuario.telefono;
+            this.repartidorRut = usuario.rut; // Cargar rut
 
             // Intentar cargar la foto del repartidor desde la base de datos
             try {
@@ -63,17 +69,19 @@ export class PerfilRPage implements OnInit {
     }
   }
 
-  activarEdicion(campo: 'nombre' | 'telefono') {
+  activarEdicion(campo: 'nombre' | 'apellido' | 'telefono' | 'rut') {
     this.editableCampos[campo] = true;
   }
 
   guardarCambios() {
     if (this.id_user) {
-      this.dbService.updatePerfil(this.id_user, this.repartidorNombre, this.repartidorTelefono).subscribe({
+      this.dbService.updatePerfil(this.id_user, this.repartidorNombre, this.repartidorApellido, this.repartidorTelefono, this.repartidorRut).subscribe({
         next: () => {
           console.log('Datos actualizados correctamente');
           this.editableCampos.nombre = false;
+          this.editableCampos.apellido = false;
           this.editableCampos.telefono = false;
+          this.editableCampos.rut = false;
         },
         error: (error: any) => {
           console.error('Error al actualizar los datos del repartidor:', error);
