@@ -16,32 +16,51 @@
       <img [src]="imagen" class="perfil" alt="Foto de Perfil" (click)="takePicture()">
     </div>
 
-    <ion-list *ngIf="usuario">
+    <ion-list class="datos-container" *ngIf="usuario">
+      <!-- Campo Nombre -->
       <ion-item>
         <ion-label>Nombre:</ion-label>
         <ion-text>{{ usuario.nombre }}</ion-text>
       </ion-item>
 
+      <!-- Campo Apellido -->
+      <ion-item>
+        <ion-label>Apellido:</ion-label>
+        <ion-text>{{ usuario.apellido }}</ion-text>
+      </ion-item>
+
+      <!-- Campo Rut -->
       <ion-item>
         <ion-label>Rut:</ion-label>
         <ion-text>{{ usuario.rut }}</ion-text>
       </ion-item>
 
+      <!-- Campo Teléfono -->
       <ion-item>
         <ion-label>Teléfono:</ion-label>
-        <ion-input [(ngModel)]="usuario.telefono" *ngIf="editableCampos.telefono" type="tel"
-        pattern="[0-9]*"
-        maxlength="13"(ionBlur)="guardarCambios('telefono')"></ion-input>
-        <ion-text *ngIf="!editableCampos.telefono" (click)="activarEdicion('telefono')">{{ usuario.telefono }}</ion-text>
+        <ion-input
+          [(ngModel)]="usuario.telefono"
+          *ngIf="editableCampos.telefono"
+          type="tel"
+          pattern="[0-9]*"
+          maxlength="13"
+          (ionBlur)="guardarCambios('telefono')">
+        </ion-input>
+        <div *ngIf="!editableCampos.telefono" (click)="activarEdicion('telefono')" style="display: flex; align-items: center;">
+          <ion-text>{{ usuario.telefono }}</ion-text>
+          <ion-icon name="pencil-outline" style="margin-left: 8px; font-size: 16px; color: gray; cursor: pointer;"></ion-icon>
+        </div>
       </ion-item>
-
-      
-
-      <ion-button expand="full" [routerLink]="['/otc']">Olvidaste Tu Contraseña</ion-button>
-
-      <ion-footer>
-        <ion-button expand="full" (click)="confirmarCambios()">Confirmar Cambios</ion-button>
-      </ion-footer>
     </ion-list>
   </div>
+
+  <div> 
+    <!-- Botón para "Olvidaste tu Contraseña" -->
+    <ion-button expand="full" [routerLink]="['/otc']">Olvidaste Tu Contraseña</ion-button>
+
+    <!-- Footer con Confirmar Cambios -->
+    <ion-footer>
+      <ion-button expand="full" (click)="confirmarCambios()">Confirmar Cambios</ion-button>
+    </ion-footer>
+  </div> 
 </ion-content>
