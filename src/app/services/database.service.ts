@@ -661,7 +661,7 @@ export class DatabaseService {
   }
 
   insertProducto(producto: Producto): void {
-    this.presentAlert('prueba', JSON.stringify(producto))
+    
     const sql = `
         INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
         VALUES (?, ?, ?, ?, ?, 1);`;
