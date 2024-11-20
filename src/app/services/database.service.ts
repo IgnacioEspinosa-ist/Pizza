@@ -36,35 +36,36 @@ export class DatabaseService {
 
   registroPizzaPepperoni: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza Pepperoni', '', 12000, 10, 'assets/peperoni.webp');`;
+  VALUES ('Pizza Pepperoni', 'Deliciosa pizza con una capa generosa de queso derretido y cubierto con rodajas finas de salami de pepperoni, que ofrecen un toque salado y sabroso en cada bocado.', 12000, 10, 'assets/peperoni.webp');`;
 
   registroPizzaQueso: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza de Queso', '', 8000, 10, 'assets/chees.webp');`;
+  VALUES ('Pizza de Queso', 'Una pizza clásica, perfecta para los amantes del queso. Con una base crujiente, salsa de tomate y una generosa cantidad de queso derretido, esta pizza es ideal para quienes buscan una opción sencilla pero deliciosa.', 8000, 10, 'assets/chees.webp');`;
 
   registroPizzaHawaiana: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza Hawaiana', '', 10000, 10, 'assets/jawai.jfif');`;
+  VALUES ('Pizza Hawaiana', 'Una combinación única de sabores con la dulzura de la piña y la salinidad del jamón. Esta pizza tropical es ideal para quienes buscan una mezcla irresistible de sabores dulces y salados.', 10000, 10, 'assets/jawai.jfif');`;
 
   registroPizzaVegetariana: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza Vegetariana', '', 8000, 10, 'assets/vegan.webp');`;
+  VALUES ('Pizza Vegetariana', 'Una opción saludable para los amantes de las verduras, con una variedad de ingredientes frescos como pimientos, champiñones, espinacas y cebolla, todo sobre una base crujiente y con salsa de tomate natural.', 8000, 10, 'assets/vegan.webp');`;
 
   registroPizzaJamonQueso: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza Jamón-Queso', '', 8000, 10, 'assets/jam.png');`;
+  VALUES ('Pizza Jamón-Queso', 'La clásica pizza de jamón y queso, una combinación simple pero sabrosa. Con una base crujiente, salsa de tomate y una capa generosa de queso acompañado de finas lonjas de jamón.', 8000, 10, 'assets/jam.png');`;
 
   registroChampizza: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Champizza', '', 12000, 10, 'assets/callam.png');`;
+  VALUES ('Champizza', 'Una pizza gourmet, con una capa de queso fundido y un toque especial de champiñones frescos. Ideal para quienes disfrutan de una pizza diferente con un toque elegante.', 12000, 10, 'assets/callam.png');`;
 
   registroPiboqueso: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Piboqueso', '', 15000, 10, 'assets/border.png');`;
+  VALUES ('Piboqueso', 'Una pizza con una corteza rellena de queso, que aporta una textura crujiente y un sabor único. Perfecta para los amantes del queso en cada bocado.', 15000, 10, 'assets/border.png');`;
 
   registroMasa: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Masa', '', 1500, 10, 'assets/deep.png');`;
+  VALUES ('Masa', 'Una deliciosa masa para preparar tus propias pizzas. Suave y elástica, ideal para cualquier tipo de cobertura que desees agregar. ¡Prepárala como más te guste!', 1500, 10, 'assets/deep.png');`;
+
 
   //Los Usuarios
 
@@ -213,7 +214,7 @@ export class DatabaseService {
       return false;
     }
   }
-  
+
 
   constructor(private sqlite: SQLite, private platform: Platform, private alertController: AlertController) {
     this.crearBD();
@@ -271,14 +272,14 @@ export class DatabaseService {
       console.log("Tabla auto creada");
 
       const existe = await this.verificarInserciones();
-    if (!existe) {
-      for (const insert of this.inserciones) {
-        await this.database.executeSql(insert, []);
-       
+      if (!existe) {
+        for (const insert of this.inserciones) {
+          await this.database.executeSql(insert, []);
+
+        }
+      } else {
+        console.log("Los datos ya existen, no se realizará la inserción nuevamente.");
       }
-    } else {
-      console.log("Los datos ya existen, no se realizará la inserción nuevamente.");
-    }
 
 
     } catch (e) {
@@ -384,7 +385,7 @@ export class DatabaseService {
         });
     });
   }
-  
+
   getUsuarioFoto(id_user: number): Promise<string | null> {
     return this.database.executeSql('SELECT foto_U FROM usuario WHERE id_user = ?', [id_user])
       .then((data) => {
@@ -399,8 +400,8 @@ export class DatabaseService {
         return null;
       });
   }
-  
-  
+
+
 
 
   getProductoById(id_prod: number) {
@@ -504,7 +505,7 @@ export class DatabaseService {
       pedido.id_user_resp ?? null, // Si no se pasa, usar null
       pedido.estatus
     ];
-  
+
     try {
       await this.database.executeSql(query, values);
       console.log('Pedido añadido correctamente');
@@ -512,7 +513,7 @@ export class DatabaseService {
       console.error('Error al insertar el pedido:', error);
     }
   }
-  
+
 
 
   addDetallePedido(id_pedido: number, carrito: Producto[]): Observable<void> {
@@ -629,21 +630,21 @@ export class DatabaseService {
       producto.descripcion,
       producto.precio,
       producto.stock,
-      producto.foto, 
+      producto.foto,
       producto.id_prod,
     ];
-  
+
     return this.database.executeSql(query, params)
       .then(() => {
         console.log('Producto actualizado en la base de datos.');
       })
       .catch(error => {
         console.error('Error al actualizar el producto:', error);
-        throw error; 
+        throw error;
       });
   }
-  
-  
+
+
 
   private refreshProductoList(): Promise<void> {
     const sql = "SELECT * FROM producto";
@@ -671,17 +672,17 @@ export class DatabaseService {
       producto.precio,
       producto.stock,
       producto.foto,
-      
+
     ])
       .then(() => {
-        return this.refreshProductoList();  
+        return this.refreshProductoList();
       })
       .then(() => {
         this.presentAlert('Éxito', 'Producto añadido correctamente.');
       })
       .catch((error) => {
         this.presentAlert('Error', 'No se pudo añadir el producto.');
-        
+
       });
   }
 
@@ -728,43 +729,43 @@ export class DatabaseService {
         INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
         VALUES (?, ?, ?, ?, ?, ?, 2, ?);`;
     try {
-        await this.database.executeSql(sql, [
-            usuario.nombre,
-            usuario.apellido,
-            usuario.rut,
-            usuario.correo,
-            usuario.clave,
-            usuario.telefono,
-            usuario.foto
-        ]);
-        this.refreshUsuarioList();
-        this.presentAlert('Éxito', 'Usuario añadido correctamente.');
-    } catch (error) {
-        console.error('Error al insertar usuario:', error);
-    }
-}
-
-async insertUsuarioU(usuario: Usuario): Promise<void> {
-
-  const sql = `
-      INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
-      VALUES (?, ?, ?, ?, ?, ?, 1, ?);`;
-  try {
       await this.database.executeSql(sql, [
-          usuario.nombre,
-          usuario.apellido,
-          usuario.rut,
-          usuario.correo,
-          usuario.clave,
-          usuario.telefono,
-          usuario.foto
+        usuario.nombre,
+        usuario.apellido,
+        usuario.rut,
+        usuario.correo,
+        usuario.clave,
+        usuario.telefono,
+        usuario.foto
       ]);
       this.refreshUsuarioList();
       this.presentAlert('Éxito', 'Usuario añadido correctamente.');
-  } catch (error) {
+    } catch (error) {
       console.error('Error al insertar usuario:', error);
+    }
   }
-}
+
+  async insertUsuarioU(usuario: Usuario): Promise<void> {
+
+    const sql = `
+      INSERT INTO usuario (nombre, apellido, rut, correo, clave, telefono, id_roll, foto_u) 
+      VALUES (?, ?, ?, ?, ?, ?, 1, ?);`;
+    try {
+      await this.database.executeSql(sql, [
+        usuario.nombre,
+        usuario.apellido,
+        usuario.rut,
+        usuario.correo,
+        usuario.clave,
+        usuario.telefono,
+        usuario.foto
+      ]);
+      this.refreshUsuarioList();
+      this.presentAlert('Éxito', 'Usuario añadido correctamente.');
+    } catch (error) {
+      console.error('Error al insertar usuario:', error);
+    }
+  }
 
 
   private async refreshUsuarioList(): Promise<void> {
@@ -822,12 +823,13 @@ async insertUsuarioU(usuario: Usuario): Promise<void> {
     }
   }
 
-  updatePerfil(id_user: number, nombre: string, telefono: string): Observable<any> {
-    const query = `UPDATE usuario SET nombre = ?, telefono = ? WHERE id_user = ?`;
-    const params = [nombre, telefono, id_user];
-
+  updatePerfil(id_user: number, nombre: string, apellido: string, telefono: string, rut: string): Observable<any> {
+    const query = `UPDATE usuario SET nombre = ?, apellido = ?, telefono = ?, rut = ? WHERE id_user = ?`;
+    const params = [nombre, apellido, telefono, rut, id_user];
+  
     return from(this.database.executeSql(query, params));
   }
+  
 
   updatePerfilU(
     id_user: number,
@@ -883,12 +885,12 @@ async insertUsuarioU(usuario: Usuario): Promise<void> {
   updatePassword(email: string, newPassword: string): Observable<any> {
     const query = `UPDATE usuario SET clave = ? WHERE correo = ?`;
     const params = [newPassword, email];
-  
- 
+
+
     return from(this.database.executeSql(query, params));
   }
-  
-  
+
+
 
 
 
