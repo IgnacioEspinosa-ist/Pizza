@@ -1,37 +1,64 @@
-
-
-ion-title{
-
+ion-title {
     background-color: white;
-
-
-}
-
-.logo{
-
-    width: 50px;
-   
+  }
   
+  .logo {
+    width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
   }
-.perfil{
-    background-image: url('/assets/fondo.png'); // Ajusta la ruta si es diferente
-    background-size: cover;     // Ajusta el tamaño de la imagen para cubrir todo el fondo
-    background-position: center; // Centra la imagen
-    background-repeat: repeat; // Evita que la imagen se repita
+  
+  .perfil {
+    background-image: url('/assets/fondo.png'); /* Ajusta la ruta si es diferente */
+    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen */
+    background-repeat: repeat; /* Evita que la imagen se repita */
     padding-bottom: 200px;
     width: 100%;
     max-width: 412px;
     padding: 20px;
     background-color: #ef8320;
-    display: flex; 
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start; 
-    align-items: center; 
+    justify-content: flex-start;
+    align-items: center;
     height: 100%;
-    margin: top;
-    
-}
+  }
+  
+  /* Contenedor de los datos */
+  .datos-container {
+    width: 90%; /* Aumenta el ancho del contenedor */
+    max-width: 450px; /* Limita el ancho máximo */
+    margin: 20px auto; /* Centra el contenedor horizontalmente */
+    padding: 20px; /* Agrega espacio interno */
+    border: 2px solid #0056a3; /* Borde azul */
+    border-radius: 10px; /* Esquinas redondeadas */
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  }
+  
+  ion-item {
+    display: flex;
+    justify-content: space-between; /* Alinea los elementos */
+    align-items: center; /* Centra verticalmente */
+    margin-bottom: 10px;
+  }
+  
+  ion-label {
+    flex-grow: 1;
+    text-align: left; /* Mantén el texto del lado izquierdo */
+  }
+  
+  ion-input, ion-text {
+    flex-grow: 2;
+    text-align: right; /* Alinea el texto a la derecha */
+  }
+  
+  ion-icon {
+    font-size: 16px;
+    color: gray;
+    cursor: pointer;
+  }
+  
