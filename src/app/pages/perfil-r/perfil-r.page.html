@@ -15,19 +15,33 @@
       <img [src]="imagen" class="perfil" alt="Foto de Perfil" (click)="takePicture()">
     </div>
 
-    {{this.id_user}}
-
     <ion-list>
-      <ion-item (click)="activarEdicion('nombre')">
+      
+      <ion-item>
         <ion-label>Nombre:</ion-label>
-        <ion-input [(ngModel)]="repartidorNombre" ></ion-input>
+        <ion-input [(ngModel)]="repartidorNombre" readonly></ion-input>
       </ion-item>
 
+     
+      <ion-item>
+        <ion-label>Apellido:</ion-label>
+        <ion-input [(ngModel)]="repartidorApellido" readonly></ion-input>
+      </ion-item>
+
+      
+      <ion-item>
+        <ion-label>RUT:</ion-label>
+        <ion-input [(ngModel)]="repartidorRut" readonly></ion-input>
+      </ion-item>
+
+      
       <ion-item (click)="activarEdicion('telefono')">
         <ion-label>Teléfono:</ion-label>
-        <ion-input [(ngModel)]="repartidorTelefono" type="tel"
-        pattern="[0-9]*"
-        maxlength="13" [readonly]="!editableCampos.telefono" type="tel"></ion-input>
+        <ion-input [(ngModel)]="repartidorTelefono" 
+                   type="tel"
+                   pattern="[0-9]*"
+                   maxlength="13" 
+                   [readonly]="!editableCampos.telefono"></ion-input>
       </ion-item>
     </ion-list>
 

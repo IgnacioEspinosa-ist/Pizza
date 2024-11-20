@@ -52,18 +52,22 @@ export class UsuariosPage implements OnInit {
   }
 
   async addUsuario() {
-
-
+    // Validar que los campos obligatorios no estén vacíos
+    if (!this.nombre || !this.telefono || !this.email || !this.id_roll || !this.apellido || !this.rut || !this.clave) {
+      this.presentAlert('Error', 'Todos los campos son obligatorios');
+      return;
+    }
+  
+    // Si pasa la validación, entonces crear el usuario
     try {
       await this.dbService.insertUsuario(this.newUser);
       this.presentAlert('Éxito', 'Usuario creado exitosamente');
       await this.cargarUsuarios();
-
-
     } catch (err) {
       this.presentAlert('Error', 'Error al crear usuario: ' + err);
     }
   }
+  
 
   cargarDatosUsuario(usuario: Usuario) {
     this.usuarioActual = usuario;
