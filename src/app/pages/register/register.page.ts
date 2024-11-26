@@ -15,7 +15,7 @@ export class RegisterPage {
     rut: '',
     correo: '',
     clave: '',
-    repeatedClave: '',  // Campo para repetir la clave
+    repeatedClave: '',  
     telefono: '',
   };
 

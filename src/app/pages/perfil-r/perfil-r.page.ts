@@ -10,18 +10,18 @@ import { Storage } from '@ionic/storage-angular';
   styleUrls: ['./perfil-r.page.scss'],
 })
 export class PerfilRPage implements OnInit {
-  imagen: string | null = null; // Ruta de la imagen del repartidor
+  imagen: string | null = null;
   id_user: number | null = null;
   repartidorNombre: string = '';
-  repartidorApellido: string = ''; // Añadimos el apellido
+  repartidorApellido: string = ''; 
   repartidorTelefono: string = '';
-  repartidorRut: string = ''; // Añadimos el rut
+  repartidorRut: string = ''; 
 
   editableCampos = {
     nombre: false,
-    apellido: false, // Añadimos el campo de apellido
+    apellido: false, 
     telefono: false,
-    rut: false, // Añadimos el campo de rut
+    rut: false, 
   };
 
   constructor(
@@ -44,17 +44,17 @@ export class PerfilRPage implements OnInit {
         this.dbService.getUsuarioById(this.id_user!).subscribe({
           next: async (usuario: any) => {
             this.repartidorNombre = usuario.nombre;
-            this.repartidorApellido = usuario.apellido; // Cargar apellido
+            this.repartidorApellido = usuario.apellido; 
             this.repartidorTelefono = usuario.telefono;
-            this.repartidorRut = usuario.rut; // Cargar rut
+            this.repartidorRut = usuario.rut; 
 
-            // Intentar cargar la foto del repartidor desde la base de datos
+           
             try {
               const foto = await this.dbService.getUsuarioFoto(this.id_user!);
-              this.imagen = foto || 'assets/perfil1.jpg'; // Imagen predeterminada si no hay foto
+              this.imagen = foto || 'assets/perfil1.jpg'; 
             } catch (error) {
               console.error('Error al cargar la foto del repartidor:', error);
-              this.imagen = 'assets/perfil1.jpg'; // Imagen predeterminada en caso de error
+              this.imagen = 'assets/perfil1.jpg'; 
             }
           },
           error: (error: any) => {
@@ -95,13 +95,12 @@ export class PerfilRPage implements OnInit {
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.Uri, // Usamos Uri para obtener la URL de la imagen
+        resultType: CameraResultType.Uri, 
       });
 
-      // Asignamos la URL obtenida como la imagen del repartidor
-      this.imagen = image.webPath ?? 'assets/perfil1.jpg'; // Usa la URL de la imagen o una por defecto
+    
+      this.imagen = image.webPath ?? 'assets/perfil1.jpg';
 
-      // Llamamos a la función para actualizar la foto del repartidor en la base de datos
       await this.guardarFotoEnDB(this.imagen);
     } catch (error) {
       console.error('Error al tomar la foto:', error);
@@ -111,7 +110,7 @@ export class PerfilRPage implements OnInit {
   async guardarFotoEnDB(foto: string) {
     try {
       if (this.id_user) {
-        // Aquí estamos pasando la ruta de la imagen para que se guarde en la base de datos
+      
         await this.dbService.insertUsuarioFoto(this.id_user, foto);
         console.log('Foto actualizada exitosamente');
       } else {

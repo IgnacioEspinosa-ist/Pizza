@@ -12,14 +12,14 @@ describe('RescontrasenaPage', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        RescontrasenaPage, // El componente que estamos probando
-        { provide: SQLite, useClass: SQLiteMock }, // Proveer el mock de SQLite
-        { provide: Storage, useClass: StorageMock },] // Usar el mock de Storage
+        RescontrasenaPage, 
+        { provide: SQLite, useClass: SQLiteMock }, 
+        { provide: Storage, useClass: StorageMock },] 
 });
     service = TestBed.inject(RescontrasenaPage);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy(); // Verifica que el componente se haya creado correctamente
+    expect(service).toBeTruthy(); 
   });
 });

@@ -1,8 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { Storage } from '@ionic/storage-angular'; // Importación de Storage
-import { StorageMock } from 'src/app/services/storage-mock.service'; // Mock de Storage
+import { Storage } from '@ionic/storage-angular'; 
+import { StorageMock } from 'src/app/services/storage-mock.service'; 
 
 
 
@@ -12,7 +12,7 @@ describe('AppComponent', () => {
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        { provide: Storage, useClass: StorageMock }, // Proveer el mock del servicio Storage
+        { provide: Storage, useClass: StorageMock }, 
       ],
     }).compileComponents();
   });

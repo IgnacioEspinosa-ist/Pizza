@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { DatabaseService } from '../../services/database.service'; // Importar tu servicio de base de datos
+import { DatabaseService } from '../../services/database.service'; 
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Storage } from '@ionic/storage-angular';
 
@@ -18,34 +18,34 @@ export class LoginPage {
   }
 
   async initStorage() {
-    await this.storage.create(); // Asegura la inicialización completa
+    await this.storage.create(); 
   }
 
   async login() {
-    // Verificar si los campos están vacíos
+   
     if (!this.username || !this.password) {
       alert('Ingrese el Nombre y Contraseña Correcta');
       return;
     }
   
-    // Verificar la longitud de la contraseña
+  
     if (this.password.length < 8) {
       alert('La contraseña debe tener al menos 8 caracteres');
       return;
     }
   
     try {
-      // Convertir el nombre de usuario (correo) a minúsculas y eliminar espacios
+      
       const usernameTrimmed = this.username.trim().toLowerCase();
   
-      // Llamar al servicio de validación del usuario
+      
       const usuarioValido = await this.dbService.validarUsuario(usernameTrimmed, this.password);
       if (usuarioValido) {
-        await this.storage.set('id_user', usuarioValido.id_user); // Guardar el ID del usuario en Storage
+        await this.storage.set('id_user', usuarioValido.id_user); 
   
         await Haptics.impact({ style: ImpactStyle.Medium });
   
-        // Redirigir según el id_roll del usuario
+      
         if (usuarioValido.id_roll === 1) {
           this.navCtrl.navigateForward('/home');
         } else if (usuarioValido.id_roll === 2) {

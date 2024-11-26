@@ -12,8 +12,8 @@ describe('DetallePedidoPage', () => {
     TestBed.configureTestingModule({
       declarations: [DetallePedidoPage],
       providers: [
-        { provide: SQLite, useClass: SQLiteMock }, // Proveer el mock de SQLite
-        DatabaseService // Incluir el servicio
+        { provide: SQLite, useClass: SQLiteMock },
+        DatabaseService 
       ]
     }).compileComponents();
 
@@ -23,6 +23,6 @@ describe('DetallePedidoPage', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy(); // Verificar que el componente se haya creado correctamente
+    expect(component).toBeTruthy(); 
   });
 });

@@ -12,6 +12,6 @@ describe('SQLiteMockService', () => {
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy(); // Verifica que el servicio se haya creado correctamente
+    expect(service).toBeTruthy(); 
   });
 });
