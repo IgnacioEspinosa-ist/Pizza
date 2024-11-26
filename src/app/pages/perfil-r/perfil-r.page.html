@@ -16,38 +16,39 @@
     </div>
 
     <ion-list>
-      
+
       <ion-item>
         <ion-label>Nombre:</ion-label>
         <ion-input [(ngModel)]="repartidorNombre" readonly></ion-input>
       </ion-item>
 
-     
+
       <ion-item>
         <ion-label>Apellido:</ion-label>
         <ion-input [(ngModel)]="repartidorApellido" readonly></ion-input>
       </ion-item>
 
-      
+
       <ion-item>
         <ion-label>RUT:</ion-label>
         <ion-input [(ngModel)]="repartidorRut" readonly></ion-input>
       </ion-item>
 
-      
+
       <ion-item (click)="activarEdicion('telefono')">
         <ion-label>Teléfono:</ion-label>
-        <ion-input [(ngModel)]="repartidorTelefono" 
-                   type="tel"
-                   pattern="[0-9]*"
-                   maxlength="13" 
-                   [readonly]="!editableCampos.telefono"></ion-input>
-                  <ion-icon name="pencil-outline" style="margin-left: 8px; font-size: 16px; color: gray; cursor: pointer;"></ion-icon>
+        <ion-input [(ngModel)]="repartidorTelefono" type="tel" pattern="[0-9]*" maxlength="13"
+          [readonly]="!editableCampos.telefono"></ion-input>
+        <ion-icon name="pencil-outline"
+          style="margin-left: 8px; font-size: 16px; color: gray; cursor: pointer;"></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-button expand="full" [routerLink]="['/otc']">Cambiar contraseña</ion-button>
+        <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
       </ion-item>
     </ion-list>
 
-    <ion-button expand="full" [routerLink]="['/otc']">Cambiar contraseña</ion-button>
 
-    <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
   </div>
 </ion-content>
