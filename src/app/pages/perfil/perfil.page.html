@@ -9,7 +9,7 @@
   </div>
 </ion-header>
 
-<ion-content>
+<ion-content class="content">
   <div class="perfil">
     <div class="perfil-imagen">
       <!-- Cambia la imagen de perfil al tomar una foto -->
@@ -51,16 +51,14 @@
           <ion-icon name="pencil-outline" style="margin-left: 8px; font-size: 16px; color: gray; cursor: pointer;"></ion-icon>
         </div>
       </ion-item>
+
+      <ion-item>
+        <ion-button expand="full" [routerLink]="['/otc']">Cambiar contraseña</ion-button>
+        <ion-button expand="full" (click)="confirmarCambios()">Confirmar Cambios</ion-button>
+      </ion-item>
     </ion-list>
   </div>
 
-  <div> 
-    <!-- Botón para "Olvidaste tu Contraseña" -->
-    <ion-button expand="full" [routerLink]="['/otc']">Cambiar contraseña</ion-button>
-
-    <!-- Footer con Confirmar Cambios -->
-    <ion-footer>
-      <ion-button expand="full" (click)="confirmarCambios()">Confirmar Cambios</ion-button>
-    </ion-footer>
-  </div> 
+  <!-- Botón para "Olvidaste tu Contraseña" -->
+ 
 </ion-content>
