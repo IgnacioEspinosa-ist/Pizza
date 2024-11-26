@@ -3,26 +3,26 @@ import { CartPage } from './cart.page';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { Producto } from 'src/app/services/producto';
 import { DatabaseService } from 'src/app/services/database.service';
-import { Storage } from '@ionic/storage-angular'; // Asegúrate de importar desde ionic storage angular
+import { Storage } from '@ionic/storage-angular'; 
 
-// Mock de Storage
+
 class MockStorage {
   async set({ key, value }: { key: string, value: string }) {
-    return Promise.resolve(); // Mock de la función set
+    return Promise.resolve(); 
   }
 
   async get({ key }: { key: string }) {
-    return Promise.resolve({ value: 'mocked value' }); // Devuelve un valor mockeado
+    return Promise.resolve({ value: 'mocked value' }); 
   }
 
   async remove({ key }: { key: string }) {
-    return Promise.resolve(); // Mock de la función remove
+    return Promise.resolve(); 
   }
 }
 
 class MockDatabaseService {
   insertProduct() {
-    return Promise.resolve(); // Mock de los métodos de DatabaseService
+    return Promise.resolve(); 
   }
 }
 
@@ -32,14 +32,14 @@ describe('CartPage', () => {
   let carritoServiceMock: jasmine.SpyObj<CarritoService>;
 
   beforeEach(async () => {
-    const mockCarritoService = jasmine.createSpyObj('CarritoService', ['obtenerProductos']); // Mock del servicio
+    const mockCarritoService = jasmine.createSpyObj('CarritoService', ['obtenerProductos']); 
 
     await TestBed.configureTestingModule({
       declarations: [CartPage],
       providers: [
         { provide: CarritoService, useValue: mockCarritoService },
-        { provide: DatabaseService, useClass: MockDatabaseService }, // Mock de DatabaseService
-        { provide: Storage, useClass: MockStorage }, // Mock de Storage
+        { provide: DatabaseService, useClass: MockDatabaseService }, 
+        { provide: Storage, useClass: MockStorage }, 
       ],
     }).compileComponents();
 
@@ -54,7 +54,7 @@ describe('CartPage', () => {
   });
 
   it('suma de productos carrito', () => {
-    // Datos mock para el carrito
+    
     const productosMock: Producto[] = [
       { 
         id_prod: 1, 
@@ -74,16 +74,16 @@ describe('CartPage', () => {
       },
     ];
   
-    // Asigna los productos mock al componente
+
     component.productos = productosMock;
   
-    // Ejecuta la función para calcular el total
+  
     component.calcularTotal();
   
-    // Total esperado: (8000 * 2) + (10000 * 1) = 26000
+   
     const totalEsperado = 26000;
   
-    // Comprueba que el total calculado sea correcto
+   
     expect(component.totalCarrito).toEqual(totalEsperado);
   });
 });

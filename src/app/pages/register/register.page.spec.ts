@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterPage } from './register.page';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // Importa ambos
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'; 
 import { DatabaseService } from 'src/app/services/database.service';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
-import { IonicModule } from '@ionic/angular'; // Importa IonicModule si es necesario
+import { IonicModule } from '@ionic/angular'; 
 
-// Clase mock de SQLite
+
 class MockSQLite {
   async create(options: any) {
     return {
@@ -20,11 +20,11 @@ describe('RegisterPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RegisterPage], // Asegúrate de que RegisterPage esté declarado
+      declarations: [RegisterPage], 
       imports: [
-        IonicModule.forRoot(), // Importa IonicModule si es necesario
-        ReactiveFormsModule,    // Importa ReactiveFormsModule
-        FormsModule            // Importa FormsModule para ngModel
+        IonicModule.forRoot(), 
+        ReactiveFormsModule,   
+        FormsModule            
       ],
       providers: [
         { provide: DatabaseService, useClass: DatabaseService },

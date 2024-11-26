@@ -17,10 +17,10 @@ describe('LoginPage', () => {
     TestBed.configureTestingModule({
       declarations: [LoginPage],
       providers: [
-        { provide: SQLite, useClass: SQLiteMock }, // Mock del servicio SQLite
+        { provide: SQLite, useClass: SQLiteMock }, 
         DatabaseService,
-        { provide: Storage, useValue: { create: jasmine.createSpy(), set: jasmine.createSpy() } }, // Mock de Storage
-        { provide: NavController, useValue: { navigateForward: jasmine.createSpy() } }, // Mock de NavController
+        { provide: Storage, useValue: { create: jasmine.createSpy(), set: jasmine.createSpy() } }, 
+        { provide: NavController, useValue: { navigateForward: jasmine.createSpy() } }, 
       ]
     }).compileComponents();
 
@@ -33,58 +33,58 @@ describe('LoginPage', () => {
 
   it('poner el correo en minuscula', async () => {
     const spy = spyOn(dbService, 'validarUsuario').and.callFake((username: string, password: string) => {
-      expect(username).toBe('test@example.com'); // Verifica que el username sea en minúsculas
+      expect(username).toBe('test@example.com'); 
       return Promise.resolve({ id_user: 1, id_roll: 1 });
     });
 
-    component.username = 'Test@Example.com'; // Establecer un correo en mayúsculas
+    component.username = 'Test@Example.com'; 
     component.password = 'password123';
 
-    await component.login(); // Llamar al método login
+    await component.login(); 
 
-    expect(spy).toHaveBeenCalledWith('test@example.com', 'password123'); // Verifica que el servicio sea llamado con el username en minúsculas
+    expect(spy).toHaveBeenCalledWith('test@example.com', 'password123'); 
   });
 
   it('cortar espacio en blancos', async () => {
     const spy = spyOn(dbService, 'validarUsuario').and.callFake((username: string, password: string) => {
-      // Verifica que el nombre de usuario no tenga espacios al principio ni al final
-      expect(username).toBe('test@example.com'); // Nombre de usuario esperado sin espacios
+     
+      expect(username).toBe('test@example.com'); 
       return Promise.resolve({ id_user: 1, id_roll: 1 });
     });
 
-    // Agregar espacios en blanco al nombre de usuario
+   
     component.username = '   test@example.com   ';
     component.password = 'password123';
 
-    await component.login(); // Llamar al método login
+    await component.login(); 
 
-    expect(spy).toHaveBeenCalledWith('test@example.com', 'password123'); // Verifica que el servicio sea llamado con el username sin espacios
+    expect(spy).toHaveBeenCalledWith('test@example.com', 'password123'); 
   });
   it('debería mostrar error si los campos están vacíos', async () => {
-    const spyAlert = spyOn(window, 'alert'); // Espiar la función alert
-    const spyDbService = spyOn(dbService, 'validarUsuario'); // Espiar el servicio validarUsuario
+    const spyAlert = spyOn(window, 'alert'); 
+    const spyDbService = spyOn(dbService, 'validarUsuario'); 
 
-    // Dejar los campos vacíos
+  
     component.username = '';
     component.password = '';
 
-    await component.login(); // Llamar al método login
+    await component.login(); 
 
-    expect(spyDbService).not.toHaveBeenCalled(); // El servicio no debe ser llamado
+    expect(spyDbService).not.toHaveBeenCalled(); 
     expect(spyAlert).toHaveBeenCalledWith('Ingrese el Nombre y Contraseña Correcta');});
 
   it('debería mostrar error si la contraseña tiene menos de 8 caracteres', async () => {
-    const spyAlert = spyOn(window, 'alert'); // Espiar la función alert
-    const spyDbService = spyOn(dbService, 'validarUsuario'); // Espiar el servicio validarUsuario
+    const spyAlert = spyOn(window, 'alert'); 
+    const spyDbService = spyOn(dbService, 'validarUsuario'); 
   
-    // Configurar username válido y contraseña corta
+    
     component.username = 'test@example.com';
-    component.password = '12345'; // Contraseña menor a 8 caracteres
+    component.password = '12345'; 
   
-    await component.login(); // Llamar al método login
+    await component.login(); 
   
-    expect(spyDbService).not.toHaveBeenCalled(); // El servicio no debe ser llamado
-    expect(spyAlert).toHaveBeenCalledWith('La contraseña debe tener al menos 8 caracteres'); // Verifica el mensaje de error
+    expect(spyDbService).not.toHaveBeenCalled(); 
+    expect(spyAlert).toHaveBeenCalledWith('La contraseña debe tener al menos 8 caracteres'); 
   });
   
 });
