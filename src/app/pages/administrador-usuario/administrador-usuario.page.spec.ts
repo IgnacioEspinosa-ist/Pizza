@@ -3,9 +3,9 @@ import { UsuariosPage } from './administrador-usuario.page';
 import { DatabaseService } from 'src/app/services/database.service';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { IonicModule } from '@ionic/angular';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // Asegúrate de importar los módulos de formularios
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'; 
 
-// Mock SQLite
+
 class MockSQLite {
   async create(options: any) {
     return {
@@ -20,15 +20,15 @@ describe('UsuariosPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UsuariosPage], // Asegúrate de declarar el componente
+      declarations: [UsuariosPage], 
       imports: [
-        IonicModule.forRoot(),    // Asegúrate de incluir IonicModule
-        ReactiveFormsModule,      // Para formularios reactivos
-        FormsModule               // Para ngModel
+        IonicModule.forRoot(),    
+        ReactiveFormsModule,      
+        FormsModule               
       ],
       providers: [
         { provide: DatabaseService, useClass: DatabaseService },
-        { provide: SQLite, useClass: MockSQLite }, // Proveedor mock de SQLite
+        { provide: SQLite, useClass: MockSQLite }, 
       ],
     }).compileComponents();
 

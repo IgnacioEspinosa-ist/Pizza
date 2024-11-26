@@ -49,7 +49,6 @@ export class MapaService implements OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-    // Opcionalmente, puedes limpiar el mapa aquí
-    // this.map.remove(); // Esto puede ser útil si el servicio se destruye
+   
   }
 }

@@ -1,28 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PerfilPage } from './perfil.page'; // Asegúrate de que tu componente esté importado correctamente
-import { DatabaseService } from 'src/app/services/database.service';
-import { SQLiteMock } from 'src/app/services/sqlite-mock.service';
-import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { PerfilPage } from './perfil.page'; // Importa el componente a probar
+import { DatabaseService } from 'src/app/services/database.service'; // Servicio de base de datos
+import { SQLiteMock } from 'src/app/services/sqlite-mock.service'; // Mock de SQLite
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx'; // SQLite real
+import { Storage } from '@ionic/storage-angular'; // Importación de Storage
+import { StorageMock } from 'src/app/services/storage-mock.service'; // Mock de Storage
 
 describe('PerfilPage', () => {
   let component: PerfilPage;
   let fixture: ComponentFixture<PerfilPage>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [PerfilPage], // Declarar el componente que estás probando
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [PerfilPage], // Declarar el componente a probar
       providers: [
-        { provide: SQLite, useClass: SQLiteMock }, // Proveer el mock de SQLite
-        DatabaseService // Asegúrate de incluir el servicio de base de datos
-      ]
+        DatabaseService, // Servicio que utiliza SQLite
+        { provide: SQLite, useClass: SQLiteMock }, // Usar el mock de SQLite
+        { provide: Storage, useClass: StorageMock }, // Usar el mock de Storage
+      ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PerfilPage);
+    fixture = TestBed.createComponent(PerfilPage); // Crear instancia del componente
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.detectChanges(); // Disparar detección de cambios
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy(); // Verificar que el componente se cree correctamente
+    expect(component).toBeTruthy(); // Verificar que el componente se crea correctamente
   });
 });

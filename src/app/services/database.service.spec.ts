@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { DatabaseService } from './database.service'; // Asegúrate de que tu servicio esté correctamente importado
-import { SQLiteMock } from './sqlite-mock.service'; // Importa el mock de SQLite
+import { DatabaseService } from './database.service'; 
+import { SQLiteMock } from './sqlite-mock.service'; 
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 
 describe('DatabaseService', () => {
@@ -10,7 +10,7 @@ describe('DatabaseService', () => {
     TestBed.configureTestingModule({
       providers: [
         DatabaseService,
-        { provide: SQLite, useClass: SQLiteMock } // Asegúrate de proporcionar el mock aquí
+        { provide: SQLite, useClass: SQLiteMock } 
       ]
     });
     service = TestBed.inject(DatabaseService);
