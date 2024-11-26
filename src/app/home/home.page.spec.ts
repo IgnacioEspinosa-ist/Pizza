@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HomePage } from './home.page'; // O la página que corresponda
+import { HomePage } from './home.page'; 
 import { Storage } from '@ionic/storage-angular';
-import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx'; // Asegúrate de importar SQLite desde el paquete correcto
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx'; 
 
 
 
-// Mock de Storage
+
 class MockStorage {
   async get() {
     return { value: null };
@@ -20,11 +20,10 @@ class MockStorage {
   }
 }
 
-// Mock de SQLite
 class MockSQLite {
   async openDatabase() {
     return {
-      executeSql: () => Promise.resolve(), // Simula que ejecuta SQL sin hacer nada
+      executeSql: () => Promise.resolve(),
       close: () => Promise.resolve(),
     };
   }
@@ -38,8 +37,8 @@ describe('HomePage', () => {
     await TestBed.configureTestingModule({
       declarations: [HomePage],
       providers: [
-        { provide: Storage, useClass: MockStorage }, // Proveemos el mock de Storage
-        { provide: SQLite, useClass: MockSQLite },   // Proveemos el mock de SQLite
+        { provide: Storage, useClass: MockStorage },
+        { provide: SQLite, useClass: MockSQLite },   
       ],
     }).compileComponents();
 

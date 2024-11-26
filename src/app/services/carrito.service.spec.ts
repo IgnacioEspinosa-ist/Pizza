@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CarritoService } from './carrito.service';
-import { StorageMock } from './storage-mock.service'; // Asegúrate de importar el mock
+import { StorageMock } from './storage-mock.service'; 
 import { Storage } from '@ionic/storage-angular';
 
 describe('CarritoService', () => {
@@ -10,7 +10,7 @@ describe('CarritoService', () => {
     TestBed.configureTestingModule({
       providers: [
         CarritoService,
-        { provide: Storage, useClass: StorageMock } // Proporciona el mock aquí
+        { provide: Storage, useClass: StorageMock } 
       ]
     });
     service = TestBed.inject(CarritoService);

@@ -23,8 +23,8 @@ export class CarritoService {
     const productoExistente = this.carrito.find(prod => prod.id_prod === producto.id_prod);
   
     if (productoExistente) {
-      // Si existe, incrementa la cantidad
-      productoExistente.cantidad = (productoExistente.cantidad ?? 0) + 1;  // Usamos ?? 0 para asegurar que si cantidad es null o undefined, tome 0
+   
+      productoExistente.cantidad = (productoExistente.cantidad ?? 0) + 1;  
     } else {
       this.carrito.push({ ...producto, cantidad: 1 });
     }
@@ -50,9 +50,9 @@ export class CarritoService {
     const producto = this.carrito.find(prod => prod.id_prod === id_prod);
     if (producto) {
       if (cantidad > 0) {
-        producto.cantidad = cantidad;  // Actualiza la cantidad
+        producto.cantidad = cantidad; 
       } else {
-        this.quitarProducto(id_prod);  // Si la cantidad es 0, elimina el producto
+        this.quitarProducto(id_prod);  
       }
       this.actualizarStorage();
     }
