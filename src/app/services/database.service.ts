@@ -823,6 +823,16 @@ export class DatabaseService {
     }
   }
 
+  async getPassword(id_user: number): Promise<string> {
+    const query = 'SELECT clave FROM usuario WHERE id_user = ?';
+    const result = await this.database.executeSql(query, [id_user]);
+    if (result.rows.length > 0) {
+      return result.rows.item(0).clave;
+    }
+    throw new Error('Usuario no encontrado');
+  }
+  
+
   updatePerfil(id_user: number, nombre: string, apellido: string, telefono: string, rut: string): Observable<any> {
     const query = `UPDATE usuario SET nombre = ?, apellido = ?, telefono = ?, rut = ? WHERE id_user = ?`;
     const params = [nombre, apellido, telefono, rut, id_user];

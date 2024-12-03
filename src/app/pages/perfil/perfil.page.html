@@ -20,19 +20,43 @@
       <!-- Campo Nombre -->
       <ion-item>
         <ion-label>Nombre:</ion-label>
-        <ion-text>{{ usuario.nombre }}</ion-text>
+        <ion-input
+          [(ngModel)]="usuario.nombre"
+          *ngIf="editableCampos.nombre"
+          (ionBlur)="guardarCambios('nombre')">
+        </ion-input>
+        <div *ngIf="!editableCampos.nombre" (click)="activarEdicion('nombre')" style="display: flex; align-items: center;">
+          <ion-text>{{ usuario.nombre }}</ion-text>
+          <ion-icon name="pencil-outline" style="margin-left: 8px; font-size: 16px; color: gray; cursor: pointer;"></ion-icon>
+        </div>
       </ion-item>
 
       <!-- Campo Apellido -->
       <ion-item>
         <ion-label>Apellido:</ion-label>
-        <ion-text>{{ usuario.apellido }}</ion-text>
+        <ion-input
+          [(ngModel)]="usuario.apellido"
+          *ngIf="editableCampos.apellido"
+          (ionBlur)="guardarCambios('apellido')">
+        </ion-input>
+        <div *ngIf="!editableCampos.apellido" (click)="activarEdicion('apellido')" style="display: flex; align-items: center;">
+          <ion-text>{{ usuario.apellido }}</ion-text>
+          <ion-icon name="pencil-outline" style="margin-left: 8px; font-size: 16px; color: gray; cursor: pointer;"></ion-icon>
+        </div>
       </ion-item>
 
       <!-- Campo Rut -->
       <ion-item>
         <ion-label>Rut:</ion-label>
-        <ion-text>{{ usuario.rut }}</ion-text>
+        <ion-input
+          [(ngModel)]="usuario.rut"
+          *ngIf="editableCampos.rut"
+          (ionBlur)="guardarCambios('rut')">
+        </ion-input>
+        <div *ngIf="!editableCampos.rut" (click)="activarEdicion('rut')" style="display: flex; align-items: center;">
+          <ion-text>{{ usuario.rut }}</ion-text>
+          <ion-icon name="pencil-outline" style="margin-left: 8px; font-size: 16px; color: gray; cursor: pointer;"></ion-icon>
+        </div>
       </ion-item>
 
       <!-- Campo Teléfono -->
@@ -52,13 +76,11 @@
         </div>
       </ion-item>
 
+      <!-- Botones -->
       <ion-item>
-        <ion-button expand="full" [routerLink]="['/otc']">Cambiar contraseña</ion-button>
+        <ion-button expand="full" [routerLink]="['/cambiocon']">Cambiar contraseña</ion-button>
         <ion-button expand="full" (click)="confirmarCambios()">Confirmar Cambios</ion-button>
       </ion-item>
     </ion-list>
   </div>
-
-  <!-- Botón para "Olvidaste tu Contraseña" -->
- 
 </ion-content>

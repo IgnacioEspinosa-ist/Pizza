@@ -99,10 +99,18 @@ const routes: Routes = [
     path: 'cambiar-contrasena',
     loadChildren: () => import('./pages/cambiar-contrasena/cambiar-contrasena.module').then( m => m.CambiarContrasenaPageModule)
   },
+
+  {
+    path: 'cambiocon',
+    loadChildren: () => import('./pages/cambiocon/cambiocon.module').then( m => m.CambioconPageModule)
+  },
+  
   {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+  
+
 
   
 

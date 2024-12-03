@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Verificar Contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Contraseña -->
+  <ion-item>
+    <ion-label position="floating">Clave</ion-label>
+    <ion-input [(ngModel)]="registerUser.clave" name="clave" required minlength="8" type="password" #clave="ngModel"></ion-input>
+  </ion-item>
+  <ion-note *ngIf="clave.invalid && clave.touched" color="danger">
+    La clave es requerida y debe tener al menos 8 caracteres.
+  </ion-note>
+
+  <!-- Botón para verificar -->
+  <ion-button expand="full" (click)="onVerifyPassword()" [disabled]="clave.invalid">
+    Cambiar Contraseña
+  </ion-button>
+
+  <!-- Mensaje de error si las contraseñas no coinciden -->
+  <ion-note *ngIf="!passwordsMatch && passwordChecked" color="danger">
+    La contraseña no coincide.
+  </ion-note>
+</ion-content>

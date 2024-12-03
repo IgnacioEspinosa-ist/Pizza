@@ -63,7 +63,7 @@ export class PerfilPage implements OnInit {
     this.editableCampos[campo] = true;
   }
 
-  guardarCambios(campo: 'nombre' | 'telefono' | 'rut') {
+  guardarCambios(campo: 'nombre' | 'apellido' | 'telefono' | 'rut') {
     if (this.id_user) {
       this.dbService
         .updatePerfilU(
