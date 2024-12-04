@@ -104,11 +104,18 @@ const routes: Routes = [
     path: 'cambiocon',
     loadChildren: () => import('./pages/cambiocon/cambiocon.module').then( m => m.CambioconPageModule)
   },
+
+  {
+    path: 'reportes',
+    loadChildren: () => import('./pages/reportes/reportes.module').then( m => m.ReportesPageModule)
+  },
   
   {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+ 
+
   
 
 

@@ -761,11 +761,24 @@ export class DatabaseService {
         usuario.foto
       ]);
       this.refreshUsuarioList();
-      this.presentAlert('Éxito', 'Usuario añadido correctamente.');
+      
     } catch (error) {
       console.error('Error al insertar usuario:', error);
     }
   }
+
+  async actualizarStockProducto(id_prod: number, nuevaCantidad: number): Promise<void> {
+    const query = 'UPDATE producto SET stock = ? WHERE id_prod = ?';
+    const valores = [nuevaCantidad, id_prod];
+    try {
+      await this.database.executeSql(query, valores);
+      console.log(`Stock del producto ${id_prod} actualizado a ${nuevaCantidad}`);
+    } catch (error) {
+      console.error('Error al actualizar el stock:', error);
+      throw error;
+    }
+  }
+  
 
 
   private async refreshUsuarioList(): Promise<void> {

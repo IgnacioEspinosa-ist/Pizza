@@ -84,37 +84,57 @@ export class CartPage implements OnInit {
 
  
   async finalizarCompra() {
-   
     if (!this.productos || this.productos.length === 0) {
       console.error('El carrito está vacío, no se puede finalizar la compra.');
       return;
     }
   
     try {
-    
       const idUser = await this.storage.get('id_user');
       if (!idUser) {
         console.error('No se pudo obtener el id_user del almacenamiento.');
         return;
       }
   
-   
-      const nuevoPedido = {
-        f_pedido: new Date().toISOString().slice(0, 10), 
-        id_user: idUser,                             
-        id_direccion: 1,                              
-        total: this.totalCarrito,                      
-        id_user_resp: undefined,                   
-        estatus: 'pendiente'                           
-      };
-      
+      // Chequeo de stock para cada producto
+      for (const producto of this.productos) {
+        if (producto.cantidad && producto.stock !== undefined) {
+          if (producto.cantidad > producto.stock) {
+            const alert = await this.alertController.create({
+              header: 'Stock insuficiente',
+              message: `El producto "${producto.nombre}" no tiene suficiente stock. Disponible: ${producto.stock}.`,
+              buttons: ['Entendido'],
+            });
+            await alert.present();
+            return; // Detiene la ejecución si algún producto no tiene stock suficiente
+          }
+        }
+      }
   
-    
+      // Crear el nuevo pedido
+      const nuevoPedido = {
+        f_pedido: new Date().toISOString().slice(0, 10),
+        id_user: idUser,
+        id_direccion: 1,
+        total: this.totalCarrito,
+        id_user_resp: undefined,
+        estatus: 'pendiente'
+      };
+  
       await this.dbService.agregarPedido(nuevoPedido);
   
-   
+      // Actualizar el stock de los productos
+      for (const producto of this.productos) {
+        if (producto.cantidad && producto.stock !== undefined) {
+          const nuevoStock = producto.stock - producto.cantidad;
+          await this.dbService.actualizarStockProducto(producto.id_prod, nuevoStock);
+        }
+      }
+  
+      // Vaciar el carrito
       this.vaciarCarrito();
   
+      // Redirigir a otra página
       this.router.navigate(['/mapacli']);
   
       console.log('Compra finalizada con éxito.');
@@ -122,6 +142,7 @@ export class CartPage implements OnInit {
       console.error('Error al finalizar la compra:', error);
     }
   }
+  
   
   
 

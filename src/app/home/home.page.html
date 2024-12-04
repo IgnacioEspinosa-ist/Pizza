@@ -19,11 +19,15 @@
         <ion-grid>
           <ion-row>
             <ion-col size="6" size-md="4" *ngFor="let producto of productos">
-              <ion-card class="producto-card" (click)="verDetalleProducto(producto)">
+              <ion-card class="producto-card">
                 <img [src]="producto.foto" class="producto-imagen" />
                 <h6 class="producto-nombre">{{ producto.nombre }}</h6>
                 <p class="producto-precio">{{ producto.precio | currency }}</p>
+                
               </ion-card>
+              <ion-button expand="block" class="boton" (click)="agregarAlCarrito(producto)">
+                Añadir al carrito
+              </ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>

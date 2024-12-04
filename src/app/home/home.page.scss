@@ -12,6 +12,11 @@ ion-content {
   padding: 0; 
 }
 
+.boton{
+  
+  background-color: #ef8320;
+}
+
 
 
 .productos-container {
@@ -44,13 +49,19 @@ ion-content {
   margin-bottom: 8px;
 }
 
-
 .producto-nombre {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 4px;
-  color: #333;
+  font-size: 10px; /* Ajusta el tamaño del texto */
+  margin: 0; /* Elimina el espaciado externo */
+  padding: 0; /* Elimina el espaciado interno */
+  line-height: 1; /* Ajusta el espaciado entre líneas */
+  text-align: center; /* Centra el texto dentro del contenedor */
+  font-weight: normal; /* Opcional: ajusta el grosor del texto */
+  white-space: nowrap; /* Evita que el texto se corte en varias líneas */
+  overflow: hidden; /* Oculta el texto desbordado */
+  text-overflow: ellipsis; /* Añade "..." si el texto es demasiado largo */
+  color: black;
 }
+
 
 .producto-precio {
   font-size: 12px;

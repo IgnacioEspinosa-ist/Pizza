@@ -1,7 +1,7 @@
 <ion-header>
   <div class="head">
     <ion-toolbar>
-      
+
       <img src="assets/logo.png" class="logo" slot="end">
     </ion-toolbar>
   </div>
@@ -17,27 +17,31 @@
       </ion-card-header>
     </ion-card>
 
-    <ion-button (click)="navigateToHomeAdmin()" size="small" color="light" class="admin-button" >
+    <ion-button (click)="navigateToHomeAdmin()" size="small" color="light" class="admin-button">
       <div class="button-background">
         <img src="assets/logo.png" class="button-logo">
       </div>
       <span>Administrar Pizzas</span>
     </ion-button>
 
-    <ion-button size="default"  color="light" class="admin-button" routerLink="/administrador-usuario">
+    <ion-button size="default" color="light" class="admin-button" routerLink="/administrador-usuario">
       <div class="button-background">
         <img src="assets/logo.png" class="button-logo">
       </div>
       <span>Administrar Repartidores</span>
     </ion-button>
-    
-    <ion-button
-          expand="block"
-          type="submit"
-          color="primary" routerLink="/login">
-          Cerrar Sesión
-        </ion-button>
- 
+
+    <ion-button size="default"  color="light" class="admin-button" routerLink="/reportes">
+      <div class="button-background">
+        <img src="assets/logo.png" class="button-logo">
+      </div>
+      <span>Ver Ventas</span>
+    </ion-button>
+
+    <ion-button expand="block" type="submit" color="primary" routerLink="/login">
+      Cerrar Sesión
+    </ion-button>
+
 
   </div>
 </ion-content>
