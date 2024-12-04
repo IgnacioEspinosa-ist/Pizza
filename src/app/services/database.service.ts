@@ -35,36 +35,36 @@ export class DatabaseService {
   //Las Pizzas
 
   registroPizzaPepperoni: string = `
-  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza Pepperoni', 'Deliciosa pizza con una capa generosa de queso derretido y cubierto con rodajas finas de salami de pepperoni, que ofrecen un toque salado y sabroso en cada bocado.', 12000, 10, 'assets/peperoni.webp');`;
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Pizza Pepperoni', 'Deliciosa pizza con una capa generosa de queso derretido y cubierto con rodajas finas de salami de pepperoni, que ofrecen un toque salado y sabroso en cada bocado.', 12000, 10, 'assets/peperoni.webp', 0);`;
 
-  registroPizzaQueso: string = `
-  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza de Queso', 'Una pizza clásica, perfecta para los amantes del queso. Con una base crujiente, salsa de tomate y una generosa cantidad de queso derretido, esta pizza es ideal para quienes buscan una opción sencilla pero deliciosa.', 8000, 10, 'assets/chees.webp');`;
+registroPizzaQueso: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Pizza de Queso', 'Una pizza clásica, perfecta para los amantes del queso. Con una base crujiente, salsa de tomate y una generosa cantidad de queso derretido, esta pizza es ideal para quienes buscan una opción sencilla pero deliciosa.', 8000, 10, 'assets/chees.webp', 0);`;
 
-  registroPizzaHawaiana: string = `
-  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza Hawaiana', 'Una combinación única de sabores con la dulzura de la piña y la salinidad del jamón. Esta pizza tropical es ideal para quienes buscan una mezcla irresistible de sabores dulces y salados.', 10000, 10, 'assets/jawai.jfif');`;
+registroPizzaHawaiana: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Pizza Hawaiana', 'Una combinación única de sabores con la dulzura de la piña y la salinidad del jamón. Esta pizza tropical es ideal para quienes buscan una mezcla irresistible de sabores dulces y salados.', 10000, 10, 'assets/jawai.jfif', 0);`;
 
-  registroPizzaVegetariana: string = `
-  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza Vegetariana', 'Una opción saludable para los amantes de las verduras, con una variedad de ingredientes frescos como pimientos, champiñones, espinacas y cebolla, todo sobre una base crujiente y con salsa de tomate natural.', 8000, 10, 'assets/vegan.webp');`;
+registroPizzaVegetariana: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Pizza Vegetariana', 'Una opción saludable para los amantes de las verduras, con una variedad de ingredientes frescos como pimientos, champiñones, espinacas y cebolla, todo sobre una base crujiente y con salsa de tomate natural.', 8000, 10, 'assets/vegan.webp', 0);`;
 
-  registroPizzaJamonQueso: string = `
-  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Pizza Jamón-Queso', 'La clásica pizza de jamón y queso, una combinación simple pero sabrosa. Con una base crujiente, salsa de tomate y una capa generosa de queso acompañado de finas lonjas de jamón.', 8000, 10, 'assets/jam.png');`;
+registroPizzaJamonQueso: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Pizza Jamón-Queso', 'La clásica pizza de jamón y queso, una combinación simple pero sabrosa. Con una base crujiente, salsa de tomate y una capa generosa de queso acompañado de finas lonjas de jamón.', 8000, 10, 'assets/jam.png', 0);`;
 
-  registroChampizza: string = `
-  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Champizza', 'Una pizza gourmet, con una capa de queso fundido y un toque especial de champiñones frescos. Ideal para quienes disfrutan de una pizza diferente con un toque elegante.', 12000, 10, 'assets/callam.png');`;
+registroChampizza: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Champizza', 'Una pizza gourmet, con una capa de queso fundido y un toque especial de champiñones frescos. Ideal para quienes disfrutan de una pizza diferente con un toque elegante.', 12000, 10, 'assets/callam.png', 0);`;
 
-  registroPiboqueso: string = `
-  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Piboqueso', 'Una pizza con una corteza rellena de queso, que aporta una textura crujiente y un sabor único. Perfecta para los amantes del queso en cada bocado.', 15000, 10, 'assets/border.png');`;
+registroPiboqueso: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Piboqueso', 'Una pizza con una corteza rellena de queso, que aporta una textura crujiente y un sabor único. Perfecta para los amantes del queso en cada bocado.', 15000, 10, 'assets/border.png', 0);`;
 
-  registroMasa: string = `
-  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO) 
-  VALUES ('Masa', 'Una deliciosa masa para preparar tus propias pizzas. Suave y elástica, ideal para cualquier tipo de cobertura que desees agregar. ¡Prepárala como más te guste!', 1500, 10, 'assets/deep.png');`;
+registroMasa: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Masa', 'Una deliciosa masa para preparar tus propias pizzas. Suave y elástica, ideal para cualquier tipo de cobertura que desees agregar. ¡Prepárala como más te guste!', 1500, 10, 'assets/deep.png', 0);`;
 
 
   //Los Usuarios
@@ -322,6 +322,29 @@ export class DatabaseService {
       this.presentAlert('fetchProductos()', 'Error al obtener los productos: ' + JSON.stringify(e));
     });
   }
+
+  fetchProductosDisponibles() {
+    this.database.executeSql('SELECT * FROM producto WHERE id_cat = 0', []).then(res => {
+      const productos: Producto[] = [];
+      for (let i = 0; i < res.rows.length; i++) {
+        productos.push({
+          id_prod: res.rows.item(i).id_prod,
+          nombre: res.rows.item(i).nombre,
+          descripcion: res.rows.item(i).descripcion,
+          precio: res.rows.item(i).precio,
+          stock: res.rows.item(i).stock,
+          foto: res.rows.item(i).foto_PRODUCTO,
+          id_cat: res.rows.item(i).id_cat
+        });
+      }
+      // Emitir los productos obtenidos
+      this.productosList.next(productos);
+    }).catch(e => {
+      this.presentAlert('fetchProductos()', 'Error al obtener los productos: ' + JSON.stringify(e));
+    });
+  }
+  
+  
 
   async validarUsuario(username: string, password: string): Promise<any> {
     try {
@@ -644,6 +667,22 @@ export class DatabaseService {
       });
   }
 
+  async updateEstado(producto: Producto) {
+    const query = `
+      UPDATE producto 
+      SET nombre = ?, descripcion = ?, precio = ?, stock = ?, foto_PRODUCTO = ?, id_cat = ? 
+      WHERE id_prod = ?`;
+  
+    try {
+      await this.database.executeSql(query, [producto.nombre, producto.descripcion, producto.precio, producto.stock, producto.foto, producto.id_cat, producto.id_prod]);
+      console.log("Producto actualizado correctamente");
+    } catch (error) {
+      console.error("Error al actualizar producto:", error);
+      throw error;
+    }
+  }
+  
+
 
 
   private refreshProductoList(): Promise<void> {
@@ -664,7 +703,7 @@ export class DatabaseService {
     
     const sql = `
         INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
-        VALUES (?, ?, ?, ?, ?, 1);`;
+        VALUES (?, ?, ?, ?, ?, 0);`;
 
     this.database.executeSql(sql, [
       producto.nombre,

@@ -50,7 +50,7 @@ export class HomePage {
     });
 
     // Llamar al método para obtener los productos
-    this.dbService.fetchProductos();
+    this.dbService.fetchProductosDisponibles();
   }
 
   

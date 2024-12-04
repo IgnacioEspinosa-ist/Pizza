@@ -55,17 +55,19 @@
 
       <ion-item *ngFor="let producto of productos">
         <ion-label>
-          <h2>{{ producto.nombre }}</h2>
+          <h5>{{ producto.nombre }}</h5>
           <p>Precio: ${{ producto.precio }}</p>
           <p>Stock: {{ producto.stock }}</p>
+          <p>Disponibilidad: {{ producto.id_cat === 0 ? 'Disponible' : 'No disponible' }}</p>
         </ion-label>
         <ion-buttons slot="end">
           <ion-button color="primary" (click)="cargarDatosProducto(producto)">
             Editar
           </ion-button>
-          <ion-button color="danger" (click)="eliminarProducto(producto.id_prod)">
-            Eliminar
+          <ion-button color="danger" (click)="cambiarEstadoProducto(producto.id_prod)">
+            {{ producto.id_cat === 0 ? 'Deshabilitar' : 'Habilitar' }}
           </ion-button>
+          
         </ion-buttons>
       </ion-item>
     </ion-list>

@@ -62,11 +62,29 @@ export class AdminPage implements OnInit {
   
   
   
-
+/*
   ionViewWillEnter() {
     this.dbService.fetchProductos();
-  }
+  }*/
   
+  async cambiarEstadoProducto(id: number) {
+    try {
+      const producto = this.productos.find(p => p.id_prod === id); // Encuentra el producto
+      if (producto) {
+        // Alternar entre 0 y 1
+        producto.id_cat = producto.id_cat === 0 ? 1 : 0;
+  
+        // Actualizar el producto en la base de datos
+        await this.dbService.updateEstado(producto);
+  
+        // Refrescar la lista de productos
+        this.dbService.fetchProductos();
+        console.log(`Estado del producto ${id} actualizado a ${producto.id_cat}`);
+      }
+    } catch (error) {
+      console.error("Error al cambiar el estado del producto:", error);
+    }
+  }
   
 
   cargarDatosProducto(producto: Producto) {
