@@ -36,6 +36,17 @@ export class CambioconPage  {
   async onVerifyPassword() {
     this.passwordChecked = true;
 
+    if (this.registerUser.clave !== this.registerUser.repeatedClave) {
+      this.passwordsMatch = false;
+      const toast = await this.toastController.create({
+        message: 'Las contraseñas no coinciden.',
+        duration: 2000,
+        color: 'danger',
+      });
+      await toast.present();
+      return;
+    }
+
     if (this.id_user) {
       try {
         const storedPassword = await this.dbService.getPassword(this.id_user);
@@ -48,6 +59,11 @@ export class CambioconPage  {
           });
           await toast.present();
 
+          const email = await this.dbService.getEmail(this.id_user);
+          if (email) {
+            // Guardar el correo electrónico en el storage
+            await this.storage.set('email', email);
+          }
      
           this.router.navigate(['/cambiar-contrasena']);
         } else {

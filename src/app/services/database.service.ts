@@ -900,6 +900,18 @@ export class DatabaseService {
     return from(this.database.executeSql(query, params));
   }
 
+  async getEmail(id_user: number): Promise<string | null> {
+    const query = 'SELECT correo FROM usuario WHERE id_user = ?';
+    const result = await this.database.executeSql(query, [id_user]);
+  
+    if (result.rows.length > 0) {
+      return result.rows.item(0).correo; 
+    } else {
+      return null; 
+    }
+  }
+  
+
 
 
 
