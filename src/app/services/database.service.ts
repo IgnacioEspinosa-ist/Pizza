@@ -576,7 +576,7 @@ registroMasa: string = `
             total: res.rows.item(i).total,
             id_user_resp: res.rows.item(i).id_user_resp,
             estatus: res.rows.item(i).estatus,
-
+            productos: []
           });
         }
         this.pedidosPendientesSubject.next(pedidos); // Emitir los pedidos pendientes
@@ -600,6 +600,38 @@ registroMasa: string = `
         });
     });
   }
+
+
+  private pedidosEntregadosSubject = new BehaviorSubject<Pedido[]>([]);
+  pedidosEntregadosList = this.pedidosEntregadosSubject.asObservable();
+
+  fetchPedidosEntregados() {
+    // Llama al método de base de datos para obtener los pedidos
+    this.database.executeSql(`SELECT * FROM pedido WHERE estatus = 'entregado'`, [])
+      .then(res => {
+        const pedidos: Pedido[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          const pedido = {
+            id_pedido: res.rows.item(i).id_pedido,
+            f_pedido: new Date(res.rows.item(i).f_pedido), // Asegúrate de convertir la fecha correctamente
+            id_user: res.rows.item(i).id_user,
+            id_direccion: res.rows.item(i).id_direccion,
+            total: res.rows.item(i).total,
+            id_user_resp: res.rows.item(i).id_user_resp,
+            estatus: res.rows.item(i).estatus,
+            productos: [] // Puedes agregar los productos aquí si es necesario
+          };
+          pedidos.push(pedido);
+        }
+
+        // Emitir los pedidos entregados
+        this.pedidosEntregadosSubject.next(pedidos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los pedidos entregados', error);
+      });}
+  
+  
 
   getProductosPorIds(ids: number[]): Observable<Producto[]> {
     return new Observable((observer) => {

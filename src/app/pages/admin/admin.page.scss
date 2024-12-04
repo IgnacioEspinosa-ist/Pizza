@@ -95,5 +95,12 @@
     padding-bottom: 250px;
   }
 
+  .foto {
+    height: 300px; /* Altura en píxeles */
+    width: 300px;  /* Ancho en píxeles */
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsión */
+  }
+  
+
   
 

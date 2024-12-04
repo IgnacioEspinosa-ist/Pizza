@@ -1,13 +1,39 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>reportes</ion-title>
+    <ion-title>Reportes</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">reportes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="fondo-g" style="padding-bottom: 500px;">
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Total de Ventas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Total de ventas: ${{ totalVentas }}</p>
+      </ion-card-content>
+    </ion-card>
+  
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Ventas</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let pedido of pedidosEntregados">
+        <ion-label>
+          <h2>ID Pedido: {{ pedido.id_pedido }}</h2>
+          <p>Total: ${{ pedido.total }}</p>
+          <p>Fecha: {{ pedido.f_pedido | date: 'dd/MM/yyyy HH:mm' : 'es-CL' }}</p>
+          <p>Status: {{ pedido.estatus }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+  </div>
+  
+  
 </ion-content>
