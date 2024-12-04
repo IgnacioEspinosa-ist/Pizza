@@ -761,7 +761,7 @@ export class DatabaseService {
         usuario.foto
       ]);
       this.refreshUsuarioList();
-      
+      this.presentAlert('Éxito', 'Usuario añadido correctamente.');
     } catch (error) {
       console.error('Error al insertar usuario:', error);
     }
