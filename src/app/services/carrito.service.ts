@@ -1,4 +1,67 @@
+
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
+import { Producto } from './producto';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CarritoService {
+  private carrito: { [key: number]: Producto[] } = {}; // Objeto donde la clave es el id_user
+
+  constructor(private storage: Storage) {}
+
+  async obtenerProductos(): Promise<Producto[]> {
+    const idUser = await this.storage.get('id_user');
+    if (idUser && this.carrito[idUser]) {
+      return this.carrito[idUser];
+    }
+    return [];
+  }
+
+  async agregarProducto(producto: Producto): Promise<void> {
+    const idUser = await this.storage.get('id_user');
+    if (!idUser) {
+      console.error('No se encontró id_user en el almacenamiento.');
+      return;
+    }
+    if (!this.carrito[idUser]) {
+      this.carrito[idUser] = [];
+    }
+    this.carrito[idUser].push(producto);
+  }
+
+  async quitarProducto(id_prod: number): Promise<void> {
+    const idUser = await this.storage.get('id_user');
+    if (!idUser || !this.carrito[idUser]) {
+      console.error('Carrito no encontrado para el usuario.');
+      return;
+    }
+    this.carrito[idUser] = this.carrito[idUser].filter(p => p.id_prod !== id_prod);
+  }
+
+  async vaciarCarrito(): Promise<void> {
+    const idUser = await this.storage.get('id_user');
+    if (idUser) {
+      this.carrito[idUser] = [];
+    }
+  }
+
+  async actualizarCantidad(id_prod: number, nuevaCantidad: number): Promise<void> {
+    const idUser = await this.storage.get('id_user');
+    if (!idUser || !this.carrito[idUser]) {
+      console.error('Carrito no encontrado para el usuario.');
+      return;
+    }
+    const producto = this.carrito[idUser].find(p => p.id_prod === id_prod);
+    if (producto) {
+      producto.cantidad = nuevaCantidad;
+    }
+  }
+}
+
+
+/*import { Injectable } from '@angular/core';
 import { Producto } from './producto';
 import { Storage } from '@ionic/storage-angular';
 
@@ -61,7 +124,7 @@ export class CarritoService {
   private async actualizarStorage() {
     await this.storage.set('carrito', this.carrito);
   }
-}
+}*/
 
 
 
@@ -75,54 +138,3 @@ export class CarritoService {
 
 
 
-
-/*import { Injectable } from '@angular/core';
-import { Producto } from '../services/producto';
-
-@Injectable({
-  providedIn: 'root',
-})
-export class CarritoService {
-  private cart: Producto[] = [];
-
-  constructor() { }
-
-
-  agregarProducto(producto: Producto): void {
-
-    const existeProducto = this.cart.find(p => p.id_prod! === producto.id_prod!);
-    if (existeProducto) {
-
-      existeProducto.stock! += 1;
-    } else {
-
-      this.cart.push({ ...producto, stock: 1 });
-    }
-    console.log('Producto agregado:', producto);
-    console.log('Carrito actual:', this.cart);
-  }
-
-
-  quitarProducto(id: number): void {
-    this.cart = this.cart.filter(producto => producto.id_prod! !== id);
-    console.log('Producto eliminado:', id);
-    console.log('Carrito actual:', this.cart);
-  }
-
-
-  obtenerProductos(): Producto[] {
-    return this.cart;
-  }
-
-
-  obtenerTotalProductos(): number {
-    return this.cart.reduce((total, producto) => total + producto.stock!, 0);
-  }
-
-
-  vaciarCarrito(): void {
-    this.cart = [];
-    console.log('Carrito vacío');
-  }
-}
-*/

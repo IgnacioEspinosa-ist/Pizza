@@ -110,10 +110,21 @@ const routes: Routes = [
     loadChildren: () => import('./pages/reportes/reportes.module').then( m => m.ReportesPageModule)
   },
   
+  
+  {
+    path: 'hist-u',
+    loadChildren: () => import('./pages/hist-u/hist-u.module').then( m => m.HistUPageModule)
+  },
+  {
+    path: 'hist-r',
+    loadChildren: () => import('./pages/hist-r/hist-r.module').then( m => m.HistRPageModule)
+  },
+
   {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+
  
 
   

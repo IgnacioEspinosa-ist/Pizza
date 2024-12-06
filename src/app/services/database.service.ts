@@ -757,6 +757,36 @@ registroMasa: string = `
       });
   }
 
+  getHistorialPedidos(userId: number): Observable<Pedido[]> {
+    return new Observable((observer) => {
+      this.database.executeSql(
+        `SELECT * FROM pedido WHERE id_user = ?`, 
+        [userId]
+      ).then((res) => {
+        const pedidos: Pedido[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          pedidos.push({
+            id_pedido: res.rows.item(i).id_pedido,
+            f_pedido: res.rows.item(i).f_pedido,
+            id_user: res.rows.item(i).id_user,
+            id_direccion: res.rows.item(i).id_direccion,
+            total: res.rows.item(i).total,
+            id_user_resp: res.rows.item(i).id_user_resp,
+            estatus: res.rows.item(i).estatus,
+            productos: JSON.parse(res.rows.item(i).productos || '[]') 
+          });
+        }
+        observer.next(pedidos);
+        observer.complete();
+      }).catch((error) => {
+        console.error('Error al obtener pedidos:', error);
+        observer.error(error);
+      });
+    });
+  }
+  
+  
+
   async deleteProducto(id: number): Promise<void> {
     const sql = "DELETE FROM producto WHERE id_prod = ?";
     try {
