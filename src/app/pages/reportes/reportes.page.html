@@ -27,7 +27,7 @@
         <ion-label>
           <h2>ID Pedido: {{ pedido.id_pedido }}</h2>
           <p>Total: ${{ pedido.total }}</p>
-          <p>Fecha: {{ pedido.f_pedido | date: 'dd/MM/yyyy HH:mm' : 'es-CL' }}</p>
+          <p>Fecha: {{ pedido.f_pedido | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
           <p>Status: {{ pedido.estatus }}</p>
         </ion-label>
       </ion-item>

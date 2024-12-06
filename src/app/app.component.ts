@@ -3,6 +3,8 @@ import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular'; // Si usas Storage de Ionic
+import { CarritoService } from './services/carrito.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +12,10 @@ import { Storage } from '@ionic/storage-angular'; // Si usas Storage de Ionic
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private platform: Platform, private storage: Storage, private menu: MenuController) {}
+  constructor(private platform: Platform, private storage: Storage, private menu: MenuController,private carritoService: CarritoService,private router: Router) {}
 
   ngOnInit() {
+    this.menu.swipeGesture(false);
     // Suscribirse al evento "pause" cuando la app pasa a segundo plano
     this.platform.pause.subscribe(() => {
       console.log('La aplicación está en segundo plano');
@@ -54,6 +57,12 @@ export class AppComponent implements OnInit {
 
   openMenuSecundario() {
     this.menu.open('menuSecundario'); 
+  }
+
+  async logout() {
+    await this.carritoService.logout();
+    this.menu.close();
+    this.router.navigate(['/login']);  // Redirigir a la página de login o donde sea necesario
   }
 
   closeMenu(menuId: string) {

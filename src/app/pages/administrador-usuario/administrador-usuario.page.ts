@@ -32,7 +32,7 @@ export class UsuariosPage implements OnInit {
   }
 
   async cargarUsuarios() {
-    this.dbService.fetchUsuarios().subscribe({
+    this.dbService.fetchRepartidores().subscribe({
       next: (usuarios: Usuario[]) => {
         this.usuarios = usuarios; 
       },

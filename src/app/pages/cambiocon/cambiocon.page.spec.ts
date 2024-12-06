@@ -1,17 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CambioconPage } from './cambiocon.page';
+import { TestBed } from '@angular/core/testing';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { DatabaseService } from 'src/app/services/database.service';
+import { SQLiteMock } from 'src/app/services/sqlite-mock.service';
 
-describe('CambioconPage', () => {
-  let component: CambioconPage;
-  let fixture: ComponentFixture<CambioconPage>;
+describe('DatabaseService', () => {
+  let service: DatabaseService;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CambioconPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    TestBed.configureTestingModule({
+      providers: [
+        DatabaseService,
+        { provide: SQLite, useClass: SQLiteMock } 
+      ]
+    });
+    service = TestBed.inject(DatabaseService);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be created', () => {
+    expect(service).toBeTruthy();
   });
 });

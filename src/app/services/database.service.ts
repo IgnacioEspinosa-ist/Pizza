@@ -38,34 +38,43 @@ export class DatabaseService {
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
   VALUES ('Pizza Pepperoni', 'Deliciosa pizza con una capa generosa de queso derretido y cubierto con rodajas finas de salami de pepperoni, que ofrecen un toque salado y sabroso en cada bocado.', 12000, 10, 'assets/peperoni.webp', 0);`;
 
-registroPizzaQueso: string = `
+  registroPizzaQueso: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
   VALUES ('Pizza de Queso', 'Una pizza clásica, perfecta para los amantes del queso. Con una base crujiente, salsa de tomate y una generosa cantidad de queso derretido, esta pizza es ideal para quienes buscan una opción sencilla pero deliciosa.', 8000, 10, 'assets/chees.webp', 0);`;
 
-registroPizzaHawaiana: string = `
+  registroPizzaHawaiana: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
   VALUES ('Pizza Hawaiana', 'Una combinación única de sabores con la dulzura de la piña y la salinidad del jamón. Esta pizza tropical es ideal para quienes buscan una mezcla irresistible de sabores dulces y salados.', 10000, 10, 'assets/jawai.jfif', 0);`;
 
-registroPizzaVegetariana: string = `
+  registroPizzaVegetariana: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
   VALUES ('Pizza Vegetariana', 'Una opción saludable para los amantes de las verduras, con una variedad de ingredientes frescos como pimientos, champiñones, espinacas y cebolla, todo sobre una base crujiente y con salsa de tomate natural.', 8000, 10, 'assets/vegan.webp', 0);`;
 
-registroPizzaJamonQueso: string = `
+  registroPizzaJamonQueso: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
   VALUES ('Pizza Jamón-Queso', 'La clásica pizza de jamón y queso, una combinación simple pero sabrosa. Con una base crujiente, salsa de tomate y una capa generosa de queso acompañado de finas lonjas de jamón.', 8000, 10, 'assets/jam.png', 0);`;
 
-registroChampizza: string = `
+  registroChampizza: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
   VALUES ('Champizza', 'Una pizza gourmet, con una capa de queso fundido y un toque especial de champiñones frescos. Ideal para quienes disfrutan de una pizza diferente con un toque elegante.', 12000, 10, 'assets/callam.png', 0);`;
 
-registroPiboqueso: string = `
+  registroPiboqueso: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
-  VALUES ('Piboqueso', 'Una pizza con una corteza rellena de queso, que aporta una textura crujiente y un sabor único. Perfecta para los amantes del queso en cada bocado.', 15000, 10, 'assets/border.png', 0);`;
+  VALUES ('Piboqueso', 'Una pizza con una corteza rellena de queso, que aporta una textura crujiente y un sabor único. Perfecta para los amantes del queso en cada bocado.', 15000, 10, 'assets/border.png',0 );`;
 
-registroMasa: string = `
+  registroMasa: string = `
   INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
-  VALUES ('Masa', 'Una deliciosa masa para preparar tus propias pizzas. Suave y elástica, ideal para cualquier tipo de cobertura que desees agregar. ¡Prepárala como más te guste!', 1500, 10, 'assets/deep.png', 0);`;
+  VALUES ('Masa', 'Una deliciosa masa para preparar tus propias pizzas. Suave y elástica, ideal para cualquier tipo de cobertura que desees agregar. ¡Prepárala como más te guste!', 1500, 10, 'assets/deep.png',0 );`;
 
+  registroMeatLover: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('MeatLover', 'Una pizza cargada de deliciosos trozos de carne como salami, jamón y pepperoni, sobre una base de queso fundido. Perfecta para los amantes de la carne.', 8500, 15, 'assets/MeatLovers.jpeg', 0);
+`;
+
+  registroPolloPesto: string = `
+  INSERT OR IGNORE INTO producto (nombre, descripcion, precio, stock, foto_PRODUCTO, id_cat) 
+  VALUES ('Pizza Pollo Con Pesto', 'Saborea una combinación de pollo jugoso y la frescura del pesto, todo en una base crujiente con queso derretido. Una opción única y deliciosa.', 9000, 12, 'assets/Pollo_Pesto.jpeg', 0);
+`
 
   //Los Usuarios
 
@@ -89,9 +98,9 @@ registroMasa: string = `
   registroComuna1: string = "INSERT INTO comuna (nombre_comuna) values ('Conchali')"
   registroComuna2: string = "INSERT INTO comuna (nombre_comuna) values ('Quilicura')"
 
-  //
+  /*
   registroPedido1: string = "INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'1','1',12000,10,'pendiente')"
-  registroPedido2: string = "INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'2','2',8000,10,'pendiente')"
+  registroPedido2: string = "INSERT INTO Pedido (f_pedido,id_user,id_direccion,total,id_user_resp,estatus) values (DATE('now'),'2','2',8000,10,'pendiente')"*/
 
   registerRol1: string = "INSERT INTO roll (nombre) values ('Usuario')"
   registerRol2: string = "INSERT INTO roll (nombre) values ('Repartidor')"
@@ -149,7 +158,7 @@ registroMasa: string = `
   // Tabla Pedido
   tablaPedido: string = `CREATE TABLE IF NOT EXISTS pedido (
       id_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
-      f_pedido DATE NOT NULL,
+      f_pedido DATETIME NOT NULL,
       id_user INTEGER NOT NULL,
       id_direccion INTEGER NOT NULL,
       total REAL NOT NULL,
@@ -180,7 +189,7 @@ registroMasa: string = `
       FOREIGN KEY(id_user) REFERENCES usuario(id_user)
   );`;
 
-  tablaCarrito: string =` CREATE TABLE IF NOT EXISTS carrito (
+  tablaCarrito: string = ` CREATE TABLE IF NOT EXISTS carrito (
     id_carrito INTEGER PRIMARY KEY AUTOINCREMENT,
     id_user INTEGER,
     id_prod INTEGER,
@@ -188,7 +197,7 @@ registroMasa: string = `
     FOREIGN KEY(id_user) REFERENCES usuario(id_user),
     FOREIGN KEY(id_prod) REFERENCES producto(id_prod)
   );`
-  
+
 
 
   //ACA SE TIENEN QUE PONER TODOS LOS INSERT INICIALES
@@ -207,12 +216,15 @@ registroMasa: string = `
     this.registroAdmin,
     this.registroComuna1,
     this.registroComuna2,
-    this.registroPedido1,
-    this.registroPedido2,
+    //this.registroPedido1,
+    //this.registroPedido2,
     this.registerRol1,
     this.registerRol2,
     this.registerRol3,
-    this.registroUsuario2
+    this.registroUsuario2,
+    this.registroMeatLover,
+    this.registroPolloPesto,
+    
 
   ];
 
@@ -288,7 +300,7 @@ registroMasa: string = `
       await this.database.executeSql(this.tablaCarrito, []);
       console.log("Tabla Carrito creada");
 
-      
+
 
       const existe = await this.verificarInserciones();
       if (!existe) {
@@ -362,8 +374,8 @@ registroMasa: string = `
       this.presentAlert('fetchProductos()', 'Error al obtener los productos: ' + JSON.stringify(e));
     });
   }
-  
-  
+
+
 
   async validarUsuario(username: string, password: string): Promise<any> {
     try {
@@ -648,9 +660,10 @@ registroMasa: string = `
       })
       .catch(error => {
         console.error('Error al obtener los pedidos entregados', error);
-      });}
-  
-  
+      });
+  }
+
+
 
   getProductosPorIds(ids: number[]): Observable<Producto[]> {
     return new Observable((observer) => {
@@ -723,7 +736,7 @@ registroMasa: string = `
       UPDATE producto 
       SET nombre = ?, descripcion = ?, precio = ?, stock = ?, foto_PRODUCTO = ?, id_cat = ? 
       WHERE id_prod = ?`;
-  
+
     try {
       await this.database.executeSql(query, [producto.nombre, producto.descripcion, producto.precio, producto.stock, producto.foto, producto.id_cat, producto.id_prod]);
       console.log("Producto actualizado correctamente");
@@ -732,7 +745,7 @@ registroMasa: string = `
       throw error;
     }
   }
-  
+
 
 
 
@@ -751,7 +764,7 @@ registroMasa: string = `
   }
 
   insertProducto(producto: Producto): void {
-    
+
     const sql = `
         INSERT INTO producto (nombre,descripcion, precio, stock, foto_PRODUCTO, id_cat) 
         VALUES (?, ?, ?, ?, ?, 0);`;
@@ -779,7 +792,7 @@ registroMasa: string = `
   getHistorialPedidos(userId: number): Observable<Pedido[]> {
     return new Observable((observer) => {
       this.database.executeSql(
-        `SELECT * FROM pedido WHERE id_user = ?`, 
+        `SELECT * FROM pedido WHERE id_user = ?`,
         [userId]
       ).then((res) => {
         const pedidos: Pedido[] = [];
@@ -792,7 +805,7 @@ registroMasa: string = `
             total: res.rows.item(i).total,
             id_user_resp: res.rows.item(i).id_user_resp,
             estatus: res.rows.item(i).estatus,
-            productos: JSON.parse(res.rows.item(i).productos || '[]') 
+            productos: JSON.parse(res.rows.item(i).productos || '[]')
           });
         }
         observer.next(pedidos);
@@ -803,8 +816,8 @@ registroMasa: string = `
       });
     });
   }
-  
-  
+
+
 
   async deleteProducto(id: number): Promise<void> {
     const sql = "DELETE FROM producto WHERE id_prod = ?";
@@ -842,6 +855,34 @@ registroMasa: string = `
       });
     });
   }
+
+  fetchRepartidores(): Observable<Usuario[]> {
+    return new Observable<Usuario[]>(observer => {
+      this.database.executeSql('SELECT * FROM usuario WHERE id_roll = 2', []).then(res => {
+        const usuarios: Usuario[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          usuarios.push({
+            id_user: res.rows.item(i).id_user,
+            nombre: res.rows.item(i).nombre,
+            apellido: res.rows.item(i).apellido,
+            rut: res.rows.item(i).rut,
+            correo: res.rows.item(i).correo,
+            clave: res.rows.item(i).clave,
+            telefono: res.rows.item(i).telefono,
+            id_roll: res.rows.item(i).id_roll,
+            foto: res.rows.item(i).foto_U
+          });
+        }
+        observer.next(usuarios); // Emitir los usuarios obtenidos
+        observer.complete(); // Completar el observable
+      }).catch(e => {
+        this.presentAlert('fetchRepartidores()', 'Error al obtener los usuarios: ' + JSON.stringify(e));
+        observer.error(e); // Emitir el error
+      });
+    });
+  }
+
+  
 
   async insertUsuario(usuario: Usuario): Promise<void> {
 
@@ -881,7 +922,7 @@ registroMasa: string = `
         usuario.foto
       ]);
       this.refreshUsuarioList();
-      
+
     } catch (error) {
       console.error('Error al insertar usuario:', error);
     }
@@ -898,7 +939,7 @@ registroMasa: string = `
       throw error;
     }
   }
-  
+
 
 
   private async refreshUsuarioList(): Promise<void> {
@@ -964,15 +1005,15 @@ registroMasa: string = `
     }
     throw new Error('Usuario no encontrado');
   }
-  
+
 
   updatePerfil(id_user: number, nombre: string, apellido: string, telefono: string, rut: string): Observable<any> {
     const query = `UPDATE usuario SET nombre = ?, apellido = ?, telefono = ?, rut = ? WHERE id_user = ?`;
     const params = [nombre, apellido, telefono, rut, id_user];
-  
+
     return from(this.database.executeSql(query, params));
   }
-  
+
 
   updatePerfilU(
     id_user: number,
@@ -1036,18 +1077,18 @@ registroMasa: string = `
   async getEmail(id_user: number): Promise<string | null> {
     const query = 'SELECT correo FROM usuario WHERE id_user = ?';
     const result = await this.database.executeSql(query, [id_user]);
-  
+
     if (result.rows.length > 0) {
-      return result.rows.item(0).correo; 
+      return result.rows.item(0).correo;
     } else {
-      return null; 
+      return null;
     }
   }
 
   getPedidosEntregados(): Observable<Pedido[]> {
     return new Observable((observer) => {
       this.database.executeSql(
-        `SELECT * FROM pedido WHERE estatus = ?`, 
+        `SELECT * FROM pedido WHERE estatus = ?`,
         ['entregado'] // Filtrar por estatus "entregado"
       ).then((res) => {
         const pedidos: Pedido[] = [];
@@ -1060,7 +1101,7 @@ registroMasa: string = `
             total: res.rows.item(i).total,
             id_user_resp: res.rows.item(i).id_user_resp,
             estatus: res.rows.item(i).estatus,
-            productos: JSON.parse(res.rows.item(i).productos || '[]') 
+            productos: JSON.parse(res.rows.item(i).productos || '[]')
           });
         }
         observer.next(pedidos);
@@ -1071,10 +1112,10 @@ registroMasa: string = `
       });
     });
   }
-  
-  
-  
-  
+
+
+
+
 
 
 

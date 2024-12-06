@@ -29,7 +29,7 @@
         
       </ion-list>
       <ion-footer>
-        <ion-item class="abajo" (click)="closeMenu('menuP')" routerDirection="root" routerLink="/login">
+        <ion-item class="abajo" (click)="logout()"  routerDirection="root" routerLink="/login">
           <ion-icon name="person-outline"></ion-icon>
           <ion-label>Cerrar Sesion</ion-label>
         </ion-item>
@@ -61,7 +61,7 @@
         </ion-item>
       </ion-list>
       <ion-footer>
-        <ion-item class="menudo" (click)="closeMenu('menuSecundario')" routerDirection="root" routerLink="/login">
+        <ion-item class="menudo" (click)="logout()" routerDirection="root" routerLink="/login">
           <ion-icon name="person-outline"></ion-icon>
           <ion-label>Cerrar Sesion</ion-label>
         </ion-item>

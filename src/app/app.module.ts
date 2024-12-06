@@ -12,7 +12,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { DatabaseService } from './services/database.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { LOCALE_ID } from '@angular/core';
+import localeEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
 
+registerLocaleData(localeEs, 'es');
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +30,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     IonicStorageModule.forRoot()
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy},SQLite,DatabaseService 
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy},SQLite,DatabaseService,{ provide: LOCALE_ID, useValue: 'es-CL' }
     
     
   ],

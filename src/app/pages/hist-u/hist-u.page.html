@@ -6,24 +6,24 @@
       </ion-buttons>
       <img src="assets/logo.png" class="logo" slot="end">
     </ion-toolbar>
-  </div> 
+  </div>
 </ion-header>
 
 <ion-content>
-  <div class="fondo-g" style="padding-bottom: 500px;">
+  <div class="fondo-g" style="padding-bottom: 750px;">
 
     <ion-list *ngIf="pedidos.length > 0; else noPedidos">
       <ion-list-header>
         <ion-label>Mis Pedidos</ion-label>
       </ion-list-header>
-  
+
       <ion-item *ngFor="let pedido of pedidos">
         <ion-label>
-          <h2>Pedido </h2>
+          <h2>Pedido: #{{ pedido.id_pedido }}</h2>
           <p>Total: {{ pedido.total | currency }}</p>
-          <p>Fecha: {{ pedido.f_pedido | date: 'dd/MM/yyyy HH:mm' : 'es-CL' }}</p>
+          <p>Fecha: {{ pedido.f_pedido | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
           <p>Estatus: {{ pedido.estatus }}</p>
-  
+
           <ion-list>
             <ion-item *ngFor="let item of pedido.productos">
               <ion-label>
@@ -35,8 +35,12 @@
       </ion-item>
     </ion-list>
     <ng-template #noPedidos>
-      <ion-text>No hay pedidos entregados.</ion-text>
+      <ion-card class="ion-text-center" >
+        <ion-card-content >
+          <p>No hay pedidos Entregados</p>
+        </ion-card-content>
+      </ion-card>
     </ng-template>
   </div>
-  
+
 </ion-content>

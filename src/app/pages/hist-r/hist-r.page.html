@@ -10,18 +10,22 @@
 </ion-header>
 
 <ion-content>
-    <div class="fondo-g" style="padding-bottom: 500px;">
+    <div class="fondo-g" style="padding-bottom: 750px;">
         <ion-list *ngIf="pedidos.length > 0; else noPedidos">
             <ion-item *ngFor="let pedido of pedidos">
                 <ion-label>
-                    <h2>Pedido: {{ pedido.id_pedido }}</h2>
-                    <p>Fecha: {{ pedido.f_pedido }}</p>
+                    <h2>Pedido: #{{ pedido.id_pedido }}</h2>
                     <p>Fecha: {{ pedido.f_pedido | date: 'dd/MM/yyyy HH:mm' : 'es-CL' }}</p>
+                    <p>Entregado</p>
                 </ion-label>
             </ion-item>
         </ion-list>
         <ng-template #noPedidos>
-            <ion-text>No hay pedidos entregados.</ion-text>
+            <ion-card class="ion-text-center" >
+                <ion-card-content >
+                  <p>No hay pedidos Entregados</p>
+                </ion-card-content>
+              </ion-card>
         </ng-template>
     </div>
 

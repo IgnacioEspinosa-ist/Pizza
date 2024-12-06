@@ -62,5 +62,15 @@ export class CarritoService {
   private async actualizarStorage() {
     await this.storage.set('carrito', this.carrito);
   }
+
+  async logout() {
+    // Eliminar el id_user del almacenamiento
+    await this.storage.remove('id_user');
+
+    // Vaciar el carrito
+    this.vaciarCarrito();
+
+    console.log('Sesión cerrada y carrito vaciado.');
+  }
 }
 

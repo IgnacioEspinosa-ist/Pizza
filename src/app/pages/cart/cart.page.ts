@@ -1,10 +1,6 @@
-
-
-
-
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { CarritoService } from 'src/app/services/carrito.service';  
+import { CarritoService } from 'src/app/services/carrito.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { Producto } from 'src/app/services/producto';
 import { Storage } from '@ionic/storage-angular';
@@ -16,16 +12,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  productos: Producto[] = [];  
-  totalCarrito: number = 0;   
+  productos: Producto[] = [];
+  totalCarrito: number = 0;
   totalFormateado: string = '';
   constructor(
     private dbService: DatabaseService,
-    private carritoService: CarritoService,  
+    private carritoService: CarritoService,
     private alertController: AlertController,
     private storage: Storage,
     private router: Router
-  ) {}
+  ) { }
 
   async ngOnInit() {
     const idUser = await this.storage.get('id_user');
@@ -36,19 +32,20 @@ export class CartPage implements OnInit {
     this.productos = await this.carritoService.obtenerProductos();
     this.calcularTotal();
   }
-  
 
   
+
+
   actualizarCarrito() {
     this.productos = this.carritoService.obtenerProductos();
-    this.calcularTotal(); 
+    this.calcularTotal();
   }
 
- 
+
   async eliminarProductoDelCarrito(id_prod: number): Promise<void> {
     try {
-      this.carritoService.quitarProducto(id_prod); 
-      this.actualizarCarrito(); 
+      this.carritoService.quitarProducto(id_prod);
+      this.actualizarCarrito();
       const alert = await this.alertController.create({
         header: 'Producto Eliminado',
         message: 'El producto ha sido eliminado del carrito.',
@@ -65,44 +62,44 @@ export class CartPage implements OnInit {
     }
   }
 
-  
+
   calcularTotal(): void {
- 
-    const total = this.productos.reduce((suma, producto) => 
-      suma + (producto.precio * (producto.cantidad || 0)), 
+
+    const total = this.productos.reduce((suma, producto) =>
+      suma + (producto.precio * (producto.cantidad || 0)),
       0
     );
-  
-   
+
+
     this.totalCarrito = total;
-  
-   
+
+
     this.totalFormateado = total.toLocaleString('es-CL', {
       style: 'currency',
       currency: 'CLP',
     });
   }
 
- 
+
   vaciarCarrito() {
-    this.carritoService.vaciarCarrito();  
-    this.actualizarCarrito(); 
+    this.carritoService.vaciarCarrito();
+    this.actualizarCarrito();
   }
 
- 
+
   async finalizarCompra() {
     if (!this.productos || this.productos.length === 0) {
       console.error('El carrito está vacío, no se puede finalizar la compra.');
       return;
     }
-  
+
     try {
       const idUser = await this.storage.get('id_user');
       if (!idUser) {
         console.error('No se pudo obtener el id_user del almacenamiento.');
         return;
       }
-  
+
       // Chequeo de stock para cada producto
       for (const producto of this.productos) {
         if (producto.cantidad && producto.stock !== undefined) {
@@ -117,19 +114,23 @@ export class CartPage implements OnInit {
           }
         }
       }
-  
+
       // Crear el nuevo pedido
+      const now = new Date();
+      const offset = now.getTimezoneOffset() * 60000; // Diferencia de UTC en milisegundos
+      const localDateTime = new Date(now.getTime() - offset).toISOString().slice(0, 19).replace('T', ' ');
+
       const nuevoPedido = {
-        f_pedido: new Date().toISOString().slice(0, 10),
+        f_pedido: localDateTime, // Fecha y hora ajustada
         id_user: idUser,
         id_direccion: 1,
         total: this.totalCarrito,
         id_user_resp: undefined,
         estatus: 'pendiente'
       };
-  
+
       await this.dbService.agregarPedido(nuevoPedido);
-  
+
       // Actualizar el stock de los productos
       for (const producto of this.productos) {
         if (producto.cantidad && producto.stock !== undefined) {
@@ -137,21 +138,21 @@ export class CartPage implements OnInit {
           await this.dbService.actualizarStockProducto(producto.id_prod, nuevoStock);
         }
       }
-  
+
       // Vaciar el carrito
       this.vaciarCarrito();
-  
+
       // Redirigir a otra página
       this.router.navigate(['/mapacli']);
-  
+
       console.log('Compra finalizada con éxito.');
     } catch (error) {
       console.error('Error al finalizar la compra:', error);
     }
   }
-  
-  
-  
+
+
+
 
 
   async presentAlert() {
@@ -163,36 +164,36 @@ export class CartPage implements OnInit {
     await alert.present();
   }
 
- 
-aumentarCantidad(id_prod: number, cantidad: number | undefined): void {
-  if (cantidad !== undefined) {
-  
-    const nuevaCantidad = cantidad + 1;
+
+  aumentarCantidad(id_prod: number, cantidad: number | undefined): void {
+    if (cantidad !== undefined) {
+
+      const nuevaCantidad = cantidad + 1;
 
 
-    this.carritoService.actualizarCantidad(id_prod, nuevaCantidad);
+      this.carritoService.actualizarCantidad(id_prod, nuevaCantidad);
 
- 
-    this.productos = this.carritoService.obtenerProductos();
 
-   
-    this.calcularTotal();
-  } else {
-    console.error('Cantidad es undefined. No se puede aumentar la cantidad.');
+      this.productos = this.carritoService.obtenerProductos();
+
+
+      this.calcularTotal();
+    } else {
+      console.error('Cantidad es undefined. No se puede aumentar la cantidad.');
+    }
   }
-}
 
 
 
-disminuirCantidad(id_prod: number, cantidad: number | undefined) {
-  if (cantidad !== undefined && cantidad > 1) {
-    this.carritoService.actualizarCantidad(id_prod, cantidad - 1);
-    this.productos = this.carritoService.obtenerProductos();  
-    this.calcularTotal();  
-  } else {
-    console.error('Cantidad es undefined o no se puede disminuir más de 1.');
+  disminuirCantidad(id_prod: number, cantidad: number | undefined) {
+    if (cantidad !== undefined && cantidad > 1) {
+      this.carritoService.actualizarCantidad(id_prod, cantidad - 1);
+      this.productos = this.carritoService.obtenerProductos();
+      this.calcularTotal();
+    } else {
+      console.error('Cantidad es undefined o no se puede disminuir más de 1.');
+    }
   }
-} 
 
 
 

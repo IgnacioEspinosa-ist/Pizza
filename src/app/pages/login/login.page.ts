@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { MenuController, NavController } from '@ionic/angular';
 import { DatabaseService } from '../../services/database.service'; 
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Storage } from '@ionic/storage-angular';
@@ -13,7 +13,7 @@ export class LoginPage {
   username: string = '';
   password: string = '';
 
-  constructor(private navCtrl: NavController, private dbService: DatabaseService, private storage: Storage) {
+  constructor(private navCtrl: NavController, private dbService: DatabaseService, private storage: Storage, private menucontroller: MenuController) {
     this.initStorage();
   }
 
