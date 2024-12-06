@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { Producto } from './producto';
 import { Storage } from '@ionic/storage-angular';
@@ -62,16 +63,4 @@ export class CarritoService {
     await this.storage.set('carrito', this.carrito);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

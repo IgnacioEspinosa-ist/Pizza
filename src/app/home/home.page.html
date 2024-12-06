@@ -4,9 +4,15 @@
       <ion-buttons slot="start">
         <ion-menu-button menu="menuP"></ion-menu-button>
       </ion-buttons>
-      <img src="assets/logo.png" class="logo" slot="end">
+      <ion-title>
+        <img src="assets/logo.png" class="logo" style="padding-left: 75px;">
+      </ion-title>
+
+      
+      <ion-icon name="cart-outline"  style="width: 50px; height: 50px;" routerLink="/cart" slot="end"></ion-icon>
+      
     </ion-toolbar>
-  </div> 
+  </div>
 </ion-header>
 
 <ion-content class="ion-padding fondo-g">
@@ -23,7 +29,7 @@
                 <img [src]="producto.foto" class="producto-imagen" />
                 <h6 class="producto-nombre">{{ producto.nombre }}</h6>
                 <p class="producto-precio">{{ producto.precio | currency }}</p>
-                
+
               </ion-card>
               <ion-button expand="block" class="boton" (click)="agregarAlCarrito(producto)">
                 Añadir al carrito

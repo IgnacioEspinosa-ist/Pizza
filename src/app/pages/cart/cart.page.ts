@@ -1,3 +1,7 @@
+
+
+
+
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { CarritoService } from 'src/app/services/carrito.service';  
@@ -193,4 +197,3 @@ disminuirCantidad(id_prod: number, cantidad: number | undefined) {
 
 
 }
-

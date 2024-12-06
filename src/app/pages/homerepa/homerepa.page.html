@@ -20,7 +20,7 @@
     <!-- Mostrar los pedidos pendientes -->
     <ion-grid style="padding-bottom: 750px;;">
       <ion-row>
-        <ion-col size="12"  *ngFor="let pedido of pedidosPendientes">
+        <ion-col size="12"   *ngFor="let pedido of pedidosPendientes">
           <!-- Cambiar la acción del ion-card -->
           <ion-card (click)="irAMapaRepartidor(pedido)">
             <ion-grid>

@@ -180,6 +180,16 @@ registroMasa: string = `
       FOREIGN KEY(id_user) REFERENCES usuario(id_user)
   );`;
 
+  tablaCarrito: string =` CREATE TABLE IF NOT EXISTS carrito (
+    id_carrito INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_user INTEGER,
+    id_prod INTEGER,
+    cantidad INTEGER,
+    FOREIGN KEY(id_user) REFERENCES usuario(id_user),
+    FOREIGN KEY(id_prod) REFERENCES producto(id_prod)
+  );`
+  
+
 
   //ACA SE TIENEN QUE PONER TODOS LOS INSERT INICIALES
   inserciones: string[] = [
@@ -274,6 +284,11 @@ registroMasa: string = `
 
       await this.database.executeSql(this.tablaAuto, []);
       console.log("Tabla auto creada");
+
+      await this.database.executeSql(this.tablaCarrito, []);
+      console.log("Tabla Carrito creada");
+
+      
 
       const existe = await this.verificarInserciones();
       if (!existe) {
@@ -1028,6 +1043,37 @@ registroMasa: string = `
       return null; 
     }
   }
+
+  getPedidosEntregados(): Observable<Pedido[]> {
+    return new Observable((observer) => {
+      this.database.executeSql(
+        `SELECT * FROM pedido WHERE estatus = ?`, 
+        ['entregado'] // Filtrar por estatus "entregado"
+      ).then((res) => {
+        const pedidos: Pedido[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          pedidos.push({
+            id_pedido: res.rows.item(i).id_pedido,
+            f_pedido: res.rows.item(i).f_pedido,
+            id_user: res.rows.item(i).id_user,
+            id_direccion: res.rows.item(i).id_direccion,
+            total: res.rows.item(i).total,
+            id_user_resp: res.rows.item(i).id_user_resp,
+            estatus: res.rows.item(i).estatus,
+            productos: JSON.parse(res.rows.item(i).productos || '[]') 
+          });
+        }
+        observer.next(pedidos);
+        observer.complete();
+      }).catch((error) => {
+        console.error('Error al obtener pedidos entregados:', error);
+        observer.error(error);
+      });
+    });
+  }
+  
+  
+  
   
 
 

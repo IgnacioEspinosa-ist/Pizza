@@ -12,7 +12,7 @@
 <ion-content>
   <div class="fondo-g" style="padding-bottom: 500px;">
 
-    <ion-list>
+    <ion-list *ngIf="pedidos.length > 0; else noPedidos">
       <ion-list-header>
         <ion-label>Mis Pedidos</ion-label>
       </ion-list-header>
@@ -34,6 +34,9 @@
         </ion-label>
       </ion-item>
     </ion-list>
+    <ng-template #noPedidos>
+      <ion-text>No hay pedidos entregados.</ion-text>
+    </ng-template>
   </div>
   
 </ion-content>

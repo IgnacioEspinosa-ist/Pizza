@@ -55,9 +55,13 @@
           <ion-icon name="person-outline"></ion-icon>
           <ion-label>Perfil</ion-label>
         </ion-item>
+        <ion-item (click)="closeMenu('menuP')" routerDirection="root" routerLink="/hist-r">
+          <ion-icon name="alarm-outline"></ion-icon>
+          <ion-label>Pedidos</ion-label>
+        </ion-item>
       </ion-list>
       <ion-footer>
-        <ion-item class="abajo" (click)="closeMenu('menuSecundario')" routerDirection="root" routerLink="/login">
+        <ion-item class="menudo" (click)="closeMenu('menuSecundario')" routerDirection="root" routerLink="/login">
           <ion-icon name="person-outline"></ion-icon>
           <ion-label>Cerrar Sesion</ion-label>
         </ion-item>
