@@ -33,7 +33,7 @@ export class CartPage implements OnInit {
     this.calcularTotal();
   }
 
-  
+
 
 
   actualizarCarrito() {
@@ -115,13 +115,13 @@ export class CartPage implements OnInit {
         }
       }
 
-      // Crear el nuevo pedido
+     
       const now = new Date();
-      const offset = now.getTimezoneOffset() * 60000; // Diferencia de UTC en milisegundos
+      const offset = now.getTimezoneOffset() * 60000; 
       const localDateTime = new Date(now.getTime() - offset).toISOString().slice(0, 19).replace('T', ' ');
 
       const nuevoPedido = {
-        f_pedido: localDateTime, // Fecha y hora ajustada
+        f_pedido: localDateTime,
         id_user: idUser,
         id_direccion: 1,
         total: this.totalCarrito,
@@ -131,7 +131,7 @@ export class CartPage implements OnInit {
 
       await this.dbService.agregarPedido(nuevoPedido);
 
-      // Actualizar el stock de los productos
+
       for (const producto of this.productos) {
         if (producto.cantidad && producto.stock !== undefined) {
           const nuevoStock = producto.stock - producto.cantidad;

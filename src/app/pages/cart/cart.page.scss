@@ -1,8 +1,8 @@
 .fondo{
-   background-image: url('/assets/fondo.png'); // Ajusta la ruta si es diferente
-    background-size: cover;     // Ajusta el tamaño de la imagen para cubrir todo el fondo
-    background-position: center; // Centra la imagen
-    background-repeat: repeat; // Evita que la imagen se repita
+   background-image: url('/assets/fondo.png'); 
+    background-size: cover;     
+    background-position: center;
+    background-repeat: repeat; 
     padding-bottom: 75vh;
   }
   
@@ -18,8 +18,8 @@
   }
 
   ion-content {
-    --padding-bottom: 56px; /* Deja espacio para el footer si se desplaza */
-    height: calc(100vh - 56px); /* Ajusta la altura para que el contenido no se sobreponga */
+    --padding-bottom: 56px; 
+    height: calc(100vh - 56px);
   }
   
   ion-footer {

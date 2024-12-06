@@ -16,40 +16,40 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.menu.swipeGesture(false);
-    // Suscribirse al evento "pause" cuando la app pasa a segundo plano
+  
     this.platform.pause.subscribe(() => {
       console.log('La aplicación está en segundo plano');
-      this.saveState();  // Guarda el estado de la app, como datos importantes
+      this.saveState();  
     });
 
-    // Suscribirse al evento "resume" cuando la app vuelve al primer plano
+    
     this.platform.resume.subscribe(() => {
       console.log('La aplicación ha regresado al primer plano');
-      this.loadState();  // Carga el estado guardado previamente
+      this.loadState(); 
     });
   }
 
-  // Guardar el estado de la aplicación
+
   saveState() {
-    this.storage.set('isLoggedIn', true); // Por ejemplo, guardar si el usuario está logueado
-    this.storage.set('lastPage', 'home'); // O guardar la última página visitada
+    this.storage.set('isLoggedIn', true); 
+    this.storage.set('lastPage', 'home'); 
   }
 
-  // Cargar el estado de la aplicación
+
   loadState() {
     this.storage.get('isLoggedIn').then((isLoggedIn) => {
       if (isLoggedIn) {
-        // Restaurar estado, como redirigir al home si el usuario está logueado
+       
         console.log('Restaurando sesión del usuario');
       } else {
         console.log('No hay sesión activa');
-        // Redirigir a login si no hay sesión activa
+      
       }
     });
 
     this.storage.get('lastPage').then((lastPage) => {
       if (lastPage) {
-        // Navegar a la última página visitada
+  
         console.log('Navegando a la última página:', lastPage);
       }
     });
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
   async logout() {
     await this.carritoService.logout();
     this.menu.close();
-    this.router.navigate(['/login']);  // Redirigir a la página de login o donde sea necesario
+    this.router.navigate(['/login']);  
   }
 
   closeMenu(menuId: string) {

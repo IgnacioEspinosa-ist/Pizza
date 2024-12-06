@@ -48,21 +48,21 @@ ion-col {
     padding: 8px;
 }
 
-/* Fondo actualizado */
+
 .fondo {
     padding-top: 120px;
-    position: fixed; /* Cambiado de absolute a fixed */
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/assets/fondo.png'); /* Usa tu imagen de fondo */
-    background-size: cover; /* Asegura que la imagen cubra todo */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita repeticiones */
+    background-image: url('/assets/fondo.png'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
 }
 
-/* Encabezado */
+
 .head {
     background-color: rgb(218, 0, 0);
 }
@@ -71,7 +71,7 @@ ion-toolbar {
     background-color: rgb(255, 0, 0);
 }
 
-/* Logo */
+
 .logo {
     width: 50px;
     display: flex;

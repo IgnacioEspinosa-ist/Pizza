@@ -234,7 +234,7 @@ export class DatabaseService {
     try {
       const resultado = await this.database.executeSql(`SELECT COUNT(*) AS count FROM usuario`, []);
       const count = resultado.rows.item(0).count;
-      return count > 0; // Devuelve true si ya hay registros en la tabla
+      return count > 0; 
     } catch (error) {
       console.error("Error al verificar inserciones: ", error);
       return false;
@@ -413,15 +413,15 @@ export class DatabaseService {
       this.database.executeSql('SELECT foto FROM usuario WHERE id_user = ?', [id_user])
         .then(res => {
           if (res.rows.length > 0) {
-            observer.next(res.rows.item(0).foto); // Emitir la foto
+            observer.next(res.rows.item(0).foto); 
           } else {
-            observer.next(null); // Emitir null si no hay foto
+            observer.next(null); 
           }
           observer.complete();
         })
         .catch(error => {
           console.error('Error al obtener la foto del usuario: ', error);
-          observer.error(error); // Emitir el error
+          observer.error(error); 
         });
     });
   }
@@ -444,9 +444,9 @@ export class DatabaseService {
     return this.database.executeSql('SELECT foto_U FROM usuario WHERE id_user = ?', [id_user])
       .then((data) => {
         if (data.rows.length > 0) {
-          return data.rows.item(0).foto_U; // Retorna la foto si existe
+          return data.rows.item(0).foto_U; 
         } else {
-          return null; // No hay foto para el usuario
+          return null; 
         }
       })
       .catch((error) => {

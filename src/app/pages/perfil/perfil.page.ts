@@ -91,14 +91,14 @@ export class PerfilPage implements OnInit {
   }
 
   async confirmarCambios() {
-    // Lógica para actualizar los datos del usuario (esto puede incluir la base de datos o algún otro servicio)
+    
     console.log('Cambios confirmados:', this.usuario);
 
-    // Mostrar el mensaje de confirmación
+    
     const toast = await this.toastController.create({
       message: 'Los cambios se han guardado correctamente.',
-      duration: 2000,  // Duración en milisegundos (2 segundos)
-      position: 'bottom',  // Posición del mensaje en la pantalla
+      duration: 2000, 
+      position: 'bottom',  
     });
     toast.present();
   }
@@ -108,13 +108,13 @@ export class PerfilPage implements OnInit {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
-      resultType: CameraResultType.Uri,  // Usamos Uri para obtener la URL de la imagen
+      resultType: CameraResultType.Uri,  
     });
   
-    // Asignamos la URL obtenida como la imagen del usuario
-    this.imagen = image.webPath ?? 'assets/perfil1.jpg';  // Usa la URL de la imagen o una por defecto
   
-    // Llamamos a la función para actualizar la foto del usuario en la base de datos
+    this.imagen = image.webPath ?? 'assets/perfil1.jpg';  
+  
+    
     await this.dbService.insertUsuarioFoto(this.id_user!, this.imagen);
   }
   

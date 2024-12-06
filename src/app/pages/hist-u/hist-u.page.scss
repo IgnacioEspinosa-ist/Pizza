@@ -50,15 +50,15 @@
   }
   
   .producto-nombre {
-    font-size: 10px; /* Ajusta el tamaño del texto */
-    margin: 0; /* Elimina el espaciado externo */
-    padding: 0; /* Elimina el espaciado interno */
-    line-height: 1; /* Ajusta el espaciado entre líneas */
-    text-align: center; /* Centra el texto dentro del contenedor */
-    font-weight: normal; /* Opcional: ajusta el grosor del texto */
-    white-space: nowrap; /* Evita que el texto se corte en varias líneas */
-    overflow: hidden; /* Oculta el texto desbordado */
-    text-overflow: ellipsis; /* Añade "..." si el texto es demasiado largo */
+    font-size: 10px; 
+    margin: 0; 
+    padding: 0; 
+    line-height: 1; 
+    text-align: center; 
+    font-weight: normal; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
     color: black;
   }
   

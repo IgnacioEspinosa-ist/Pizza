@@ -11,10 +11,10 @@ ion-title {
 }
 
 .perfil {
-  background-image: url('/assets/fondo.png'); /* Ajusta la ruta si es diferente */
-  background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
-  background-position: center; /* Centra la imagen */
-  background-repeat: repeat; /* Evita que la imagen se repita */
+  background-image: url('/assets/fondo.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: repeat; 
   padding-bottom: 200px;
   width: 100%;
   max-width: 412px;
@@ -27,33 +27,32 @@ ion-title {
   height: 100%;
 }
 
-/* Contenedor de los datos */
 .datos-container {
-  width: 90%; /* Aumenta el ancho del contenedor */
-  max-width: 450px; /* Limita el ancho máximo */
-  margin: 20px auto; /* Centra el contenedor horizontalmente */
-  padding: 20px; /* Agrega espacio interno */
-  border: 2px solid #0056a3; /* Borde azul */
-  border-radius: 10px; /* Esquinas redondeadas */
-  background-color: #ffffff; /* Fondo blanco */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  width: 90%; 
+  max-width: 450px; 
+  margin: 20px auto; 
+  padding: 20px; 
+  border: 2px solid #0056a3; 
+  border-radius: 10px; 
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 ion-item {
   display: flex;
-  justify-content: space-between; /* Alinea los elementos */
-  align-items: center; /* Centra verticalmente */
+  justify-content: space-between; 
+  align-items: center; 
   margin-bottom: 10px;
 }
 
 ion-label {
   flex-grow: 1;
-  text-align: left; /* Mantén el texto del lado izquierdo */
+  text-align: left; 
 }
 
 ion-input, ion-text {
   flex-grow: 2;
-  text-align: right; /* Alinea el texto a la derecha */
+  text-align: right; 
 }
 
 ion-icon {
@@ -62,22 +61,21 @@ ion-icon {
   cursor: pointer;
 }
 
-/* Asegúrate de que ion-content use todo el espacio disponible */
+
 ion-content.content {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Esto garantiza que los botones queden abajo */
+  justify-content: space-between; 
 }
 
-/* Si hay otros márgenes o rellenos, ajusta */
 .perfil {
-  flex: 1; /* Esto hace que la sección de perfil ocupe todo el espacio disponible */
+  flex: 1; 
   display: flex;
   flex-direction: column;
 }
 
-/* Asegúrate de que los botones no se solapen con la lista */
+
 ion-button {
-  margin-top: 10px; /* Margen para separar botones de contenido */
+  margin-top: 10px; 
 }
 

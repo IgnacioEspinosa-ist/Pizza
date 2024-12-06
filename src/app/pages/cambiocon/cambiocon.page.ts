@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { DatabaseService } from 'src/app/services/database.service'; // Cambia la ruta según tu proyecto
+import { DatabaseService } from 'src/app/services/database.service'; 
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 @Component({
@@ -61,7 +61,7 @@ export class CambioconPage  {
 
           const email = await this.dbService.getEmail(this.id_user);
           if (email) {
-            // Guardar el correo electrónico en el storage
+           
             await this.storage.set('email', email);
           }
      
