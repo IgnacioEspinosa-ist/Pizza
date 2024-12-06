@@ -79,6 +79,9 @@ registroMasa: string = `
   registroRepartidor2: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
   VALUES ('Javier','Soto','18789652-0','javier@gmail.com','enwarhammer','123456',2,'assets/perfil1.jpg')`
 
+  registroUsuario2: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
+  VALUES ('perroawe','boldo','21841456-0','perroawe@gmail.com','ignacio123','123456',1,'assets/perfil1.jpg')`
+
   registroAdmin: string = `INSERT INTO usuario (nombre,apellido,rut,correo,clave,telefono,id_roll,foto_U) 
   VALUES ('Benjamin','Leon','217856982-4','benja@gmail.com','adminrar','254152',3,'assets/perfil1.jpg')`
 
@@ -198,7 +201,8 @@ registroMasa: string = `
     this.registroPedido2,
     this.registerRol1,
     this.registerRol2,
-    this.registerRol3
+    this.registerRol3,
+    this.registroUsuario2
 
   ];
 

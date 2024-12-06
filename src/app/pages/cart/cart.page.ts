@@ -24,12 +24,15 @@ export class CartPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-   
+    const idUser = await this.storage.get('id_user');
+    if (!idUser) {
+      console.error('No se encontró id_user en el almacenamiento.');
+      return;
+    }
     this.productos = await this.carritoService.obtenerProductos();
     this.calcularTotal();
-    await this.storage.remove('selectedProductId');  
-    const idUser = await this.storage.get('id_user');
   }
+  
 
   
   actualizarCarrito() {
