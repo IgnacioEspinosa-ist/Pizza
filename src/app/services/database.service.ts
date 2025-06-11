@@ -426,6 +426,8 @@ export class DatabaseService {
     });
   }
 
+ 
+  
   async insertUsuarioFoto(id_user: number, foto: string) {
     return new Promise<void>((resolve, reject) => {
       this.database.executeSql('UPDATE usuario SET foto_U = ? WHERE id_user = ?', [foto, id_user])

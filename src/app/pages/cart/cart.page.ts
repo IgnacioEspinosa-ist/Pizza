@@ -15,6 +15,7 @@ export class CartPage implements OnInit {
   productos: Producto[] = [];
   totalCarrito: number = 0;
   totalFormateado: string = '';
+  correoUsuario: string | null = null;
   constructor(
     private dbService: DatabaseService,
     private carritoService: CarritoService,
@@ -40,6 +41,16 @@ export class CartPage implements OnInit {
     this.productos = this.carritoService.obtenerProductos();
     this.calcularTotal();
   }
+
+  async emailconseguir() {
+    const id_user = await this.storage.get('id_user');
+    try {
+      this.correoUsuario = await this.dbService.getEmail(id_user);
+    }
+    catch (error) {
+      console.error('Error al obtener el correo:', error);
+    }
+  };
 
 
   async eliminarProductoDelCarrito(id_prod: number): Promise<void> {
@@ -81,11 +92,26 @@ export class CartPage implements OnInit {
   }
 
 
+
   vaciarCarrito() {
     this.carritoService.vaciarCarrito();
     this.actualizarCarrito();
   }
 
+  linkpago() {
+    this.carritoService.obtenerLinkPago().subscribe({
+      next: (linkPago) => {
+        console.log('Link de pago:', linkPago);
+        window.open(linkPago, '_blank');  // abre el link en nueva pestaña
+
+        this.vaciarCarrito();
+      },
+      error: (err) => {
+        console.error('Error al obtener link de pago:', err);
+        // Mostrar mensaje de error al usuario si quieres
+      }
+    });
+  }
 
   async finalizarCompra() {
     if (!this.productos || this.productos.length === 0) {
@@ -115,9 +141,9 @@ export class CartPage implements OnInit {
         }
       }
 
-     
+
       const now = new Date();
-      const offset = now.getTimezoneOffset() * 60000; 
+      const offset = now.getTimezoneOffset() * 60000;
       const localDateTime = new Date(now.getTime() - offset).toISOString().slice(0, 19).replace('T', ' ');
 
       const nuevoPedido = {
@@ -142,8 +168,15 @@ export class CartPage implements OnInit {
       // Vaciar el carrito
       this.vaciarCarrito();
 
-      // Redirigir a otra página
-      this.router.navigate(['/mapacli']);
+      this.carritoService.obtenerLinkPago().subscribe({
+        next: (linkPago) => {
+          console.log('Link de pago:', linkPago);
+          window.open(linkPago, '_blank');
+        },
+        error: (err) => {
+          console.error('Error al obtener link de pago:', err);
+        }
+      });
 
       console.log('Compra finalizada con éxito.');
     } catch (error) {

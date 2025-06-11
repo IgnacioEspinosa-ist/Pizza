@@ -2,19 +2,31 @@
 import { Injectable } from '@angular/core';
 import { Producto } from './producto';
 import { Storage } from '@ionic/storage-angular';
-
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class CarritoService {
   private carrito: Producto[] = [];
 
-  constructor(private storage: Storage) {}
+  constructor(private storage: Storage,private http: HttpClient) {}
 
   async cargarCarrito() {
     const carrito = await this.storage.get('carrito');
     this.carrito = carrito || [];
   }
+
+  
+
+
+  private apiUrl = 'https://pago-flow.onrender.com/api/flow/link';
+
+ 
+
+  obtenerLinkPago() {
+    return this.http.get(this.apiUrl, { responseType: 'text' });
+  }
+
 
   obtenerProductos(): Producto[] {
     return this.carrito;
