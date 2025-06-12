@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Producto } from './producto';
 import { Storage } from '@ionic/storage-angular';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +22,11 @@ export class CarritoService {
 
   private apiUrl = 'https://pago-flow.onrender.com/api/flow/link';
 
- 
+  private apiCompra = 'https://pago-flow.onrender.com/api/flow/pagar';
+  
+  enviarPago(body: any): Observable<any> {
+    return this.http.post<any>(this.apiCompra, body);
+  }
 
   obtenerLinkPago() {
     return this.http.get(this.apiUrl, { responseType: 'text' });

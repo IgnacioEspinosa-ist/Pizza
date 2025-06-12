@@ -42,7 +42,7 @@ export class CartPage implements OnInit {
     this.calcularTotal();
   }
 
-  async emailconseguir() {
+  async emailConseguir() {
     const id_user = await this.storage.get('id_user');
     try {
       this.correoUsuario = await this.dbService.getEmail(id_user);
@@ -155,6 +155,26 @@ export class CartPage implements OnInit {
         estatus: 'pendiente'
       };
 
+      const commerceOrder = this.generarCommerceOrder();
+      const subject = this.generarSubject(this.productos);
+
+      const body = {
+        amount: this.totalCarrito,
+        email: this.correoUsuario,
+        commerceOrder,
+        subject,
+
+      };
+      this.carritoService.enviarPago(body).subscribe({
+        next: (response) => {
+          const urlPago = response.url + '?token=' + response.token;
+          
+        },
+        error: (err) => {
+          console.error('Error al crear el pago:', err);
+        }
+      });
+
       await this.dbService.agregarPedido(nuevoPedido);
 
 
@@ -227,6 +247,22 @@ export class CartPage implements OnInit {
       console.error('Cantidad es undefined o no se puede disminuir más de 1.');
     }
   }
+
+
+  generarCommerceOrder(): string {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 10000);
+    return `ORD-${timestamp}-${random}`;
+  }
+
+
+  generarSubject(productos: Producto[]): string {
+    return productos
+      .map(p => `${p.cantidad}x ${p.nombre}`)
+      .join(', ');
+  }
+
+
 
 
 

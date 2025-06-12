@@ -109,6 +109,16 @@ export class DatabaseService {
   //variable de tipo observable para ver el estado de la base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  tablaFlow: string = `CREATE TABLE flow_pago (
+  ´id_pago INTEGER PRIMARY KEY AUTOINCREMENT,
+  commerce_order TEXT NOT NULL UNIQUE, 
+  id_pedido INTEGER NOT NULL,          
+  monto REAL NOT NULL,                 
+  correo TEXT NOT NULL,                
+  estado TEXT DEFAULT 'pendiente',     
+  fecha_pago TEXT                     
+);`
+
   // Tabla Roll
   tablaRoll: string = "CREATE TABLE IF NOT EXISTS roll (id_roll INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(50) NOT NULL);";
 
@@ -224,7 +234,7 @@ export class DatabaseService {
     this.registroUsuario2,
     this.registroMeatLover,
     this.registroPolloPesto,
-    
+
 
   ];
 
@@ -234,7 +244,7 @@ export class DatabaseService {
     try {
       const resultado = await this.database.executeSql(`SELECT COUNT(*) AS count FROM usuario`, []);
       const count = resultado.rows.item(0).count;
-      return count > 0; 
+      return count > 0;
     } catch (error) {
       console.error("Error al verificar inserciones: ", error);
       return false;
@@ -300,6 +310,8 @@ export class DatabaseService {
       await this.database.executeSql(this.tablaCarrito, []);
       console.log("Tabla Carrito creada");
 
+      await this.database.executeSql(this.tablaFlow, []);
+      console.log("Tabla flow creada");
 
 
       const existe = await this.verificarInserciones();
@@ -413,21 +425,21 @@ export class DatabaseService {
       this.database.executeSql('SELECT foto FROM usuario WHERE id_user = ?', [id_user])
         .then(res => {
           if (res.rows.length > 0) {
-            observer.next(res.rows.item(0).foto); 
+            observer.next(res.rows.item(0).foto);
           } else {
-            observer.next(null); 
+            observer.next(null);
           }
           observer.complete();
         })
         .catch(error => {
           console.error('Error al obtener la foto del usuario: ', error);
-          observer.error(error); 
+          observer.error(error);
         });
     });
   }
 
- 
-  
+
+
   async insertUsuarioFoto(id_user: number, foto: string) {
     return new Promise<void>((resolve, reject) => {
       this.database.executeSql('UPDATE usuario SET foto_U = ? WHERE id_user = ?', [foto, id_user])
@@ -446,9 +458,9 @@ export class DatabaseService {
     return this.database.executeSql('SELECT foto_U FROM usuario WHERE id_user = ?', [id_user])
       .then((data) => {
         if (data.rows.length > 0) {
-          return data.rows.item(0).foto_U; 
+          return data.rows.item(0).foto_U;
         } else {
-          return null; 
+          return null;
         }
       })
       .catch((error) => {
@@ -884,7 +896,7 @@ export class DatabaseService {
     });
   }
 
-  
+
 
   async insertUsuario(usuario: Usuario): Promise<void> {
 
