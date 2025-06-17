@@ -26,6 +26,7 @@ export class CartPage implements OnInit {
 
   async ngOnInit() {
     const idUser = await this.storage.get('id_user');
+    this.emailConseguir()
     if (!idUser) {
       console.error('No se encontró id_user en el almacenamiento.');
       return;
@@ -97,7 +98,7 @@ export class CartPage implements OnInit {
     this.carritoService.vaciarCarrito();
     this.actualizarCarrito();
   }
-
+/*
   linkpago() {
     this.carritoService.obtenerLinkPago().subscribe({
       next: (linkPago) => {
@@ -111,7 +112,7 @@ export class CartPage implements OnInit {
         // Mostrar mensaje de error al usuario si quieres
       }
     });
-  }
+  }*/
 
   async finalizarCompra() {
     if (!this.productos || this.productos.length === 0) {
@@ -158,6 +159,7 @@ export class CartPage implements OnInit {
       const commerceOrder = this.generarCommerceOrder();
       const subject = this.generarSubject(this.productos);
 
+
       const body = {
         amount: this.totalCarrito,
         email: this.correoUsuario,
@@ -165,10 +167,20 @@ export class CartPage implements OnInit {
         subject,
 
       };
+      const datos = {
+        commerceOrder: this.generarCommerceOrder(),
+        amount: this.totalCarrito,
+        email: this.correoUsuario,
+        subject: this.generarSubject(this.productos),
+      };
+
+      this.carritoService.obtenerLinkPagoPost(datos).subscribe(link => {
+        console.log('Link recibido:', link);
+      });
       this.carritoService.enviarPago(body).subscribe({
         next: (response) => {
           const urlPago = response.url + '?token=' + response.token;
-          
+
         },
         error: (err) => {
           console.error('Error al crear el pago:', err);
@@ -188,15 +200,31 @@ export class CartPage implements OnInit {
       // Vaciar el carrito
       this.vaciarCarrito();
 
-      this.carritoService.obtenerLinkPago().subscribe({
+      this.carritoService.obtenerLinkPagoPost(datos).subscribe({
         next: (linkPago) => {
           console.log('Link de pago:', linkPago);
           window.open(linkPago, '_blank');
         },
         error: (err) => {
           console.error('Error al obtener link de pago:', err);
-        }
-      });
+        }});
+
+
+      /*
+      this.carritoService.obtenerLinkPago().subscribe({
+          next: (linkPago) => {
+            console.log('Link de pago:', linkPago);
+            window.open(linkPago, '_blank');
+          },
+          error: (err) => {
+            console.error('Error al obtener link de pago:', err);
+          }
+        });*/
+
+
+
+        alert(JSON.stringify(body));
+
 
       console.log('Compra finalizada con éxito.');
     } catch (error) {

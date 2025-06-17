@@ -28,9 +28,15 @@ export class CarritoService {
     return this.http.post<any>(this.apiCompra, body);
   }
 
+
+  obtenerLinkPagoPost(datosPago: any) {
+  return this.http.post(this.apiUrl, datosPago, { responseType: 'text' });
+}
+
+/*
   obtenerLinkPago() {
     return this.http.get(this.apiUrl, { responseType: 'text' });
-  }
+  }*/
 
 
   obtenerProductos(): Producto[] {
