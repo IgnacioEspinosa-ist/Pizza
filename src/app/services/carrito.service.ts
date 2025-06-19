@@ -24,6 +24,8 @@ export class CarritoService {
 
   private apiCompra = 'https://pago-flow.onrender.com/api/flow/pagar';
   
+  private baseUrl = 'https://pago-flow.onrender.com/api/flow';
+
   enviarPago(body: any): Observable<any> {
     return this.http.post<any>(this.apiCompra, body);
   }
@@ -32,6 +34,11 @@ export class CarritoService {
   obtenerLinkPagoPost(datosPago: any) {
   return this.http.post(this.apiUrl, datosPago, { responseType: 'text' });
 }
+
+obtenerEstadoPorCommerceOrder(commerceOrder: string) {
+    return this.http.get<any>(`${this.baseUrl}/estado?commerceOrder=${commerceOrder}`);
+  }
+
 
 /*
   obtenerLinkPago() {

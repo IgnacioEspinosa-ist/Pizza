@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Estado del Pago</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-spinner *ngIf="loading"></ion-spinner>
+
+  <div *ngIf="error">
+    <p color="danger">{{ error }}</p>
+    <ion-button (click)="irInicio()">Volver al inicio</ion-button>
+  </div>
+
+  <div *ngIf="!loading && !error && pagoEstado">
+    <h2>Estado del pago</h2>
+    <p>Orden: {{ pagoEstado.commerceOrder }}</p>
+    <p>Monto: {{ pagoEstado.amount }} {{ pagoEstado.currency }}</p>
+    <p>Estado:
+      <span *ngIf="pagoEstado.status === 2" style="color: green;">Aprobado</span>
+      <span *ngIf="pagoEstado.status !== 2" style="color: red;">No aprobado</span>
+    </p>
+
+     
+    <ion-button *ngIf="pagoEstado.status !== 2" (click)="irInicio()">Volver al inicio</ion-button>
+  </div>
+</ion-content>

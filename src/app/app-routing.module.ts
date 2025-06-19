@@ -119,11 +119,17 @@ const routes: Routes = [
     path: 'hist-r',
     loadChildren: () => import('./pages/hist-r/hist-r.module').then( m => m.HistRPageModule)
   },
+  {
+    path: 'estado-pago',
+    loadChildren: () => import('./pages/estado-pago/estado-pago.module').then( m => m.EstadoPagoPageModule)
+  },
 
   {
     path: '**',
     loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
   },
+  
+
 
  
 
