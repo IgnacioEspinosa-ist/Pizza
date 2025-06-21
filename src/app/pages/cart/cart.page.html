@@ -47,8 +47,9 @@
       </ion-buttons>
       <ion-buttons slot="end" style="font-size: 12px; padding: 5px 10px; width: auto; height: auto; border-radius: 5px;">
         <ion-button 
-          (click)="finalizarCompra()" 
+          (click)="compraYcommerce()" 
           [routerLink]="['/estado-pago']"
+          [queryParams]="{ commerceOrder: commerceOrder }"
           [disabled]="productos.length === 0">
           Finalizar Compra
         </ion-button>

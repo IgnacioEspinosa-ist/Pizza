@@ -109,14 +109,12 @@ export class DatabaseService {
   //variable de tipo observable para ver el estado de la base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  tablaFlow: string = `CREATE TABLE flow_pago (
-  ´id_pago INTEGER PRIMARY KEY AUTOINCREMENT,
-  commerce_order TEXT NOT NULL UNIQUE, 
-  id_pedido INTEGER NOT NULL,          
-  monto REAL NOT NULL,                 
-  correo TEXT NOT NULL,                
-  estado TEXT DEFAULT 'pendiente',     
-  fecha_pago TEXT                     
+  tablaFlow: string = `CREATE TABLE IF NOT EXISTS pedido_flow (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  commerceOrder TEXT,
+  correo TEXT,
+  total REAL,
+  fecha TEXT
 );`
 
   // Tabla Roll
@@ -174,9 +172,10 @@ export class DatabaseService {
       total REAL NOT NULL,
       id_user_resp INTEGER,
       estatus VARCHAR(50) NOT NULL,
+      descripcion VARCHAR(200) NOT NULL,
       FOREIGN KEY(id_user) REFERENCES usuario(id_user),
       FOREIGN KEY(id_direccion) REFERENCES direccion(id_direccion)
-  );`;
+  );`; //descripcion
 
   // Tabla Detalle
   tablaDetalle: string = `CREATE TABLE IF NOT EXISTS detalle (
@@ -553,26 +552,54 @@ export class DatabaseService {
     });
   }
 
-
-
-
-
-
-
-
-  async agregarPedido(pedido: { f_pedido: string; id_user: number; id_direccion: number; total: number; id_user_resp?: number; estatus: string }): Promise<void> {
+  async agregarPedidoDesdeFlow(pedido: {
+    commerceOrder: string,
+    correo: string,
+    total: number,
+    fecha: string
+  }): Promise<void> {
     const query = `
-      INSERT INTO pedido (f_pedido, id_user, id_direccion, total, id_user_resp, estatus)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `;
+    INSERT INTO pedido_flow (commerceOrder, correo, total, fecha)
+    VALUES (?, ?, ?, ?)
+  `;
+
+    const values = [
+      pedido.commerceOrder,
+      pedido.correo,
+      pedido.total,
+      pedido.fecha
+    ];
+
+    try {
+      await this.database.executeSql(query, values);
+      console.log('Pedido añadido correctamente');
+    } catch (error) {
+      console.error('Error al insertar el pedido:', error);
+    }
+  }
+
+
+
+
+
+
+
+  async agregarPedido(pedido: { f_pedido: string; id_user: number; id_direccion: number; total: number; id_user_resp?: number; estatus: string, descripcion: string }): Promise<void> {
+    const query = `
+  INSERT INTO pedido (f_pedido, id_user, id_direccion, total, id_user_resp, estatus, descripcion)
+  VALUES (?, ?, ?, ?, ?, ?, ?)
+`;
     const values = [
       pedido.f_pedido,
       pedido.id_user,
       pedido.id_direccion,
       pedido.total,
-      pedido.id_user_resp ?? null, // Si no se pasa, usar null
-      pedido.estatus
+      pedido.id_user_resp ?? null,
+      pedido.estatus,
+      pedido.descripcion
     ];
+
+
 
     try {
       await this.database.executeSql(query, values);
@@ -621,6 +648,7 @@ export class DatabaseService {
             total: res.rows.item(i).total,
             id_user_resp: res.rows.item(i).id_user_resp,
             estatus: res.rows.item(i).estatus,
+            descripcion: res.rows.item(i).descripcion,
             productos: []
           });
         }
@@ -664,6 +692,7 @@ export class DatabaseService {
             total: res.rows.item(i).total,
             id_user_resp: res.rows.item(i).id_user_resp,
             estatus: res.rows.item(i).estatus,
+            descripcion: res.rows.item(i).descripcion,
             productos: [] // Puedes agregar los productos aquí si es necesario
           };
           pedidos.push(pedido);
@@ -819,6 +848,7 @@ export class DatabaseService {
             total: res.rows.item(i).total,
             id_user_resp: res.rows.item(i).id_user_resp,
             estatus: res.rows.item(i).estatus,
+            descripcion: res.rows.item(i).descripcion,
             productos: JSON.parse(res.rows.item(i).productos || '[]')
           });
         }
@@ -1115,6 +1145,7 @@ export class DatabaseService {
             total: res.rows.item(i).total,
             id_user_resp: res.rows.item(i).id_user_resp,
             estatus: res.rows.item(i).estatus,
+            descripcion: res.rows.item(i).descripcion,
             productos: JSON.parse(res.rows.item(i).productos || '[]')
           });
         }

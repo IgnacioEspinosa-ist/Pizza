@@ -13,6 +13,7 @@ export class Item {
     total!: number;
     id_user_resp?: number;
     estatus!: string;
+    descripcion!: string;
     productos: Item[] = []; 
   }
   

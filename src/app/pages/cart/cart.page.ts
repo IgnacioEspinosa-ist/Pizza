@@ -16,16 +16,21 @@ export class CartPage implements OnInit {
   totalCarrito: number = 0;
   totalFormateado: string = '';
   correoUsuario: string | null = null;
+ 
+  commerceOrder = this.generarCommerceOrder();
   constructor(
     private dbService: DatabaseService,
     private carritoService: CarritoService,
     private alertController: AlertController,
     private storage: Storage,
-    private router: Router
+    private router: Router,
+    
   ) { }
 
   async ngOnInit() {
+    
     const idUser = await this.storage.get('id_user');
+  
     this.emailConseguir()
     if (!idUser) {
       console.error('No se encontró id_user en el almacenamiento.');
@@ -142,7 +147,7 @@ export class CartPage implements OnInit {
         }
       }
 
-
+/*
       const now = new Date();
       const offset = now.getTimezoneOffset() * 60000;
       const localDateTime = new Date(now.getTime() - offset).toISOString().slice(0, 19).replace('T', ' ');
@@ -154,21 +159,25 @@ export class CartPage implements OnInit {
         total: this.totalCarrito,
         id_user_resp: undefined,
         estatus: 'pendiente'
-      };
+      };*/
 
-      const commerceOrder = this.generarCommerceOrder();
+      
       const subject = this.generarSubject(this.productos);
-
+      
 
       const body = {
         amount: this.totalCarrito,
         email: this.correoUsuario,
-        commerceOrder,
+        commerceOrder: this.commerceOrder,
         subject,
 
       };
+
+      
+       
+
       const datos = {
-        commerceOrder: this.generarCommerceOrder(),
+        commerceOrder: this.commerceOrder,
         amount: this.totalCarrito,
         email: this.correoUsuario,
         subject: this.generarSubject(this.productos),
@@ -186,7 +195,7 @@ export class CartPage implements OnInit {
           console.error('Error al crear el pago:', err);
         }
       });
-
+/*
       await this.dbService.agregarPedido(nuevoPedido);
 
 
@@ -196,7 +205,7 @@ export class CartPage implements OnInit {
           await this.dbService.actualizarStockProducto(producto.id_prod, nuevoStock);
         }
       }
-
+*/
       // Vaciar el carrito
       this.vaciarCarrito();
 
@@ -223,17 +232,24 @@ export class CartPage implements OnInit {
 
 
 
-        alert(JSON.stringify(body));
+        //alert(JSON.stringify(body));
 
 
       console.log('Compra finalizada con éxito.');
+     
     } catch (error) {
       console.error('Error al finalizar la compra:', error);
     }
   }
 
+  async guardarcommerceOrder(){
+    this.storage.set('ultimoCommerceOrder', this.commerceOrder);
+  }
 
-
+  compraYcommerce(){
+    this.finalizarCompra()
+    //this.guardarcommerceOrder()
+  }
 
 
   async presentAlert() {
