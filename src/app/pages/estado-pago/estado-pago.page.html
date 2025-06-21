@@ -1,5 +1,5 @@
 <ion-header>
-  <div class="head">
+  <div>
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button menu="menuP"></ion-menu-button>
@@ -8,34 +8,38 @@
     </ion-toolbar>
   </div>
 </ion-header>
-<ion-content class="ion-padding">
-  <ion-spinner *ngIf="loading"></ion-spinner>
+<ion-content class="fondo">
+  <div class="fondo">
+    <ion-spinner *ngIf="loading"></ion-spinner>
 
-  <div *ngIf="error">
-    <p color="danger">{{ error }}</p>
-    <ion-button (click)="irInicio()">Volver al inicio</ion-button>
-  </div>
+   
 
-  <ion-button expand="block" color="primary" (click)="consultarEstadoPago(commerceOrder!)">
-  Verificar estado manualmente
-</ion-button>
-
-<p><strong>Commerce Order recibido:</strong> {{ commerceOrder }}</p>
+    
+    <p class="rectangulo-blanco"><strong>Commerce Order recibido:</strong> {{ commerceOrder }}</p>
 
 
-  <div *ngIf="!loading && !error && pagoEstado">
-    <h2>Estado del pago</h2>
-    <p>Orden: {{ pagoEstado.commerceOrder }}</p>
-    <p>Monto: {{ pagoEstado.amount }} {{ pagoEstado.currency }}</p>
-    <p>Estado:
-      <span *ngIf="pagoEstado.status === 2" style="color: green;">Aprobado</span>
-      <span *ngIf="pagoEstado.status === 1" style="color: rgb(255, 174, 0);">Pendiente</span>
-      <span *ngIf="pagoEstado.status === 3" style="color: rgb(255, 0, 0);">Rechazado</span>
-    </p>
+    <div class="rectangulo-blanco" *ngIf="!loading && !error && pagoEstado">
+      <h2>Estado del pago</h2>
+      <p>Orden: {{ pagoEstado.commerceOrder }}</p>
+      <p>Monto: {{ pagoEstado.amount }} {{ pagoEstado.currency }}</p>
+      <p>Estado:
+        <span *ngIf="pagoEstado.status === 2" style="color: green;">Aprobado</span>
+        <span *ngIf="pagoEstado.status === 1" style="color: rgb(255, 174, 0);">Pendiente</span>
+        <span *ngIf="pagoEstado.status === 3" style="color: rgb(255, 0, 0);">Rechazado</span>
+      </p>
 
-     
-    <ion-button *ngIf="pagoEstado.status === 3" (click)="irInicio()">Volver al inicio</ion-button>
-    <ion-button *ngIf="pagoEstado.status === 1" (click)="irInicio()">Volver al inicio</ion-button>
-    <ion-button *ngIf="pagoEstado.status === 2" (click)="irMapa()">Continuar</ion-button>
+
+      <ion-button *ngIf="pagoEstado.status === 3" (click)="irInicio()">Volver al inicio</ion-button>
+      <ion-button *ngIf="pagoEstado.status === 1" (click)="irInicio()">Volver al inicio</ion-button>
+      <ion-button *ngIf="pagoEstado.status === 2" (click)="irMapa()">Continuar</ion-button>
+    </div>
+     <div  class="rectangulo-blanco"   *ngIf="error">
+      <p color="danger">{{ error }}</p>
+      <ion-button (click)="irInicio()">Volver al inicio</ion-button>
+    </div>
+    <ion-button expand="block" color="primary" (click)="consultarEstadoPago(commerceOrder!)">
+      Verificar estado 
+    </ion-button>
+
   </div>
 </ion-content>
