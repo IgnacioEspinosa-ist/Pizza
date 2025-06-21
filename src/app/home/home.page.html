@@ -28,7 +28,7 @@
               <ion-card class="producto-card" (click)="verDetalleProducto(producto)">
                 <img [src]="producto.foto" class="producto-imagen" />
                 <h6 class="producto-nombre">{{ producto.nombre }}</h6>
-                <p class="producto-precio">{{ producto.precio | currency }}</p>
+                <p class="producto-precio">${{ producto.precio }}</p>
 
               </ion-card>
               <ion-button expand="block" class="boton" (click)="agregarAlCarrito(producto)">
